@@ -80,4 +80,67 @@ public class UtilTests {
             connection.close();
         }
     }
+
+    @Test
+    public void test_insert_permission() throws SQLException {
+        PGSimpleDataSource db = getDataSource();
+        Connection connection = db.getConnection();
+
+        try {
+            connection.setAutoCommit(false);
+            createTableForTests(connection);
+            addDataToTable(connection);
+            String sqlCmd = "INSERT INTO students(course, number, name) VALUES (1, 666, 'Asdrubal');";
+
+            PreparedStatement statement = connection.prepareStatement(sqlCmd);
+            int result = statement.executeUpdate();
+            Assert.assertEquals(1, result);
+
+        } finally {
+            connection.rollback();
+            connection.close();
+        }
+    }
+
+    @Test
+    public void test_update_permission() throws SQLException {
+        PGSimpleDataSource db = getDataSource();
+        Connection connection = db.getConnection();
+
+        try {
+            connection.setAutoCommit(false);
+            createTableForTests(connection);
+            addDataToTable(connection);
+            String sqlCmd = "UPDATE students SET name = 'Alvaro' WHERE name LIKE 'Alice';";
+
+            PreparedStatement statement = connection.prepareStatement(sqlCmd);
+            int result = statement.executeUpdate();
+            Assert.assertEquals(1, result);
+
+        } finally {
+            connection.rollback();
+            connection.close();
+        }
+    }
+
+    @Test
+    public void test_delete_permission() throws SQLException {
+        PGSimpleDataSource db = getDataSource();
+        Connection connection = db.getConnection();
+
+        try {
+            connection.setAutoCommit(false);
+            createTableForTests(connection);
+            addDataToTable(connection);
+            String sqlCmd = "DELETE FROM students WHERE number = 12345;";
+
+            PreparedStatement statement = connection.prepareStatement(sqlCmd);
+            int result = statement.executeUpdate();
+            Assert.assertEquals(1, result);
+
+        } finally {
+            connection.rollback();
+            connection.close();
+        }
+    }
 }
