@@ -8,6 +8,8 @@ import java.util.Properties;
 
 public class Utils {
 
+    private static PGSimpleDataSource db = null;
+
     public static PGSimpleDataSource getDataSource(){
         Properties configs = new Properties();
         FileInputStream config_file = null;

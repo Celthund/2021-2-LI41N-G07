@@ -1,11 +1,18 @@
 package pt.isel.ls;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import static org.junit.Assert.assertEquals;
 
 public class ExampleTest {
+
+    @AfterClass
+    public static void cenas(){
+        assertEquals(1, 1);
+    }
 
     @Test
     public void example() {
