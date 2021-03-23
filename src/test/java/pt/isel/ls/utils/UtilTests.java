@@ -38,19 +38,10 @@ public class UtilTests {
 
 
     private void createTableForTests(Connection connection) throws SQLException {
-        String create = "drop table if exists students;\n" +
-                "drop table if exists courses;\n" +
-                "\n" +
-                "create table courses (\n" +
-                "  cid serial primary key,\n" +
-                "  name varchar(80)\n" +
-                ");\n" +
-                "\n" +
-                "create table students (\n" +
-                "  number int primary key,\n" +
-                "  name varchar(80),\n" +
-                "  course int references courses(cid)\n" +
-                ");";
+        String create = "drop table if exists students;" +
+                        "drop table if exists courses;" +
+                        "create table courses (cid serial primary key, name varchar(80));" +
+                        "create table students (number int primary key, name varchar(80), course int references courses(cid));";
 
         Statement statement = connection.createStatement();
 
@@ -59,9 +50,9 @@ public class UtilTests {
     }
 
     private void addDataToTable(Connection connection) throws SQLException {
-        String create = "insert into courses(name) values ('LEIC');\n" +
-                "insert into students(course, number, name) values (1, 12345, 'Alice');\n" +
-                "insert into students(course, number, name) select cid as course, 12346 as number, 'Bob' as name from courses where name = 'LEIC'";
+        String create = "insert into courses(name) values ('LEIC');" +
+                        "insert into students(course, number, name) values (1, 12345, 'Alice');" +
+                        "insert into students(course, number, name) select cid as course, 12346 as number, 'Bob' as name from courses where name = 'LEIC'";
 
         Statement statement = connection.createStatement();
 
