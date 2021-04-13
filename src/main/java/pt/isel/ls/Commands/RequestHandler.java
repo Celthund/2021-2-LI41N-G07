@@ -1,5 +1,7 @@
 package pt.isel.ls.Commands;
 
+import pt.isel.ls.Request;
+
 public interface RequestHandler {
-    void execute();
+    RequestResult execute(Request request);
 }
