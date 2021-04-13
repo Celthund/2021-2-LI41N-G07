@@ -1,8 +1,10 @@
 package pt.isel.ls;
 
-import pt.isel.ls.Commands.RequestHandler;
 import pt.isel.ls.Commands.RequestResult;
 import pt.isel.ls.Path.Router;
+import pt.isel.ls.Request.Method;
+import pt.isel.ls.Request.Request;
+import pt.isel.ls.Views.Users;
 
 import java.util.Optional;
 
@@ -19,29 +21,29 @@ public class App {
                 System.out.println(request);
                 return null;
             });
-            test.addRoute("GET", "/user/<id>", request -> {
-                System.out.println("GET /user/<id>");
-                System.out.println(request);
-                return null;
-            });
+            Users user = new Users();
+            test.addRoute("GET", "/users", user);
+            test.addRoute("GET", "/users/{id}", user);
+            test.addRoute("POST", "/users", user);
+
         } catch (RouteAlreadyExistsException e) {
             e.printStackTrace();
         }
 
-        String ex = "GET / nome=Tiago&Numero=47199&Nome=Jorge"; //"POST /users/id name=First+Last&email=example@email.com";
+        String ex = "POST /users name=Tiago&email=a47199@alunos.isel.pt"; //"POST /users/id name=First+Last&email=example@email.com";
         try {
             Request request = parseRequest(ex);
             Optional<RequestResult> result = test.findRoute(request);
-        } catch (InvalidRequestException | RouteNotFoundException e) {
+        } catch (InvalidRequestException | RouteNotFoundException | InvalidRequest e) {
             e.printStackTrace();
         }
 
 
-        String ex1 = "GET /user/batatas nome=Tiago&Numero=47199&Nome=Jorge"; //"POST /users/id name=First+Last&email=example@email.com";
+        String ex1 = "GET /users/batatas nome=Tiago&Numero=47199&Nome=Jorge"; //"POST /users/id name=First+Last&email=example@email.com";
         try {
             Request request = parseRequest(ex1);
             Optional<RequestResult> result = test.findRoute(request);
-        } catch (InvalidRequestException | RouteNotFoundException e) {
+        } catch (InvalidRequestException | RouteNotFoundException | InvalidRequest e) {
             e.printStackTrace();
         }
        /* if(args.length > 1)
@@ -81,10 +83,10 @@ public class App {
         }
 
         if(arr.length == 2){ // doesn't have parameters
-            return new Request(arr[0], arr[1]);
+            return new Request(Method.getMethod(arr[0]) , arr[1]);
         }
 
-        return new Request(arr[0], arr[1], arr[2]);
+        return new Request(Method.getMethod(arr[0]), arr[1], arr[2]);
     }
 
 }
