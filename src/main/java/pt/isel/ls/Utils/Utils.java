@@ -1,4 +1,4 @@
-package pt.isel.ls.utils;
+package pt.isel.ls.Utils;
 
 import org.postgresql.ds.PGSimpleDataSource;
 
@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class Utils {
-
-    private static PGSimpleDataSource db = null;
 
     public static PGSimpleDataSource getDataSource(){
         Properties configs = new Properties();

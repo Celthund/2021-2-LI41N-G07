@@ -1,14 +1,13 @@
-package pt.isel.ls.utils;
+package pt.isel.ls.Utils;
 
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.postgresql.util.PSQLException;
 
 import java.sql.*;
 
-import static pt.isel.ls.utils.Utils.getDataSource;
+import static pt.isel.ls.Utils.Utils.getDataSource;
 
 public class UtilTests {
 
@@ -23,7 +22,7 @@ public class UtilTests {
     public void test_wrong_user() throws SQLException {
         PGSimpleDataSource db = getDataSource();
         db.setServerNames(new String[]{"Server1"});
-        db.setUser("Wrong User");
+        db.setUser("Wrong UserModel");
         Connection connection = db.getConnection();
         connection.close();
     }

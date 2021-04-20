@@ -2,11 +2,11 @@ package pt.isel.ls.Path;
 
 import pt.isel.ls.Commands.RequestHandler;
 import pt.isel.ls.Commands.RequestResult;
-import pt.isel.ls.InvalidRequest;
+import pt.isel.ls.Exceptions.InvalidRequestException;
 import pt.isel.ls.Node;
 import pt.isel.ls.Request.Request;
-import pt.isel.ls.RouteAlreadyExistsException;
-import pt.isel.ls.RouteNotFoundException;
+import pt.isel.ls.Exceptions.RouteAlreadyExistsException;
+import pt.isel.ls.Exceptions.RouteNotFoundException;
 
 import java.util.Optional;
 
@@ -65,7 +65,7 @@ public class Router {
         nodeFound.setHandler(requestHandler);
     }
 
-    public Optional<RequestResult> findRoute(Request request) throws RouteNotFoundException, InvalidRequest {
+    public Optional<RequestResult> findRoute(Request request) throws RouteNotFoundException, InvalidRequestException {
         Node nodeFound = null;
 
         for (Node h : node.nodes) {

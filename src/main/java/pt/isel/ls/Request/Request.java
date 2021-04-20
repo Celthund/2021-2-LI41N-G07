@@ -1,15 +1,17 @@
 package pt.isel.ls.Request;
 
+import pt.isel.ls.Exceptions.InvalidRequestException;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Request {
     private String path;
-    Method method;
+    private Method method;
     final private HashMap<String, LinkedList<String>> queryString = new HashMap<>();
     final private HashMap<String, String> parameters = new HashMap<>();
 
-    public Request(Method method, String path, String queryString){
+    public Request(Method method, String path, String queryString) throws InvalidRequestException {
         setMethod(method);
         setPath(path);
         setQueryString(queryString);
@@ -46,11 +48,13 @@ public class Request {
         this.method = method;
     }
 
-    public void setQueryString(String queryString) {
+    public void setQueryString(String queryString) throws InvalidRequestException {
         String[] params = queryString.split("&");
 
         for (String param : params) {
             String[] keyValue = param.split("=");
+            if (keyValue.length != 2)
+                throw new InvalidRequestException("Query String with wrong format");
             if (this.queryString.containsKey(keyValue[0])) {
                 this.queryString.get(keyValue[0]).add(keyValue[1].replace("+", " "));
             } else {
