@@ -10,6 +10,8 @@ import pt.isel.ls.Request.Request;
 
 import java.util.LinkedList;
 
+// Class that sends the information it got to the corresponding model to handle
+//showing the results to the user
 public class UsersView implements RequestHandler {
 
     UserModel model = new UserModel();

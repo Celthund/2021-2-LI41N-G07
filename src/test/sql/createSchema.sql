@@ -5,8 +5,8 @@ drop table if exists activities;
 
 create table routes (
   rid serial primary key,
-  startLocation varchar(80),
-  endLocation varchar(80),
+  startlocation varchar(80),
+  endlocation varchar(80),
   distance int
 );
 

@@ -2,11 +2,11 @@ package pt.isel.ls.DataClass;
 
 public class Sport {
 
-    public final int id;
+    public final int sid;
     public final String name, description;
 
     public Sport(int id, String name, String description) {
-        this.id = id;
+        this.sid = id;
         this.name = name;
         this.description = description;
     }
@@ -14,7 +14,7 @@ public class Sport {
     @Override
     public String toString() {
         return "Sport {" +
-                "id=" + id +
+                "sid=" + sid +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 '}';

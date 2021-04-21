@@ -14,13 +14,13 @@ public class SportsView implements RequestHandler {
 
     SportsModel model = new SportsModel();
 
-    public RequestResult getSportById(String id) {
-        Sport sport = model.getSportById(id);
+    public RequestResult getSportById(String sid) {
+        Sport sport = model.getSportById(sid);
         if (sport != null){
             return new RequestResult(
                     200,
                     sport,
-                    "Found sport with id = " + id);
+                    "Found sport with id = " + sid);
         }
         return new RequestResult(404, null, "Sport not found.");
     }
@@ -36,7 +36,7 @@ public class SportsView implements RequestHandler {
     public RequestResult createSport(String name, String description) {
         Sport sport = model.createSport(name, description);
         if (sport != null){
-            return new RequestResult(200, sport, "Sport created with success with id = " + sport.id + "");
+            return new RequestResult(200, sport, "Sport created with success with id = " + sport.sid + "");
         }
         return new RequestResult(500, null, "Failed to create sport.");
     }

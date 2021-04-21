@@ -9,15 +9,18 @@ import java.util.LinkedList;
 
 import static pt.isel.ls.Utils.Utils.getDataSource;
 
+// Handles the data sent by the corresponding view
 public class UserModel {
 
     public User getUserById(String id) {
         User user = null;
+        // Get the configurations to set up the DB connection
         PGSimpleDataSource db = getDataSource();
         try {
             Connection connection = db.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE uid = ?");
             preparedStatement.setInt(1, Integer.parseInt(id));
+
             ResultSet userResult = preparedStatement.executeQuery();
             if (userResult.next()) {
                 user = new User(
@@ -27,8 +30,8 @@ public class UserModel {
             }
             preparedStatement.close();
             connection.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
         return user;
     }
@@ -78,16 +81,8 @@ public class UserModel {
             preparedStatement.close();
             connection.setAutoCommit(true);
 
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
         return user;
     }

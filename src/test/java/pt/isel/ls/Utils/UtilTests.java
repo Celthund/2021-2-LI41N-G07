@@ -4,12 +4,20 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.postgresql.util.PSQLException;
+import pt.isel.ls.utils.Methods.Method;
 
 import java.sql.*;
 
 import static pt.isel.ls.Utils.Utils.getDataSource;
 
 public class UtilTests {
+
+    @Test
+    public void testMethod()
+    {
+        Method method = new Method();
+         //Assert.assertTrue(method.getMethodType("GET"));
+    }
 
     @Test
     public void test_connection() throws SQLException {
@@ -58,6 +66,39 @@ public class UtilTests {
         statement.execute(create);
     }
 
+    @Test
+    public void test_new_db() throws SQLException
+    {
+        PGSimpleDataSource db = getDataSource();
+        Connection con = db.getConnection();
+        int a;
+
+        try
+        {
+            con.setAutoCommit(false);
+            String select = "select users.name from users" +
+                    " inner join activity on (users.uid = activity.uid) " +
+                    "where (\"name\" = ?)";
+
+
+            String search = "user2";
+
+            PreparedStatement ps = con.prepareStatement(select);
+            ps.setString(1, search);
+            ResultSet rs = ps.executeQuery();
+
+            rs.next();
+            String s1 = rs.getString("name");
+
+            System.out.println(s1);
+
+
+        }finally {
+            con.setAutoCommit(true);
+            con.close();
+        }
+        //Assert.assertEquals(2,a);
+    }
 
     @Test
     public void test_select_permission() throws SQLException {
@@ -76,6 +117,7 @@ public class UtilTests {
 
         } finally {
             connection.rollback();
+            connection.setAutoCommit(true);
             connection.close();
         }
     }
@@ -97,6 +139,7 @@ public class UtilTests {
 
         } finally {
             connection.rollback();
+            connection.setAutoCommit(true);
             connection.close();
         }
     }
@@ -118,6 +161,7 @@ public class UtilTests {
 
         } finally {
             connection.rollback();
+            connection.setAutoCommit(true);
             connection.close();
         }
     }
@@ -139,6 +183,7 @@ public class UtilTests {
 
         } finally {
             connection.rollback();
+            connection.setAutoCommit(true);
             connection.close();
         }
     }

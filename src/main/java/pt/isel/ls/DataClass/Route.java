@@ -2,11 +2,11 @@ package pt.isel.ls.DataClass;
 
 public class Route {
 
-    public final int id, distance;
+    public final int rid, distance;
     public final String startLocation, endLocation;
 
-    public Route(int id, int distance, String startLocation, String endLocation) {
-        this.id = id;
+    public Route(int rid, int distance, String startLocation, String endLocation) {
+        this.rid = rid;
         this.distance = distance;
         this.startLocation = startLocation;
         this.endLocation = endLocation;
@@ -15,7 +15,7 @@ public class Route {
     @Override
     public String toString() {
         return "Route {" +
-                "id=" + id +
+                "rid=" + rid +
                 ", distance=" + distance +
                 ", startLocation='" + startLocation + '\'' +
                 ", endLocation='" + endLocation + '\'' +

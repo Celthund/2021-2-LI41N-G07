@@ -36,7 +36,7 @@ public class RoutesView implements RequestHandler {
     public RequestResult createRoute(String startLocation, String endLocation, String distance) {
         Route route = model.createRoute(startLocation, endLocation, distance);
         if (route != null){
-            return new RequestResult(200, route, "Route created with success with id = " + route.id + "");
+            return new RequestResult(200, route, "Route created with success with id = " + route.rid + "");
         }
         return new RequestResult(500, null, "Failed to create route.");
     }
@@ -50,13 +50,13 @@ public class RoutesView implements RequestHandler {
             return getRouteById(request.getParameters().get("rid"));
 
         if (request.getMethod() == Method.POST &&
-                request.getQueryString().containsKey("startLocation") &&
-                request.getQueryString().containsKey("endLocation") &&
+                request.getQueryString().containsKey("startlocation") &&
+                request.getQueryString().containsKey("endlocation") &&
                 request.getQueryString().containsKey("distance")
         )
             return createRoute(
-                    request.getQueryString().get("startLocation").getFirst(),
-                    request.getQueryString().get("endLocation").getFirst(),
+                    request.getQueryString().get("startlocation").getFirst(),
+                    request.getQueryString().get("endlocation").getFirst(),
                     request.getQueryString().get("distance").getFirst());
 
         throw new InvalidRequestException();
