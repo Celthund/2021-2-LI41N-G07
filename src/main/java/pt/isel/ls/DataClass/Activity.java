@@ -8,10 +8,12 @@ public class Activity {
     public final User user;
     public final Route route;
     public final Date date;
+    public final Sport sport;
 
-    public Activity(int id, long duration, User user, Route route, Date date) {
+    public Activity(int id, User user, Sport sport, Route route, Date date, long duration) {
         this.id = id;
         this.duration = duration;
+        this.sport = sport;
         this.user = user;
         this.route = route;
         this.date = date;
@@ -23,6 +25,7 @@ public class Activity {
                 "id=" + id +
                 ", duration=" + durationToString(duration) +
                 ", user=" + (user != null ? user.toString() : "null") +
+                ", sport=" + (sport != null ? sport.toString() : "null") +
                 ", route=" + (route != null ? route.toString() : "null") +
                 ", date=" + date +
                 '}';
@@ -44,16 +47,24 @@ public class Activity {
     }
 
     public static long durationToLong(String duration){
+            //"hh:mm:ss.fff"
+            if (duration.matches("\\d{1,2}:\\d{1,2}:\\d{1,2}\\.\\d{1,3}")){
+                String[] split = duration.split("\\.");
+                String[] time = split[0].split(":");
+                int hours = Integer.parseInt(time[0]) * 3600000;
+                int minutes = Integer.parseInt(time[1]) * 60000;
+                int seconds = Integer.parseInt(time[2]) * 1000;
+                int milliseconds = Integer.parseInt(split[1]);
+                return hours + minutes + seconds + milliseconds;
+            }
+            return -1;
+    }
+
+    public static Date dateToDate(String date){
         //"hh:mm:ss.fff"
-        if (duration.matches("\\d{1,2}:\\d{1,2}:\\d{1,2}\\.\\d\\d\\d")){
-            String[] split = duration.split("\\.");
-            String[] time = split[0].split(":");
-            int hours = Integer.parseInt(time[0]) * 3600000;
-            int minutes = Integer.parseInt(time[1]) * 60000;
-            int seconds = Integer.parseInt(time[2]) * 1000;
-            int milliseconds = Integer.parseInt(split[1]);
-            return hours + minutes + seconds + milliseconds;
+        if (date.matches("\\d{4}-\\d{1,2}-\\d{1,2}")){
+            return Date.valueOf(date);
         }
-        return 0;
+        return null;
     }
 }

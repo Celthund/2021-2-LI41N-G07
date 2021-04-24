@@ -2,11 +2,9 @@ package pt.isel.ls.Path;
 
 import pt.isel.ls.Commands.RequestHandler;
 import pt.isel.ls.Commands.RequestResult;
-import pt.isel.ls.Exceptions.InvalidRequestException;
+import pt.isel.ls.Exceptions.*;
 import pt.isel.ls.Node;
 import pt.isel.ls.Request.Request;
-import pt.isel.ls.Exceptions.RouteAlreadyExistsException;
-import pt.isel.ls.Exceptions.RouteNotFoundException;
 
 import java.util.Optional;
 
@@ -38,14 +36,18 @@ public class Router {
 
         // Flag to check if there is already a Path in the tree so it can act accordingly
         boolean flag = false;
-
+        String cmp;
         // Cycle that run through all the path sent
         for (int i = 1; i < allPaths.length; i++) {
-
+            cmp = allPaths[i];
             // Checks the current tree level if the path already exists
             for (Node current : nodeFound.nodes) {
                 // If exists it changes the pointer to that node and put the flag to true to know a node has been found
-                if (current.getId().equalsIgnoreCase(allPaths[i])) {
+                if(cmp.startsWith("{") && cmp.endsWith("}")){
+                    cmp = cmp.substring(1, cmp.length() - 1);
+                }
+
+                if (current.getId().equalsIgnoreCase(cmp)) {
                     nodeFound = current;
                     flag = true;
                     break;
@@ -82,7 +84,7 @@ public class Router {
         nodeFound.setHandler(requestHandler);
     }
 
-    public Optional<RequestResult> findRoute(Request request) throws RouteNotFoundException, InvalidRequestException {
+    public Optional<RequestResult> findRoute(Request request) throws AppException {
         // Pointer that will run through the tree
         Node nodeFound = null;
 
@@ -106,7 +108,7 @@ public class Router {
         boolean flag = false;
 
         // Runs through all the paths substring
-        for (int i = 1; i < allPaths.length; i++) {
+        for (int i = 0; i < allPaths.length; i++) {
             // Cycle to check in the current ith tree level
             for (Node current : nodeFound.nodes) {
                 if (current.isVariable() || current.getId().equalsIgnoreCase(allPaths[i])) {

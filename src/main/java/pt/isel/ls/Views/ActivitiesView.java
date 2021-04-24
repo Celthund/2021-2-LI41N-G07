@@ -3,6 +3,8 @@ package pt.isel.ls.Views;
 import pt.isel.ls.Commands.RequestHandler;
 import pt.isel.ls.Commands.RequestResult;
 import pt.isel.ls.DataClass.Activity;
+import pt.isel.ls.Exceptions.InvalidDateException;
+import pt.isel.ls.Exceptions.InvalidDurationException;
 import pt.isel.ls.Exceptions.InvalidRequestException;
 import pt.isel.ls.Models.ActivitiesModel;
 import pt.isel.ls.Request.Method;
@@ -33,7 +35,7 @@ public class ActivitiesView implements RequestHandler {
         return new RequestResult(404, null, "Activity not found");
     }
 
-    private RequestResult postActivity(String sid, String uid, String duration, String date, String rid) {
+    private RequestResult postActivity(String sid, String uid, String duration, String date, String rid) throws InvalidDateException, InvalidDurationException {
         Activity activity = model.postActivity(sid, uid, duration, date, rid);
 
         if (activity != null) {
@@ -43,7 +45,7 @@ public class ActivitiesView implements RequestHandler {
     }
 
     private RequestResult getActivityByAid_Sid(String aid, String sid) {
-        Activity activity = model.getActivityByAid_Sid(aid, sid);
+        Activity activity = model.getActivityByAidSid(aid, sid);
         if (activity != null) {
             return new RequestResult(200, activity, "Found activity with id = " + activity.id);
         }
@@ -59,7 +61,7 @@ public class ActivitiesView implements RequestHandler {
     }
 
     @Override
-    public RequestResult execute(Request request) throws InvalidRequestException {
+    public RequestResult execute(Request request) throws InvalidRequestException, InvalidDateException, InvalidDurationException {
         HashMap<String, LinkedList<String>> queryString = request.getQueryString();
         HashMap<String, String> parameters = request.getParameters();
 

@@ -4,20 +4,12 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.postgresql.util.PSQLException;
-import pt.isel.ls.utils.Methods.Method;
 
 import java.sql.*;
 
 import static pt.isel.ls.Utils.Utils.getDataSource;
 
 public class UtilTests {
-
-    @Test
-    public void testMethod()
-    {
-        Method method = new Method();
-         //Assert.assertTrue(method.getMethodType("GET"));
-    }
 
     @Test
     public void test_connection() throws SQLException {

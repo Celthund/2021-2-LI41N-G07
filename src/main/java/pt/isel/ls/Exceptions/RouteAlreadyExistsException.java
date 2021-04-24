@@ -1,6 +1,6 @@
 package pt.isel.ls.Exceptions;
 
-public class RouteAlreadyExistsException extends Exception {
+public class RouteAlreadyExistsException extends AppException {
     public RouteAlreadyExistsException() {
         super();
     }

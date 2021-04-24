@@ -1,6 +1,6 @@
 package pt.isel.ls.Exceptions;
 
-public class RouteNotFoundException extends Exception {
+public class RouteNotFoundException extends AppException {
     public RouteNotFoundException() {
         super();
     }

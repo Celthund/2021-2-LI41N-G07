@@ -31,6 +31,7 @@ public class Request {
         StringBuilder result = new StringBuilder();
         if (method != null) result.append(method).append(" ");
         if (path != null) {
+            result.append("/");
             for (String s : path) {
                 result.append(s).append("/");
             }
@@ -51,7 +52,7 @@ public class Request {
     }
 
     public void setPath(String path) {
-        this.path = path.toLowerCase().split("/");
+        this.path = path.toLowerCase().substring(1).split("/");
     }
 
     public String[] getPath() {

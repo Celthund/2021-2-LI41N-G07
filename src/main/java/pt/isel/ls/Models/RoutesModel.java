@@ -56,7 +56,7 @@ public class RoutesModel {
         return routes;
     }
 
-    public Route createRoute(String startLocation,  String endLocation, String distance) {
+    public Route createRoute(String startLocation, String endLocation, String distance) {
         Route route = null;
         PGSimpleDataSource db = getDataSource();
         Connection connection = null;
@@ -68,32 +68,25 @@ public class RoutesModel {
             preparedStatement.setInt(1, Integer.parseInt(distance));
             preparedStatement.setString(2, startLocation);
             preparedStatement.setString(3, endLocation);
-            if (preparedStatement.executeUpdate() == 1){
+            if (preparedStatement.executeUpdate() == 1) {
                 sqlCmd = "SELECT * FROM routes ORDER BY rid DESC LIMIT 1;";
-                ResultSet userResult = connection.createStatement().executeQuery(sqlCmd);
-                if (userResult.next()) {
+                ResultSet routeResult = connection.createStatement().executeQuery(sqlCmd);
+                if (routeResult.next()) {
                     route = new Route(
-                            userResult.getInt("rid"),
-                            userResult.getInt("distance"),
-                            userResult.getString("startlocation"),
-                            userResult.getString("endlocation"));
+                            routeResult.getInt("rid"),
+                            routeResult.getInt("distance"),
+                            routeResult.getString("startlocation"),
+                            routeResult.getString("endlocation"));
                 }
                 connection.commit();
             }
 
             preparedStatement.close();
             connection.setAutoCommit(true);
+            connection.close();
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException throwable) {
-                    throwable.printStackTrace();
-                }
-            }
         }
         return route;
     }
