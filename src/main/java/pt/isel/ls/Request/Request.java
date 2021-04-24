@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Request {
-    private String path;
+    private String[] path;
     private Method method;
     // Hashmap where we store all parameters
     final private HashMap<String, LinkedList<String>> queryString = new HashMap<>();
@@ -21,7 +21,7 @@ public class Request {
     }
 
     // Constructor if its just the method and path
-    public Request(Method method, String path){
+    public Request(Method method, String path) {
         setMethod(method);
         setPath(path);
     }
@@ -30,8 +30,13 @@ public class Request {
     public String toString() {
         StringBuilder result = new StringBuilder();
         if (method != null) result.append(method).append(" ");
-        if (path != null) result.append(path).append(" ");
-        if (parameters.size() > 0 ) result.append(" parameters: ").append(parameters);
+        if (path != null) {
+            for (String s : path) {
+                result.append(s).append("/");
+            }
+            result.append(" ");
+        }
+        if (parameters.size() > 0) result.append(" parameters: ").append(parameters);
         if (queryString.size() > 0) result.append(" queryString: ").append(queryString);
         return result.toString();
     }
@@ -40,17 +45,18 @@ public class Request {
     public void setMethod(Method method) {
         this.method = method;
     }
+
     public Method getMethod() {
         return method;
     }
 
     public void setPath(String path) {
-        this.path = path.toLowerCase();
-    }
-    public String getPath() {
-        return path;
+        this.path = path.toLowerCase().split("/");
     }
 
+    public String[] getPath() {
+        return path;
+    }
 
 
     // Adds to the queryString Hashmap all the parameters
@@ -75,14 +81,16 @@ public class Request {
             }
         }
     }
+
     public HashMap<String, LinkedList<String>> getQueryString() {
         return queryString;
     }
 
 
-    public void addParameter(String key, String value){
+    public void addParameter(String key, String value) {
         parameters.put(key, value);
     }
+
     public HashMap<String, String> getParameters() {
         return parameters;
     }

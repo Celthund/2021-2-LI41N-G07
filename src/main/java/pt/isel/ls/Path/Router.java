@@ -100,7 +100,7 @@ public class Router {
         }
 
         // Separates the path string sent into substring to search to the tree for the correspondent path
-        String[] allPaths = request.getPath().split("/");
+        String[] allPaths = request.getPath();
 
         // Flag to check if a path was found in the current tree level
         boolean flag = false;

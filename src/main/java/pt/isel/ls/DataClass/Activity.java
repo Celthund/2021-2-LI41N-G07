@@ -3,12 +3,13 @@ package pt.isel.ls.DataClass;
 import java.sql.Date;
 
 public class Activity {
-    public final int id, duration;
+    public final int id;
+    public long duration;
     public final User user;
     public final Route route;
     public final Date date;
 
-    public Activity(int id, int duration, User user, Route route, Date date) {
+    public Activity(int id, long duration, User user, Route route, Date date) {
         this.id = id;
         this.duration = duration;
         this.user = user;
@@ -27,12 +28,12 @@ public class Activity {
                 '}';
     }
 
-    public static String durationToString(int duration){
+    public static String durationToString(long duration){
         //"hh:mm:ss.fff"
-        int hours = duration / 3600000;
-        int minutes = (duration % 3600000) / 60000;
-        int seconds = ((duration % 3600000) % 60000) / 1000;
-        int milliseconds = ((duration % 3600000) % 60000) % 1000;
+        int hours = (int) (duration / 3600000);
+        int minutes = (int) ((duration % 3600000) / 60000);
+        int seconds = (int) (((duration % 3600000) % 60000) / 1000);
+        int milliseconds = (int) (((duration % 3600000) % 60000) % 1000);
 
         return (hours < 10 ? "0" + hours : hours) +
                 ":" +

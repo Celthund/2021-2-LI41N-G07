@@ -10,7 +10,7 @@ Este documento contém os aspectos relevantes do desenho e implementação da fa
 
 O seguinte diagrama apresenta o modelo entidade-associação para a informação gerida pelo sistema. 
 
-![Diagrama Entidade-associação](templates/ERDiagram.png)
+![Diagrama Entidade-associação](ERDiagram.png)
 
 Destacam-se os seguintes aspectos deste modelo:
 
