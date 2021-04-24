@@ -4,8 +4,17 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.postgresql.util.PSQLException;
+import pt.isel.ls.Commands.RequestHandler;
+import pt.isel.ls.Commands.RequestResult;
+import pt.isel.ls.Exceptions.AppException;
+import pt.isel.ls.Exceptions.RouteAlreadyExistsException;
+import pt.isel.ls.Exceptions.RouteNotFoundException;
+import pt.isel.ls.Path.Router;
+import pt.isel.ls.Request.Method;
+import pt.isel.ls.Request.Request;
 
 import java.sql.*;
+import java.util.Optional;
 
 import static pt.isel.ls.Utils.Utils.getDataSource;
 
@@ -16,6 +25,21 @@ public class UtilTests {
         PGSimpleDataSource db = getDataSource();
         Connection connection = db.getConnection();
         connection.close();
+    }
+
+    @Test(expected= PSQLException.class)
+    public void test_wrong_server() throws SQLException {
+        PGSimpleDataSource db = getDataSource();
+        db.setServerNames(new String[]{"Test_Host"});
+        Connection conn = db.getConnection();
+        conn.close();
+    }
+
+    @Test
+    public void test_connection_config_file() throws SQLException {
+        PGSimpleDataSource db = getDataSource();
+        Connection conn = db.getConnection();
+        conn.close();
     }
 
     @Test(expected = PSQLException.class)
@@ -56,40 +80,6 @@ public class UtilTests {
         Statement statement = connection.createStatement();
 
         statement.execute(create);
-    }
-
-    @Test
-    public void test_new_db() throws SQLException
-    {
-        PGSimpleDataSource db = getDataSource();
-        Connection con = db.getConnection();
-        int a;
-
-        try
-        {
-            con.setAutoCommit(false);
-            String select = "select users.name from users" +
-                    " inner join activity on (users.uid = activity.uid) " +
-                    "where (\"name\" = ?)";
-
-
-            String search = "user2";
-
-            PreparedStatement ps = con.prepareStatement(select);
-            ps.setString(1, search);
-            ResultSet rs = ps.executeQuery();
-
-            rs.next();
-            String s1 = rs.getString("name");
-
-            System.out.println(s1);
-
-
-        }finally {
-            con.setAutoCommit(true);
-            con.close();
-        }
-        //Assert.assertEquals(2,a);
     }
 
     @Test
@@ -178,5 +168,28 @@ public class UtilTests {
             connection.setAutoCommit(true);
             connection.close();
         }
+    }
+
+    @Test
+    public void test_existing_routing() throws AppException {
+        Router router = new Router();
+        router.addRoute("GET", "/abc/{id}/123", request -> new RequestResult(200, null, "Success"));
+        Optional<RequestResult> res = router.findRoute(new Request(Method.getMethod("GET"), "/abc/2/123"));
+        assert res.isPresent();
+        assert res.get().message.equals("Success");
+    }
+
+
+    @Test(expected= RouteNotFoundException.class)
+    public void test_non_existing_routing() throws AppException {
+        Router router = new Router();
+        Optional<RequestResult> res = router.findRoute(new Request(Method.getMethod("GET"), "/abc/2/123"));
+    }
+
+    @Test(expected=RouteAlreadyExistsException.class)
+    public void test_already_existing_routing() throws AppException {
+        Router router = new Router();
+        router.addRoute("GET", "/abc/{id}/123", request -> new RequestResult(200, null, "Success"));
+        router.addRoute("GET", "/abc/{id}/123", request -> new RequestResult(200, null, "Success"));
     }
 }

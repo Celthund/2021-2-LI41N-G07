@@ -1,6 +1,7 @@
 package pt.isel.ls.DataClass;
 
 import java.sql.Date;
+import java.util.concurrent.TimeUnit;
 
 public class Activity {
     public final int id;
@@ -33,17 +34,19 @@ public class Activity {
 
     public static String durationToString(long duration){
         //"hh:mm:ss.fff"
-        int hours = (int) (duration / 1000*60*60) % 24;
-        int minutes = (int) ((duration / 1000*60)) % 60 ;
-        int seconds = (int) (((duration / (1000)) % 60));
-        int milliseconds = (int) (duration % 60);
+        long hours = TimeUnit.MILLISECONDS.toHours(duration);
+        duration -= TimeUnit.HOURS.toMillis(hours);
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(duration);
+        duration -= TimeUnit.MINUTES.toMillis(minutes);
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(duration);
+        duration -=  TimeUnit.SECONDS.toMillis(seconds);
 
         return (hours < 10 ? "0" + hours : hours) +
                 ":" +
-                (minutes < 10 ? "0" + hours : hours) +
+                (minutes < 10 ? "0" + minutes : minutes) +
                 ":" +
-                (seconds < 10 ? "0" + hours : hours) +
-                "." + milliseconds;
+                (seconds < 10 ? "0" + seconds : seconds) +
+                "." + duration;
     }
 
     public static long durationToLong(String duration){
@@ -51,10 +54,10 @@ public class Activity {
             if (duration.matches("\\d{1,2}:\\d{1,2}:\\d{1,2}\\.\\d{1,3}")){
                 String[] split = duration.split("\\.");
                 String[] time = split[0].split(":");
-                int hours = Integer.parseInt(time[0]) * 3600000;
-                int minutes = Integer.parseInt(time[1]) * 60000;
-                int seconds = Integer.parseInt(time[2]) * 1000;
-                int milliseconds = Integer.parseInt(split[1]);
+                long hours = Long.parseLong(time[0]) * 3600 * 1000;
+                long minutes = Long.parseLong(time[1]) * 60 *1000;
+                long seconds = Long.parseLong(time[2]) * 1000;
+                long milliseconds = Long.parseLong(split[1]);
                 return hours + minutes + seconds + milliseconds;
             }
             return -1;
