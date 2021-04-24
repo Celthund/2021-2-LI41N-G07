@@ -24,9 +24,9 @@ create table if not exists sports (
 
 create table if not exists activities (
     aid serial primary key,
-    uid int not null,
-    rid int,
-    sid int,
+    uid int not null references users (uid),
+    rid int references routes (rid),
+    sid int references sports (sid),
     date date not null,
     duration bigint not null
 );
