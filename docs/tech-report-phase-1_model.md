@@ -10,7 +10,7 @@ Este documento contém os aspectos relevantes do desenho e implementação da fa
 
 O seguinte diagrama apresenta o modelo entidade-associação para a informação gerida pelo sistema. 
 
-![Diagrama Entidade-associação](ERDiagram.png)
+![Diagrama Entidade-associação](templates/ERDiagram.png)
 
 Destacam-se os seguintes aspectos deste modelo:
 
@@ -36,21 +36,29 @@ O modelo conceptual apresenta ainda as seguintes restrições:
     
 ### Modelação física ###
 
-O modelo físico da base de dados está presente em ([SQL Scripts](../).
+O modelo físico da base de dados está presente em ([SQL Script](../src/scripts/sql/createSchema.sql)).
 
 Destacam-se os seguintes aspectos deste modelo:
 
-* (_include a list of relevant design issues_)
+* A script de criação do modelo de dados define as tabelas/relações apenas se estas não estiverem presentes na base de dados.
 
 ## Organização do software
 
 ### Processamento de comandos
 
-(_describe the command handling interface_)
+O processamento de pedidos é implentado através da interface `RequestHandler` que define o método `execute` que retorna um `RequestResult` que contém os dados da resposta ao comando solicitado.
 
-(_describe any additional classes used internally by the command handlers_)
+As classes `ActivitiesView`, `RoutesView`, `SportsView` e `UsersView` implementam a interface `RequestHandler` recebendo um pedido(`Request`) que irá conter o `method` o `path` e eventualmente `parameters` com a seguinte estrutura:
+> ``` {method} {path} {parameters} ```
 
-(_describe how command parameters are obtained and validated_)
+Ao receber o request, é verificado o metodo e também a existência de parâmetros executanto o metodo correspondente à chamada assim que validado.
+
+Os argumentos recebidos no request são :
+
+* Obtidos com recurso ao método `parseRequest` da class `App` que separa os comandos recebendo uma `String` e com recurso ao método `split` o divide nos vários componentes validado também se a sua composição contém um número válido de argumentos (2 ou 3).
+
+* A verificação da instrução é realizada pelo método `findRoute` da classe `Router` que recebe o request e o processa percorrendo uma árvore n-ária definida com todos os caminhos possíveis existentes na aplicação. Concluida a validação, é executado o metodo `execute` do ultimo nó encontrado.
+
 
 ### Encaminhamento dos comandos
 
