@@ -3,6 +3,7 @@ package pt.isel.ls.Models;
 
 import org.postgresql.ds.PGSimpleDataSource;
 import pt.isel.ls.DataClass.User;
+import pt.isel.ls.Exceptions.ServerErrorException;
 
 import java.sql.*;
 import java.util.LinkedList;
@@ -12,7 +13,7 @@ import static pt.isel.ls.Utils.Utils.getDataSource;
 // Handles the data sent by the corresponding view
 public class UserModel {
 
-    public User getUserById(String id) {
+    public User getUserById(String id) throws ServerErrorException {
         User user = null;
         // Get the configurations to set up the DB connection
         PGSimpleDataSource db = getDataSource();
@@ -31,12 +32,12 @@ public class UserModel {
             preparedStatement.close();
             connection.close();
         } catch (SQLException throwable) {
-            throwable.printStackTrace();
+            throw new ServerErrorException("Server Error! Fail getting User.");
         }
         return user;
     }
 
-    public LinkedList<User> getAllUsers() {
+    public LinkedList<User> getAllUsers() throws ServerErrorException {
         LinkedList<User> users = new LinkedList<>();
         PGSimpleDataSource db = getDataSource();
         try {
@@ -50,12 +51,12 @@ public class UserModel {
                         userResult.getInt("uid")));
             connection.close();
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            throw new ServerErrorException("Server Error! Fail getting Users.");
         }
         return users;
     }
 
-    public User createRoute(String name, String email) {
+    public User createUser(String name, String email) throws ServerErrorException {
         User user = null;
         PGSimpleDataSource db = getDataSource();
         Connection connection = null;
@@ -82,7 +83,7 @@ public class UserModel {
             connection.setAutoCommit(true);
 
         } catch (SQLException throwable) {
-            throwable.printStackTrace();
+            throw new ServerErrorException("Server Error! Fail getting User.");
         }
         return user;
     }

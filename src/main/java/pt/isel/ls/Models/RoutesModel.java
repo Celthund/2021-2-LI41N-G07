@@ -3,6 +3,7 @@ package pt.isel.ls.Models;
 import org.postgresql.ds.PGSimpleDataSource;
 import pt.isel.ls.DataClass.Route;
 import pt.isel.ls.DataClass.User;
+import pt.isel.ls.Exceptions.ServerErrorException;
 
 import java.sql.*;
 import java.util.LinkedList;
@@ -11,7 +12,7 @@ import static pt.isel.ls.Utils.Utils.getDataSource;
 
 public class RoutesModel {
 
-    public Route getRouteById(String rid) {
+    public Route getRouteById(String rid) throws ServerErrorException {
         Route route = null;
         // Get the configurations to set up the DB connection
         PGSimpleDataSource db = getDataSource();
@@ -31,12 +32,12 @@ public class RoutesModel {
             preparedStatement.close();
             connection.close();
         } catch (SQLException throwable) {
-            throwable.printStackTrace();
+            throw new ServerErrorException("Server Error! Fail getting Routes.");
         }
         return route;
     }
 
-    public LinkedList<Route> getAllRoutes() {
+    public LinkedList<Route> getAllRoutes() throws ServerErrorException {
         LinkedList<Route> routes = new LinkedList<>();
         PGSimpleDataSource db = getDataSource();
         try {
@@ -51,12 +52,12 @@ public class RoutesModel {
                         routeResult.getString("endLocation")));
             connection.close();
         } catch (SQLException throwable) {
-            throwable.printStackTrace();
+            throw new ServerErrorException("Server Error! Fail getting Routes.");
         }
         return routes;
     }
 
-    public Route createRoute(String startLocation, String endLocation, String distance) {
+    public Route createRoute(String startLocation, String endLocation, String distance) throws ServerErrorException {
         Route route = null;
         PGSimpleDataSource db = getDataSource();
         Connection connection = null;
@@ -86,7 +87,7 @@ public class RoutesModel {
             connection.close();
 
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            throw new ServerErrorException("Server Error! Fail getting Route.");
         }
         return route;
     }

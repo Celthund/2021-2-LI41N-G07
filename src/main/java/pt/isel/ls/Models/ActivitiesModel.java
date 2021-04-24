@@ -3,6 +3,8 @@ package pt.isel.ls.Models;
 import org.postgresql.ds.PGSimpleDataSource;
 import pt.isel.ls.DataClass.Activity;
 import pt.isel.ls.Exceptions.BadRequestException;
+import pt.isel.ls.Exceptions.ServerErrorException;
+
 import java.sql.*;
 import java.util.LinkedList;
 
@@ -10,19 +12,23 @@ import static pt.isel.ls.Utils.Utils.getDataSource;
 
 public class ActivitiesModel {
 
+    // Variable used in the creation of Activity
     final private SportsModel sports =  new SportsModel();
     private final  UserModel users = new UserModel();
     final private RoutesModel routes = new RoutesModel();
 
-    public LinkedList<Activity> getActivitiesByTops(String sid, String orderBy, String date, String rid) throws BadRequestException {
+    public LinkedList<Activity> getActivitiesByTops(String sid, String orderBy, String date, String rid) throws BadRequestException, ServerErrorException {
         Activity activity = null;
+        // Stores all the activities get from the query
         LinkedList<Activity> activites = new LinkedList<>();
 
-
+        // Will concatenate the parts of the query
         StringBuilder sqlCmd = new StringBuilder("SELECT * FROM activities WHERE sid = ?");
+        // If they are null it means the user didnt search for them so we dont concatenate
         if(date != null) sqlCmd.append(" and date = ?");
         if(rid != null) sqlCmd.append(" and rid = ?");
 
+        // Checks what order the user pretends to see the query
         if((orderBy.equals("ascending"))) {
             sqlCmd.append(" order by duration asc;");
         }else if(orderBy.equals("descending")){
@@ -37,13 +43,19 @@ public class ActivitiesModel {
             Connection connection = db.getConnection();
             int i = 1;
             PreparedStatement preparedStatement = connection.prepareStatement(sqlCmd.toString());
+            // Sets the sport the user wants to search for
             preparedStatement.setInt(i++, Integer.parseInt(sid));
+            // If they are null it means the user didnt search for them so we dont set the value
             if(date != null) preparedStatement.setDate(i++, Activity.dateToDate(date));
             if(rid != null) preparedStatement.setInt(i, Integer.parseInt(rid));
 
+            // Executes the query
             ResultSet activityResult = preparedStatement.executeQuery();
+
+            // Value to get the route value (in case its not null)
             int tmpRid;
             while (activityResult.next()) {
+                // The constructor for the Activity value holder
                 activity = new Activity(
                         activityResult.getInt("aid"),
                         users.getUserById(Integer.toString(activityResult.getInt("uid")) ),
@@ -56,12 +68,12 @@ public class ActivitiesModel {
             preparedStatement.close();
             connection.close();
         } catch (SQLException throwable) {
-            throwable.printStackTrace();
+            throw new ServerErrorException("Server Error! Fail getting Activities.");
         }
         return activites;
     }
 
-    public Activity getActivityByUid(String uid) {
+    public Activity getActivityByUid(String uid) throws ServerErrorException {
         Activity activity = null;
 
         // Get the configurations to set up the DB connection
@@ -85,16 +97,22 @@ public class ActivitiesModel {
             preparedStatement.close();
             connection.close();
         } catch (SQLException throwable) {
-            throwable.printStackTrace();
+            throw new ServerErrorException("Server Error! Fail getting Activity.");
         }
         return activity;
     }
 
-    public Activity postActivity(String sid, String uid, String duration, String date, String rid) throws BadRequestException {
+    // Server that creates Activity
+    public Activity postActivity(String sid, String uid, String duration, String date, String rid) throws BadRequestException, ServerErrorException {
+        // Transforms the String date to Date date
         Date sqlDate = Activity.dateToDate(date);
+
+        // Invalid data, throw request
         if (sqlDate == null) {
             throw new BadRequestException("Invalid date format.(yyyy-mm-dd)");
         }
+
+        //
         long sqlDuration = Activity.durationToLong(duration);
         if (sqlDuration == -1) {
             throw new BadRequestException("Invalid duration format. (hh:mm:ss.fff)");
@@ -106,7 +124,10 @@ public class ActivitiesModel {
             connection = db.getConnection();
             connection.setAutoCommit(false);
             PreparedStatement preparedStatement;
+            //  Will store the Sql command
             String sqlCmd;
+
+            // If rid is null it means the user didnt introduce it so the query will not have it
             if(rid == null){
                 sqlCmd = "INSERT INTO activities(uid, sid, date, duration) VALUES (?, ?, ?, ?);";
                 preparedStatement = connection.prepareStatement(sqlCmd);
@@ -126,6 +147,7 @@ public class ActivitiesModel {
                 preparedStatement.setLong(5, sqlDuration);
             }
 
+            // Creates a new activity with the value it got from the query
             if (preparedStatement.executeUpdate() == 1) {
                 sqlCmd = "SELECT * FROM activities ORDER BY aid DESC LIMIT 1;";
                 ResultSet activityResult = connection.createStatement().executeQuery(sqlCmd);
@@ -133,8 +155,12 @@ public class ActivitiesModel {
                     int checkRid;
                     activity = new Activity(
                             activityResult.getInt("aid"),
+                            // Creates a user with the user got from the query with the value it got from the query
                             users.getUserById(uid),
+                            // Creates a user with the value got from the query with the sid sent by the user
                             sports.getSportById(sid),
+                            // Checks if the user pretend to get Route, if its null, just put the Route in activity to null if not it will query for the rid sent
+                            //by the user and store in activity
                             (checkRid = activityResult.getInt("rid")) == 0 ? null : routes.getRouteById(Integer.toString(checkRid)),
                             activityResult.getDate("date"),
                             activityResult.getLong("duration"));
@@ -148,12 +174,12 @@ public class ActivitiesModel {
             connection.close();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ServerErrorException("Server Error! Fail creating Activity.");
         }
         return activity;
     }
 
-    public Activity getActivityByAidSid(String aid, String sid) {
+    public Activity getActivityByAidSid(String aid, String sid) throws ServerErrorException {
         Activity activity = null;
 
         // Get the configurations to set up the DB connection
@@ -165,12 +191,16 @@ public class ActivitiesModel {
             preparedStatement.setInt(2, Integer.parseInt(sid));
 
             ResultSet activityResult = preparedStatement.executeQuery();
+            // Creates the activity with value it got from the query
             if (activityResult.next()) {
                 int rid;
                 activity = new Activity(
                         Integer.parseInt(aid),
+                        // Creates a user with the user got from the query with the value it got from the query
                         users.getUserById(Integer.toString(activityResult.getInt("uid"))),
                         sports.getSportById(sid),
+                        // Checks if the user pretend to get Route, if its null, just put the Route in activity to null if not it will query for the rid sent
+                        //by the user and store in activity
                         (rid = activityResult.getInt("rid")) == 0 ? null : routes.getRouteById(Integer.toString(rid)),
                         activityResult.getDate("date"),
                         activityResult.getLong("duration"));
@@ -178,12 +208,12 @@ public class ActivitiesModel {
             preparedStatement.close();
             connection.close();
         } catch (SQLException throwable) {
-            throwable.printStackTrace();
+            throw new ServerErrorException("Server Error! Fail getting Activity.");
         }
         return activity;
     }
 
-    public Activity getActivityBySid(String sid) {
+    public Activity getActivityBySid(String sid) throws ServerErrorException {
         Activity activity = null;
 
         // Get the configurations to set up the DB connection
@@ -194,12 +224,17 @@ public class ActivitiesModel {
             preparedStatement.setInt(1, Integer.parseInt(sid));
 
             ResultSet activityResult = preparedStatement.executeQuery();
+            // Creates the activity with value it got from the query
             if (activityResult.next()) {
                 int rid;
                 activity = new Activity(
                         activityResult.getInt("aid"),
+                        // Creates a user with the user got from the query with the value it got from the query
                         users.getUserById(Integer.toString(activityResult.getInt("uid"))),
+                        // Creates a user with the value got from the query with the sid sent by the user
                         sports.getSportById(sid),
+                        // Checks if the user pretend to get Route, if its null, just put the Route in activity to null if not it will query for the rid sent
+                        //by the user and store in activity
                         (rid = activityResult.getInt("rid")) == 0 ? null : routes.getRouteById(Integer.toString(rid)),
                         activityResult.getDate("date"),
                         activityResult.getLong("duration"));
@@ -207,7 +242,7 @@ public class ActivitiesModel {
             preparedStatement.close();
             connection.close();
         } catch (SQLException throwable) {
-            throwable.printStackTrace();
+            throw new ServerErrorException("Server Error! Fail getting Activity.");
         }
         return activity;
     }

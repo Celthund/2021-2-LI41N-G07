@@ -3,6 +3,7 @@ package pt.isel.ls.Models;
 import org.postgresql.ds.PGSimpleDataSource;
 import pt.isel.ls.DataClass.Sport;
 import pt.isel.ls.DataClass.User;
+import pt.isel.ls.Exceptions.ServerErrorException;
 
 import java.sql.*;
 import java.util.LinkedList;
@@ -11,7 +12,7 @@ import static pt.isel.ls.Utils.Utils.getDataSource;
 
 public class SportsModel {
 
-    public Sport getSportById(String sid) {
+    public Sport getSportById(String sid) throws ServerErrorException {
         Sport sport = null;
         // Get the configurations to set up the DB connection
         PGSimpleDataSource db = getDataSource();
@@ -30,12 +31,12 @@ public class SportsModel {
             preparedStatement.close();
             connection.close();
         } catch (SQLException throwable) {
-            throwable.printStackTrace();
+            throw new ServerErrorException("Server Error! Failed get Sport.");
         }
         return sport;
     }
 
-    public LinkedList<Sport> getAllSports() {
+    public LinkedList<Sport> getAllSports() throws ServerErrorException {
         LinkedList<Sport> sports = new LinkedList<>();
         PGSimpleDataSource db = getDataSource();
         try {
@@ -49,12 +50,12 @@ public class SportsModel {
                         sportResult.getString("description")));
             connection.close();
         } catch (SQLException throwable) {
-            throwable.printStackTrace();
+            throw new ServerErrorException("Server Error! Failed getting all the Sports.");
         }
         return sports;
     }
 
-    public Sport createSport(String name, String description) {
+    public Sport createSport(String name, String description) throws ServerErrorException {
         Sport sport = null;
         PGSimpleDataSource db = getDataSource();
         Connection connection = null;
@@ -81,7 +82,7 @@ public class SportsModel {
             connection.setAutoCommit(true);
 
         } catch (SQLException throwable) {
-            throwable.printStackTrace();
+            throw new ServerErrorException("Server Error! Failed to create Sport.");
         }
         return sport;
     }

@@ -1,7 +1,6 @@
 package pt.isel.ls;
 
 import pt.isel.ls.Commands.RequestResult;
-import pt.isel.ls.DataClass.Activity;
 import pt.isel.ls.Path.Router;
 import pt.isel.ls.Request.Method;
 import pt.isel.ls.Request.Request;

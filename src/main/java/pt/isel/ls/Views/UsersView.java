@@ -4,6 +4,7 @@ import pt.isel.ls.Commands.RequestHandler;
 import pt.isel.ls.Commands.RequestResult;
 import pt.isel.ls.Exceptions.InvalidRequestException;
 import pt.isel.ls.DataClass.User;
+import pt.isel.ls.Exceptions.ServerErrorException;
 import pt.isel.ls.Models.UserModel;
 import pt.isel.ls.Request.Method;
 import pt.isel.ls.Request.Request;
@@ -16,7 +17,7 @@ public class UsersView implements RequestHandler {
 
     UserModel model = new UserModel();
 
-    public RequestResult getUserById(String id) {
+    public RequestResult getUserById(String id) throws ServerErrorException {
         User user = model.getUserById(id);
         if (user != null){
             return new RequestResult(
@@ -27,7 +28,7 @@ public class UsersView implements RequestHandler {
         return new RequestResult(404, null, "User not found.");
     }
 
-    public RequestResult getAllUsers() {
+    public RequestResult getAllUsers() throws ServerErrorException {
         LinkedList<User> users = model.getAllUsers();
         if(users.size() > 0){
             return new RequestResult(200, users, users.size() + " users found.");
@@ -35,16 +36,17 @@ public class UsersView implements RequestHandler {
         return new RequestResult(404, null, "No users found.");
     }
 
-    public RequestResult createUser(String name, String email) {
-        User user = model.createRoute(name, email);
+    public RequestResult createUser(String name, String email) throws ServerErrorException {
+        User user = model.createUser(name, email);
         if (user != null){
             return new RequestResult(200, user, "User created with success with id = " + user.id + "");
         }
         return new RequestResult(500, null, "Failed to create user.");
     }
 
+    // The execute method receives a request, checks the arguments in it so it can get the query correspondent to the Method, Path and/or parameters in the Request class
     @Override
-    public RequestResult execute(Request request) throws InvalidRequestException {
+    public RequestResult execute(Request request) throws InvalidRequestException, ServerErrorException {
         if (request.getMethod() == Method.GET && request.getParameters().size() == 0)
             return getAllUsers();
 
