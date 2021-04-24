@@ -33,10 +33,10 @@ public class Activity {
 
     public static String durationToString(long duration){
         //"hh:mm:ss.fff"
-        int hours = (int) (duration / 3600000);
-        int minutes = (int) ((duration % 3600000) / 60000);
-        int seconds = (int) (((duration % 3600000) % 60000) / 1000);
-        int milliseconds = (int) (((duration % 3600000) % 60000) % 1000);
+        int hours = (int) (duration / 1000*60*60) % 24;
+        int minutes = (int) ((duration / 1000*60)) % 60 ;
+        int seconds = (int) (((duration / (1000)) % 60));
+        int milliseconds = (int) (duration % 60);
 
         return (hours < 10 ? "0" + hours : hours) +
                 ":" +

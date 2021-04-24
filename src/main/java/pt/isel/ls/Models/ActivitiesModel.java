@@ -2,9 +2,7 @@ package pt.isel.ls.Models;
 
 import org.postgresql.ds.PGSimpleDataSource;
 import pt.isel.ls.DataClass.Activity;
-import pt.isel.ls.Exceptions.InvalidDateException;
-import pt.isel.ls.Exceptions.InvalidDurationException;
-
+import pt.isel.ls.Exceptions.BadRequestException;
 import java.sql.*;
 import java.util.LinkedList;
 
@@ -15,8 +13,52 @@ public class ActivitiesModel {
     final private SportsModel sports =  new SportsModel();
     private final  UserModel users = new UserModel();
     final private RoutesModel routes = new RoutesModel();
-    public LinkedList<Activity> getActivitiesByTops(String sid, String orderBy, String date, String rid) {
-        return null;
+
+    public LinkedList<Activity> getActivitiesByTops(String sid, String orderBy, String date, String rid) throws BadRequestException {
+        Activity activity = null;
+        LinkedList<Activity> activites = new LinkedList<>();
+
+
+        StringBuilder sqlCmd = new StringBuilder("SELECT * FROM activities WHERE sid = ?");
+        if(date != null) sqlCmd.append(" and date = ?");
+        if(rid != null) sqlCmd.append(" and rid = ?");
+
+        if((orderBy.equals("ascending"))) {
+            sqlCmd.append(" order by duration asc;");
+        }else if(orderBy.equals("descending")){
+            sqlCmd.append(" order by duration desc;");
+        }else{
+            throw new BadRequestException("Invalid Order By");
+        }
+
+        // Get the configurations to set up the DB connection
+        PGSimpleDataSource db = getDataSource();
+        try {
+            Connection connection = db.getConnection();
+            int i = 1;
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlCmd.toString());
+            preparedStatement.setInt(i++, Integer.parseInt(sid));
+            if(date != null) preparedStatement.setDate(i++, Activity.dateToDate(date));
+            if(rid != null) preparedStatement.setInt(i, Integer.parseInt(rid));
+
+            ResultSet activityResult = preparedStatement.executeQuery();
+            int tmpRid;
+            while (activityResult.next()) {
+                activity = new Activity(
+                        activityResult.getInt("aid"),
+                        users.getUserById(Integer.toString(activityResult.getInt("uid")) ),
+                        sports.getSportById(Integer.toString(activityResult.getInt("sid"))),
+                        (tmpRid = activityResult.getInt("rid")) == 0 ? null : routes.getRouteById(Integer.toString(tmpRid)),
+                        activityResult.getDate("date"),
+                        activityResult.getLong("duration"));
+                activites.add(activity);
+            }
+            preparedStatement.close();
+            connection.close();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+        return activites;
     }
 
     public Activity getActivityByUid(String uid) {
@@ -48,14 +90,14 @@ public class ActivitiesModel {
         return activity;
     }
 
-    public Activity postActivity(String sid, String uid, String duration, String date, String rid) throws InvalidDateException, InvalidDurationException {
+    public Activity postActivity(String sid, String uid, String duration, String date, String rid) throws BadRequestException {
         Date sqlDate = Activity.dateToDate(date);
         if (sqlDate == null) {
-            throw new InvalidDateException("Invalid date format.(yyyy-mm-dd)");
+            throw new BadRequestException("Invalid date format.(yyyy-mm-dd)");
         }
         long sqlDuration = Activity.durationToLong(duration);
         if (sqlDuration == -1) {
-            throw new InvalidDurationException("Invalid duration format. (hh:mm:ss.fff)");
+            throw new BadRequestException("Invalid duration format. (hh:mm:ss.fff)");
         }
         Activity activity = null;
         PGSimpleDataSource db = getDataSource();

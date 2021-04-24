@@ -3,8 +3,7 @@ package pt.isel.ls.Views;
 import pt.isel.ls.Commands.RequestHandler;
 import pt.isel.ls.Commands.RequestResult;
 import pt.isel.ls.DataClass.Activity;
-import pt.isel.ls.Exceptions.InvalidDateException;
-import pt.isel.ls.Exceptions.InvalidDurationException;
+import pt.isel.ls.Exceptions.BadRequestException;
 import pt.isel.ls.Exceptions.InvalidRequestException;
 import pt.isel.ls.Models.ActivitiesModel;
 import pt.isel.ls.Request.Method;
@@ -17,7 +16,7 @@ public class ActivitiesView implements RequestHandler {
 
     ActivitiesModel model = new ActivitiesModel();
 
-    private RequestResult getActivitiesByTops(String sid, String orderBy, String date, String rid) {
+    private RequestResult getActivitiesByTops(String sid, String orderBy, String date, String rid) throws BadRequestException {
         LinkedList<Activity> activities = model.getActivitiesByTops(sid, orderBy, date, rid);
 
         if (activities != null) {
@@ -35,7 +34,7 @@ public class ActivitiesView implements RequestHandler {
         return new RequestResult(404, null, "Activity not found");
     }
 
-    private RequestResult postActivity(String sid, String uid, String duration, String date, String rid) throws InvalidDateException, InvalidDurationException {
+    private RequestResult postActivity(String sid, String uid, String duration, String date, String rid) throws BadRequestException {
         Activity activity = model.postActivity(sid, uid, duration, date, rid);
 
         if (activity != null) {
@@ -61,7 +60,7 @@ public class ActivitiesView implements RequestHandler {
     }
 
     @Override
-    public RequestResult execute(Request request) throws InvalidRequestException, InvalidDateException, InvalidDurationException {
+    public RequestResult execute(Request request) throws InvalidRequestException, BadRequestException {
         HashMap<String, LinkedList<String>> queryString = request.getQueryString();
         HashMap<String, String> parameters = request.getParameters();
 
