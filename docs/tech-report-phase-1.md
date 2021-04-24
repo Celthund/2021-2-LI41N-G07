@@ -46,17 +46,17 @@ Destacam-se os seguintes aspectos deste modelo:
 
 ### Processamento de comandos
 
-Para o processamento de comandos é criada a classe `Request` fazendo o `parse` da `String` recebida. Este request 
-separa a String nas suas propriedades como por exemplo `method`, path, etc...
-Por sua vez, esse Request é passado ao Router para encontrar a route e executar o handler correspondente.
+Para o processamento de comandos foi criada a classe `Request` que realiza o `parse` da `String` recebida. Este `parse` 
+separa a `String` nas suas propriedades como por exemplo `method`, `path`, etc...
+Por sua vez, o Request é passado ao Router para encontrar a route e executar o handler correspondente.
 
 ### Encaminhamento dos comandos
 
 A verificação da instrução é realizada pelo método `findRoute` da classe `Router` que recebe o request 
-referido na secção anterior e o processa percorrendo uma árvore n-ária definida com todos os caminhos possíveis
- registados na aplicação. 
+referido na secção anterior e o processa percorrendo uma árvore n-ária definida com todos os caminhos possíveis registados na aplicação. 
 Esta árvore começa com o primeiro nível a corresponder ao `method` e os seguintes níveis a todas a subdivisões do `path`,
-estas subdivisões podem ser variáveis o que faz com que o nó correspondente fique com um boleano de variavel a verdadeiro.
+como as subdivisões podem conter valores variáveis, foi criado uma flag boleana que ao ser verdadeira ignora a pesquisa do valor na àrvore pois este
+será um parâmetro a fornecer a quando da execução do metodo.
 Concluida a validação, é executado o metodo `execute` do ultimo nó encontrado passando o request como argumento. 
 Finalmente o nó que recebe o request, verifica o método e também a existência de parâmetros 
 executanto o metodo correspondente à chamada assim que validado.
@@ -65,13 +65,13 @@ executanto o metodo correspondente à chamada assim que validado.
 ### Gestão de ligações
 
 Cada modelo é responsável por pedir a criação de um novo datasource ao package Utils, realizar as queries necessárias 
-ao seu propósito e finalmente encerrar todas as ligações que possa ter com o datasource.
+ao seu propósito e finalmente garantindo o encerramento de todas as ligações que possam existir com o datasource.
 
 ### Acesso a dados
 
-Foi desenvolvidas classes para representar cada area do problema, nomeadamente user, sports, activities e routes de modo
-a abstrair a obtenção de dados da base de dados. Estas classes devolvem sempre representações unitárias de uma identidade
-como por exemplo, a classe UserModel irá sempre retornar instâncias de User.  
+Foram desenvolvidas classes para representar cada area do problema, nomeadamente `user`, `sports`, `activities` e `routes` de modo
+a abstrair as transações de dados da base de dados. Estas classes devolvem sempre representações unitárias de uma identidade
+como por exemplo, a classe `UserModel` irá sempre retornar instâncias de `User`.  
 
 Na maioria dos casos, as queries são de sintaxe trivial. Nas inserções, de forma a retornar uma representação unitária, 
 é feita uma query extra para procura da entrada acabada de inserir.
@@ -91,54 +91,4 @@ Todos estas exceções têm uma mensagem que é apresentada ao utilizador.
 Fazer com que os modelos recebam os tipos de argumentos corretos e serem as views a validar e modificar para o tipo correto
 os dados que venham do utilizador.
 Criar uma maior abstração na criação de views com objetivo de diminuir a complexidade do `execute`.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-O processamento de pedidos é implentado através da interface `RequestHandler` que define o método `execute` 
-que retorna um `RequestResult` que contém os dados da resposta ao comando solicitado.
-
-As classes `ActivitiesView`, `RoutesView`, `SportsView` e `UsersView` implementam a interface 
-`RequestHandler` recebendo um pedido(`Request`) que irá conter o `method` o `path` e eventualmente 
-`parameters` com a seguinte estrutura:
-> ``` {method} {path} {parameters} ```
-
-
-Os argumentos recebidos no request são :
-
-* Obtidos com recurso ao método `parseRequest` da class `App` que separa os comandos recebendo uma 
-`String` e com recurso ao método `split` o divide nos vários componentes validado também se a sua 
-composição contém um número válido de argumentos (2 ou 3).
-
-* A verificação da instrução é realizada pelo método `findRoute` da classe `Router` que recebe o 
-request e o processa percorrendo uma árvore n-ária definida com todos os caminhos possíveis registados 
-na aplicação. Concluida a validação, é executado o metodo `execute` do ultimo nó encontrado passando o request 
-como argumento.
+Implementar uma maior variedade de testes.
