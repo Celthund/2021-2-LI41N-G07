@@ -60,7 +60,13 @@ public class Request {
     }
 
     public void setPath(String path) {
-        this.path = path.toLowerCase().substring(1).split("/");
+        String[] allPath = path.toLowerCase().substring(1).split("/");
+        if (allPath.length == 1 && allPath[0].length() == 0) {
+            this.path = new String[0];
+        } else {
+            this.path = allPath;
+        }
+
     }
 
     public String[] getPath() {
@@ -103,26 +109,6 @@ public class Request {
         return parameters;
     }
 
-    private void parse(String request) throws InvalidRequestException {
-        String[] arr = request.split(" ");
-
-        if (arr.length < 2) { //doesn't have path, method or both
-            throw new InvalidRequestException();
-        }
-
-        if (arr.length == 2) { // doesn't have parameters
-            setMethod(Method.getMethod(arr[0]));
-            setPath(arr[1]);
-        } else if (arr.length == 4) {
-            setMethod(Method.getMethod(arr[0]));
-            setPath(arr[1]);
-            setHeader(arr[2]);
-            setQueryStrings(arr[3]);
-        } else {
-            // to be continued ...
-        }
-    }
-
     private void setHeader(String headerString) throws InvalidRequestException {
         // To separate all the headers
         String[] headers = headerString.split("\\|");
@@ -143,6 +129,44 @@ public class Request {
                 list.add(keyValue[1].replace("+", " "));
                 this.headers.put(keyValue[0], list);
             }
+        }
+    }
+
+    public HashMap<String, LinkedList<String>> getHeaders() {
+        return headers;
+    }
+
+    private void parse(String request) throws InvalidRequestException {
+        String[] arr = request.split(" ");
+
+        if (arr.length < 2) { //doesn't have path, method or both
+            throw new InvalidRequestException();
+        }
+
+        if (arr.length == 2) { // doesn't have parameters
+            setMethod(Method.getMethod(arr[0]));
+            setPath(arr[1]);
+        } else if (arr.length == 4) {
+            setMethod(Method.getMethod(arr[0]));
+            setPath(arr[1]);
+            setHeader(arr[2]);
+            setQueryStrings(arr[3]);
+        } else if (arr.length == 3) {
+            setMethod(Method.getMethod(arr[0]));
+            setPath(arr[1]);
+            int idxOfParameters = arr[2].indexOf("="), idxOfHeader = arr[2].indexOf(":");
+
+            if (idxOfHeader > 0 && idxOfParameters > 0) {
+                if (idxOfHeader < idxOfParameters) {
+                    setHeader(arr[2]);
+                } else {
+                    setQueryStrings(arr[2]);
+                }
+            } else {
+                if (idxOfHeader > 0) setHeader(arr[2]);
+                else if (idxOfParameters > 0) setQueryStrings(arr[2]);
+            }
+
         }
     }
 }
