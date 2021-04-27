@@ -53,9 +53,9 @@ public class UsersView implements RequestHandler {
         if (request.getMethod() == Method.GET && request.getParameters().containsKey("uid"))
             return getUserById(request.getParameters().get("uid"));
 
-        if (request.getMethod() == Method.POST && request.getQueryString().containsKey("name") &&
-                request.getQueryString().containsKey("email"))
-            return createUser(request.getQueryString().get("name").getFirst(), request.getQueryString().get("email").getFirst());    //TO DO
+        if (request.getMethod() == Method.POST && request.getQueryStrings().containsKey("name") &&
+                request.getQueryStrings().containsKey("email"))
+            return createUser(request.getQueryStrings().get("name").getFirst(), request.getQueryStrings().get("email").getFirst());    //TO DO
 
         throw new InvalidRequestException();
     }

@@ -2,7 +2,6 @@ package pt.isel.ls;
 
 import pt.isel.ls.Commands.RequestResult;
 import pt.isel.ls.Path.Router;
-import pt.isel.ls.Request.Method;
 import pt.isel.ls.Request.Request;
 import pt.isel.ls.Views.ActivitiesView;
 import pt.isel.ls.Views.RoutesView;
@@ -11,7 +10,6 @@ import pt.isel.ls.Views.UsersView;
 import java.util.Optional;
 import java.util.Scanner;
 import pt.isel.ls.Exceptions.AppException;
-import pt.isel.ls.Exceptions.InvalidRequestException;
 import pt.isel.ls.Exceptions.RouteAlreadyExistsException;
 
 public class App {
@@ -44,7 +42,7 @@ public class App {
     private static void run(String input){
         try {
             // Sets the request with the arguments sent by the user
-            Request request = parseRequest(input);
+            Request request = new Request(input);
             // Finds the route through the request created and returns a RequestResult
             Optional<RequestResult> result = routing.findRoute(request);
             // If there is a RequestResult will show the result
@@ -94,23 +92,5 @@ public class App {
         } catch (RouteAlreadyExistsException e) {
             e.printStackTrace();
         }
-        
-        
     }
-
-    // Creates a Request to store the parsed request sent by the user
-    private static Request parseRequest(String request) throws InvalidRequestException {
-        String[] arr = request.split(" ");
-
-        if (arr.length < 2) { //doesn't have path, method or both
-            throw new InvalidRequestException();
-        }
-
-        if (arr.length == 2) { // doesn't have parameters
-            return new Request(Method.getMethod(arr[0]), arr[1]);
-        }
-
-        return new Request(Method.getMethod(arr[0]), arr[1], arr[2]);
-    }
-
 }

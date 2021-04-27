@@ -74,7 +74,7 @@ public class ActivitiesView implements RequestHandler {
     @Override
     public RequestResult execute(Request request) throws InvalidRequestException, BadRequestException, ServerErrorException {
         // Holder for the queryString and the parameters got form the request sent by the user
-        HashMap<String, LinkedList<String>> queryString = request.getQueryString();
+        HashMap<String, LinkedList<String>> queryString = request.getQueryStrings();
         HashMap<String, String> parameters = request.getParameters();
 
         // The getPath() method in Request class returns the first position stores from the path array which has stores the path separated by "/"

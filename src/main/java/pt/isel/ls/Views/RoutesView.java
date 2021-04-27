@@ -52,14 +52,14 @@ public class RoutesView implements RequestHandler {
             return getRouteById(request.getParameters().get("rid"));
 
         if (request.getMethod() == Method.POST &&
-                request.getQueryString().containsKey("startlocation") &&
-                request.getQueryString().containsKey("endlocation") &&
-                request.getQueryString().containsKey("distance")
+                request.getQueryStrings().containsKey("startlocation") &&
+                request.getQueryStrings().containsKey("endlocation") &&
+                request.getQueryStrings().containsKey("distance")
         )
             return createRoute(
-                    request.getQueryString().get("startlocation").getFirst(),
-                    request.getQueryString().get("endlocation").getFirst(),
-                    request.getQueryString().get("distance").getFirst());
+                    request.getQueryStrings().get("startlocation").getFirst(),
+                    request.getQueryStrings().get("endlocation").getFirst(),
+                    request.getQueryStrings().get("distance").getFirst());
 
         throw new InvalidRequestException();
     }

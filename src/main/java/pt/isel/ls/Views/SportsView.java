@@ -52,12 +52,12 @@ public class SportsView implements RequestHandler {
             return getSportById(request.getParameters().get("sid"));
 
         if (request.getMethod() == Method.POST &&
-                request.getQueryString().containsKey("name") &&
-                request.getQueryString().containsKey("description")
+                request.getQueryStrings().containsKey("name") &&
+                request.getQueryStrings().containsKey("description")
         )
             return createSport(
-                    request.getQueryString().get("name").getFirst(),
-                    request.getQueryString().get("description").getFirst());
+                    request.getQueryStrings().get("name").getFirst(),
+                    request.getQueryStrings().get("description").getFirst());
 
         throw new InvalidRequestException();
     }
