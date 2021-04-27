@@ -75,7 +75,7 @@ public class Request {
             if (this.queryString.containsKey(keyValue[0])) {
                 this.queryString.get(keyValue[0]).add(keyValue[1].replace("+", " "));
             } else {
-                // If the parameter doesnt yet exist we create a linkedlist to store the value and add that parameter to the hashmap
+                // If the parameter doesnt yet exist we create a linklist to store the value and add that parameter to the hashmap
                 LinkedList<String> l = new LinkedList<>();
                 l.add(keyValue[1].replace("+", " "));
                 this.queryString.put(keyValue[0], l);

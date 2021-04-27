@@ -35,19 +35,23 @@ public class Router {
         String[] allPaths = path.split("/");
 
         // Flag to check if there is already a Path in the tree so it can act accordingly
-        boolean flag = false;
-        String cmp;
+        boolean flag = false, isVar;
+        String currPath;
         // Cycle that run through all the path sent
         for (int i = 1; i < allPaths.length; i++) {
-            cmp = allPaths[i];
+            isVar = false;
+            currPath = allPaths[i];
+
+            // If exists it changes the pointer to that node and put the flag to true to know a node has been found
+            if(currPath.startsWith("{") && currPath.endsWith("}")){
+                currPath = currPath.substring(1, currPath.length() - 1);
+                isVar = true;
+            }
+
             // Checks the current tree level if the path already exists
             for (Node current : nodeFound.nodes) {
-                // If exists it changes the pointer to that node and put the flag to true to know a node has been found
-                if(cmp.startsWith("{") && cmp.endsWith("}")){
-                    cmp = cmp.substring(1, cmp.length() - 1);
-                }
 
-                if (current.getId().equalsIgnoreCase(cmp)) {
+                if (current.getId().equalsIgnoreCase(currPath)) {
                     nodeFound = current;
                     flag = true;
                     break;
@@ -58,15 +62,10 @@ public class Router {
             //a new branch in the tree
             if (!flag) {
                 Node tmp = new Node();
-
-                // Checks if its a variable Path, if it is it will change the Variable flag to true and then add to the id the value
-                if (allPaths[i].startsWith("{") && allPaths[i].endsWith("}")) {
-                    tmp.setVariable(true);
-                    tmp.setId(allPaths[i].substring(1, allPaths[i].length() - 1).toLowerCase());
-                } else {
-                    // If it isn't a variable then just add "normally" leaving the Variable flag at false
-                    tmp.setId(allPaths[i].toLowerCase());
-                }
+                // Will set the type of path it is
+                tmp.setVariable(isVar);
+                // The id of the node has the name of the curr path
+                tmp.setId(currPath.toLowerCase());
 
                 nodeFound.nodes.add(tmp);
                 nodeFound = tmp;
