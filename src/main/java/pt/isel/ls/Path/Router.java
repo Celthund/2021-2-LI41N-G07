@@ -6,11 +6,21 @@ import pt.isel.ls.Exceptions.*;
 import pt.isel.ls.Node;
 import pt.isel.ls.Request.Request;
 
+import java.util.LinkedList;
 import java.util.Optional;
 
 public class Router {
     // The head of the tree
     Node node = new Node();
+    LinkedList<String> routes = new LinkedList<>();
+
+    public String print(){
+        StringBuilder str = new StringBuilder();
+        for (String out : routes) {
+            str.append(out).append('\n');
+        }
+        return str.toString();
+    }
 
     public void addRoute(String method, String path, RequestHandler requestHandler) throws RouteAlreadyExistsException {
         // Pointer that will run through the tree
@@ -23,6 +33,7 @@ public class Router {
                 break;
             }
         }
+
 
         // If not fount just creat a new node and add to the head list
         if (nodeFound == null) {
@@ -78,6 +89,8 @@ public class Router {
         // If a Route already exists, just throws a exception
         if (nodeFound.getHandler() != null)
             throw new RouteAlreadyExistsException();
+
+        routes.add(method + " " + path);
 
         // When it reaches the root, it will set the handler to the one sent by in the function parameter
         nodeFound.setHandler(requestHandler);

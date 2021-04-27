@@ -7,8 +7,12 @@ import pt.isel.ls.Views.ActivitiesView;
 import pt.isel.ls.Views.RoutesView;
 import pt.isel.ls.Views.SportsView;
 import pt.isel.ls.Views.UsersView;
+
+import java.io.BufferedWriter;
+import java.io.OutputStreamWriter;
 import java.util.Optional;
 import java.util.Scanner;
+
 import pt.isel.ls.Exceptions.AppException;
 import pt.isel.ls.Exceptions.RouteAlreadyExistsException;
 
@@ -25,28 +29,28 @@ public class App {
             System.out.print("> ");
             Scanner scanner = new Scanner(System.in);
             String input;
-            while(!(input = scanner.nextLine()).equalsIgnoreCase("EXIT /") ) {
+            while (!(input = scanner.nextLine()).equalsIgnoreCase("EXIT /")) {
                 run(input);
                 System.out.print("> ");
             }
-        }else{
+        } else {
             StringBuilder input = new StringBuilder();
-            for (String string: args) {
+            for (String string : args) {
                 input.append(string).append(" ");
             }
             run(input.toString());
         }
-        
+
     }
 
-    private static void run(String input){
+    private static void run(String input) {
         try {
             // Sets the request with the arguments sent by the user
             Request request = new Request(input);
             // Finds the route through the request created and returns a RequestResult
             Optional<RequestResult> result = routing.findRoute(request);
             // If there is a RequestResult will show the result
-            if(result.isPresent()){
+            if (result.isPresent()) {
                 System.out.println(result.get().message);
                 // In case there was an error
                 if (result.get().data != null)
@@ -58,14 +62,11 @@ public class App {
             e.printStackTrace();
         }
     }
+
     // Used to register the Routes
-    private static void registerRoutes(){
+    private static void registerRoutes() {
         try {
-            routing.addRoute("GET", "/", request -> {
-                System.out.println("GET /");
-                System.out.println(request);
-                return null;
-            });
+            routing.addRoute("OPTION", "/", request -> new RequestResult(200, null, routing.print()));
             UsersView user = new UsersView();
             routing.addRoute("GET", "/users", user);
             routing.addRoute("GET", "/users/{uid}", user);
