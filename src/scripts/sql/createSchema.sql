@@ -28,5 +28,6 @@ create table if not exists activities (
     rid int references routes (rid),
     sid int references sports (sid),
     date date not null,
-    duration bigint not null
+    duration bigint not null,
+    ts_deleted timestamp
 );
