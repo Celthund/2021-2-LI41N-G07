@@ -1,10 +1,10 @@
-package pt.isel.ls.Models.domainclasses.Models;
+package pt.isel.ls.models;
 
 import java.sql.*;
 import java.util.LinkedList;
 import org.postgresql.ds.PGSimpleDataSource;
 import pt.isel.ls.exceptions.ServerErrorException;
-import pt.isel.ls.Models.domainclasses.Models.domainclasses.Sport;
+import pt.isel.ls.models.domainclasses.Sport;
 import static pt.isel.ls.utils.Utils.getDataSource;
 
 public class SportsModel {

@@ -1,4 +1,4 @@
-package pt.isel.ls.Models.domainclasses.Models;
+package pt.isel.ls.models;
 
 import java.sql.*;
 import java.util.LinkedList;
@@ -6,7 +6,7 @@ import org.postgresql.ds.PGSimpleDataSource;
 import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.exceptions.BadRequestException;
 import pt.isel.ls.exceptions.ServerErrorException;
-import pt.isel.ls.Models.domainclasses.Models.domainclasses.Activity;
+import pt.isel.ls.models.domainclasses.Activity;
 import static pt.isel.ls.utils.Utils.getDataSource;
 
 

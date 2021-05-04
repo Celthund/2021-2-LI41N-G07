@@ -3,10 +3,10 @@ package pt.isel.ls.handlers.routes;
 import pt.isel.ls.commands.RequestHandler;
 import pt.isel.ls.commands.RequestResult;
 import pt.isel.ls.exceptions.AppException;
-import pt.isel.ls.Models.domainclasses.Route;
+import pt.isel.ls.models.domainclasses.Route;
 import pt.isel.ls.exceptions.InvalidRequestException;
-import pt.isel.ls.Models.RoutesModel;
-import pt.isel.ls.Request.Request;
+import pt.isel.ls.models.RoutesModel;
+import pt.isel.ls.request.Request;
 import java.util.Optional;
 
 public class GetRouteByIdHandler implements RequestHandler {

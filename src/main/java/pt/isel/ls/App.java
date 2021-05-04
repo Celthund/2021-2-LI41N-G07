@@ -1,8 +1,8 @@
 package pt.isel.ls;
 
 import pt.isel.ls.commands.RequestResult;
-import pt.isel.ls.Path.Router;
-import pt.isel.ls.Request.Request;
+import pt.isel.ls.path.Router;
+import pt.isel.ls.request.Request;
 import pt.isel.ls.commands.RequestHandler;
 import pt.isel.ls.handlers.activities.*;
 import pt.isel.ls.handlers.routes.CreateRouteHandler;

@@ -1,9 +1,9 @@
-package pt.isel.ls.Path;
+package pt.isel.ls.path;
 
 import pt.isel.ls.commands.RequestHandler;
 import pt.isel.ls.exceptions.*;
 import pt.isel.ls.Node;
-import pt.isel.ls.Request.Request;
+import pt.isel.ls.request.Request;
 import java.util.LinkedList;
 
 public class Router {

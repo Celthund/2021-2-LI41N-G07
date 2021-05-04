@@ -1,4 +1,4 @@
-package pt.isel.ls.Models.domainclasses.Models.domainclasses;
+package pt.isel.ls.models.domainclasses;
 
 import java.sql.Date;
 import java.util.concurrent.TimeUnit;

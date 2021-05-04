@@ -1,11 +1,11 @@
-package pt.isel.ls.Models.domainclasses.Models;
+package pt.isel.ls.models;
 
 
 import java.sql.*;
 import java.util.LinkedList;
 import org.postgresql.ds.PGSimpleDataSource;
 import pt.isel.ls.exceptions.ServerErrorException;
-import pt.isel.ls.Models.domainclasses.Models.domainclasses.User;
+import pt.isel.ls.models.domainclasses.User;
 import static pt.isel.ls.utils.Utils.getDataSource;
 
 // Handles the data sent by the corresponding view

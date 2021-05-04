@@ -9,9 +9,9 @@ import pt.isel.ls.commands.RequestResult;
 import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.exceptions.RouteAlreadyExistsException;
 import pt.isel.ls.exceptions.RouteNotFoundException;
-import pt.isel.ls.Path.Router;
-import pt.isel.ls.Request.Method;
-import pt.isel.ls.Request.Request;
+import pt.isel.ls.path.Router;
+import pt.isel.ls.request.Method;
+import pt.isel.ls.request.Request;
 
 import java.sql.*;
 import java.util.Optional;

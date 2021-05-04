@@ -2,10 +2,10 @@ package pt.isel.ls.handlers.users;
 
 import pt.isel.ls.commands.RequestHandler;
 import pt.isel.ls.commands.RequestResult;
-import pt.isel.ls.Models.domainclasses.User;
+import pt.isel.ls.models.domainclasses.User;
 import pt.isel.ls.exceptions.AppException;
-import pt.isel.ls.Models.UserModel;
-import pt.isel.ls.Request.Request;
+import pt.isel.ls.models.UserModel;
+import pt.isel.ls.request.Request;
 import java.util.LinkedList;
 import java.util.Optional;
 

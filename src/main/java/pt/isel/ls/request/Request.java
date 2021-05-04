@@ -1,4 +1,4 @@
-package pt.isel.ls.Request;
+package pt.isel.ls.request;
 
 import pt.isel.ls.exceptions.InvalidRequestException;
 import java.util.HashMap;
