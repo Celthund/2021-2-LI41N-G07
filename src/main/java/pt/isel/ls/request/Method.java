@@ -7,21 +7,16 @@ public enum Method {
 
     public static Method getMethod(String method) throws InvalidRequestException {
         switch (method.toUpperCase()) {
-            case "GET" -> {
+            case "GET" :
                 return GET;
-            }
-            case "POST" -> {
+            case "POST":
                 return POST;
-            }
-            case "DELETE" -> {
+            case "DELETE":
                 return DELETE;
-            }
-            case "OPTION" -> {
+            case "OPTION":
                 return OPTION;
-            }
-            default -> {
+            default:
                 throw new InvalidRequestException("Invalid Method");
-            }
         }
     }
 }
