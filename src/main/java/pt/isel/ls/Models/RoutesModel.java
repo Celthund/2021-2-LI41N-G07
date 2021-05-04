@@ -1,14 +1,11 @@
-package pt.isel.ls.Models;
-
-import org.postgresql.ds.PGSimpleDataSource;
-import pt.isel.ls.DataClass.Route;
-import pt.isel.ls.DataClass.User;
-import pt.isel.ls.Exceptions.ServerErrorException;
+package pt.isel.ls.Models.domainclasses.Models;
 
 import java.sql.*;
 import java.util.LinkedList;
-
-import static pt.isel.ls.Utils.Utils.getDataSource;
+import org.postgresql.ds.PGSimpleDataSource;
+import pt.isel.ls.exceptions.ServerErrorException;
+import pt.isel.ls.Models.domainclasses.Models.domainclasses.Route;
+import static pt.isel.ls.utils.Utils.getDataSource;
 
 public class RoutesModel {
 
@@ -44,12 +41,13 @@ public class RoutesModel {
             Connection connection = db.getConnection();
             Statement statement = connection.createStatement();
             ResultSet routeResult = statement.executeQuery("SELECT * FROM routes");
-            while (routeResult.next())
+            while (routeResult.next()) {
                 routes.add(new Route(
-                        routeResult.getInt("rid"),
-                        routeResult.getInt("distance"),
-                        routeResult.getString("startLocation"),
-                        routeResult.getString("endLocation")));
+                    routeResult.getInt("rid"),
+                    routeResult.getInt("distance"),
+                    routeResult.getString("startLocation"),
+                    routeResult.getString("endLocation")));
+            }
             connection.close();
         } catch (SQLException throwable) {
             throw new ServerErrorException("Server Error! Fail getting Routes.");

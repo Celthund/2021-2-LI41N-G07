@@ -1,9 +1,10 @@
-package pt.isel.ls.Exceptions;
+package pt.isel.ls.exceptions;
 
-public class InvalidRequestException extends AppException{
+public class InvalidRequestException extends AppException {
     public InvalidRequestException() {
-        super();
+        super("Invalid Request.");
     }
+
     public InvalidRequestException(String message) {
         super(message);
     }

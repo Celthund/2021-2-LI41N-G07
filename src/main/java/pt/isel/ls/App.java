@@ -1,20 +1,20 @@
 package pt.isel.ls;
 
-import pt.isel.ls.Commands.RequestResult;
+import pt.isel.ls.commands.RequestResult;
 import pt.isel.ls.Path.Router;
 import pt.isel.ls.Request.Request;
-import pt.isel.ls.Views.ActivitiesView;
-import pt.isel.ls.Views.RoutesView;
-import pt.isel.ls.Views.SportsView;
-import pt.isel.ls.Views.UsersView;
-
-import java.io.BufferedWriter;
-import java.io.OutputStreamWriter;
+import pt.isel.ls.commands.RequestHandler;
+import pt.isel.ls.handlers.activities.*;
+import pt.isel.ls.handlers.routes.CreateRouteHandler;
+import pt.isel.ls.handlers.routes.GetAllRoutesHandler;
+import pt.isel.ls.handlers.routes.GetRouteByIdHandler;
+import pt.isel.ls.handlers.sports.CreateSportHandler;
+import pt.isel.ls.handlers.sports.GetAllSportsHandler;
+import pt.isel.ls.handlers.sports.GetSportByIdHandler;
+import pt.isel.ls.handlers.users.*;
+import pt.isel.ls.exceptions.AppException;
 import java.util.Optional;
 import java.util.Scanner;
-
-import pt.isel.ls.Exceptions.AppException;
-import pt.isel.ls.Exceptions.RouteAlreadyExistsException;
 
 public class App {
 
@@ -48,50 +48,56 @@ public class App {
             // Sets the request with the arguments sent by the user
             Request request = new Request(input);
             // Finds the route through the request created and returns a RequestResult
-            Optional<RequestResult> result = routing.findRoute(request);
+            RequestHandler handler = routing.findRoute(request);
+            Optional<RequestResult> result = handler.execute(request);
             // If there is a RequestResult will show the result
             if (result.isPresent()) {
                 System.out.println(result.get().message);
                 // In case there was an error
-                if (result.get().data != null)
+                if (result.get().data != null) {
                     System.out.println(result.get().data);
+                }
+
             } else {
                 System.out.println("Error getting result");
             }
         } catch (AppException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
     // Used to register the Routes
     private static void registerRoutes() {
         try {
-            routing.addRoute("OPTION", "/", request -> new RequestResult(200, null, routing.print()));
-            UsersView user = new UsersView();
-            routing.addRoute("GET", "/users", user);
-            routing.addRoute("GET", "/users/{uid}", user);
-            routing.addRoute("POST", "/users", user);
+            routing.addRoute("OPTION", "/", request -> Optional.of(new RequestResult(200, null, routing.print())));
+            routing.addRoute("GET", "/", request -> {
+                System.out.println("GET /");
+                System.out.println(request);
+                return Optional.empty();
+            });
 
-            RoutesView route = new RoutesView();
-            routing.addRoute("GET", "/routes", route);
-            routing.addRoute("GET", "/routes/{rid}", route);
-            routing.addRoute("POST", "/routes", route);
+            routing.addRoute("GET", "/users", new GetAllUsersHandler());
+            routing.addRoute("GET", "/users/{uid}", new GetUserByIdHandler());
+            routing.addRoute("POST", "/users", new CreateUserHandler());
 
-            SportsView sport = new SportsView();
-            routing.addRoute("GET", "/sports", sport);
-            routing.addRoute("GET", "/sports/{sid}", sport);
-            routing.addRoute("POST", "/sports", sport);
+            routing.addRoute("GET", "/routes", new GetAllRoutesHandler());
+            routing.addRoute("GET", "/routes/{rid}", new GetRouteByIdHandler());
+            routing.addRoute("POST", "/routes", new CreateRouteHandler());
 
-            ActivitiesView activity = new ActivitiesView();
-            routing.addRoute("GET", "/sports/{sid}/activities", activity);
-            routing.addRoute("GET", "/sports/{sid}/activities/{aid}", activity);
-            routing.addRoute("GET", "/users/{uid}/activities", activity);
-            routing.addRoute("GET", "/tops/activities", activity);
-            routing.addRoute("POST", "/sports/{sid}/activities", activity);
+            routing.addRoute("GET", "/sports", new GetAllSportsHandler());
+            routing.addRoute("GET", "/sports/{sid}", new GetSportByIdHandler());
+            routing.addRoute("POST", "/sports", new CreateSportHandler());
 
+            routing.addRoute("GET", "/sports/{sid}/activities", new GetActivityBySidHandler());
+            routing.addRoute("GET", "/sports/{sid}/activities/{aid}", new GetActivityByAidSidHandler());
+            routing.addRoute("GET", "/users/{uid}/activities", new GetActivityByUidHandler());
+            routing.addRoute("GET", "/tops/activities", new GetActivitiesByTopsHandler());
+            routing.addRoute("POST", "/sports/{sid}/activities", new CreateActivityHandler());
 
-        } catch (RouteAlreadyExistsException e) {
-            e.printStackTrace();
+        } catch (AppException e) {
+            System.out.println(e.getMessage());
         }
+
+
     }
 }

@@ -1,7 +1,6 @@
 package pt.isel.ls;
 
-import pt.isel.ls.Commands.RequestHandler;
-
+import pt.isel.ls.commands.RequestHandler;
 import java.util.LinkedList;
 
 public class Node {
@@ -32,7 +31,8 @@ public class Node {
     public void setVariable(boolean variable) {
         this.variable = variable;
     }
-    public boolean isVariable(){
+
+    public boolean isVariable() {
         return variable;
     }
 }

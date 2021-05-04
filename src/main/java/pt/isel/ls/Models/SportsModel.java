@@ -1,14 +1,11 @@
-package pt.isel.ls.Models;
-
-import org.postgresql.ds.PGSimpleDataSource;
-import pt.isel.ls.DataClass.Sport;
-import pt.isel.ls.DataClass.User;
-import pt.isel.ls.Exceptions.ServerErrorException;
+package pt.isel.ls.Models.domainclasses.Models;
 
 import java.sql.*;
 import java.util.LinkedList;
-
-import static pt.isel.ls.Utils.Utils.getDataSource;
+import org.postgresql.ds.PGSimpleDataSource;
+import pt.isel.ls.exceptions.ServerErrorException;
+import pt.isel.ls.Models.domainclasses.Models.domainclasses.Sport;
+import static pt.isel.ls.utils.Utils.getDataSource;
 
 public class SportsModel {
 
@@ -24,9 +21,9 @@ public class SportsModel {
             ResultSet sportResult = preparedStatement.executeQuery();
             if (sportResult.next()) {
                 sport = new Sport(
-                        sportResult.getInt("sid"),
-                        sportResult.getString("name"),
-                        sportResult.getString("description"));
+                    sportResult.getInt("sid"),
+                    sportResult.getString("name"),
+                    sportResult.getString("description"));
             }
             preparedStatement.close();
             connection.close();
@@ -43,11 +40,12 @@ public class SportsModel {
             Connection connection = db.getConnection();
             Statement statement = connection.createStatement();
             ResultSet sportResult = statement.executeQuery("SELECT * FROM sports");
-            while (sportResult.next())
+            while (sportResult.next()) {
                 sports.add(new Sport(
-                        sportResult.getInt("sid"),
-                        sportResult.getString("name"),
-                        sportResult.getString("description")));
+                    sportResult.getInt("sid"),
+                    sportResult.getString("name"),
+                    sportResult.getString("description")));
+            }
             connection.close();
         } catch (SQLException throwable) {
             throw new ServerErrorException("Server Error! Failed getting all the Sports.");
@@ -66,14 +64,14 @@ public class SportsModel {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlCmd);
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, description);
-            if (preparedStatement.executeUpdate() == 1){
+            if (preparedStatement.executeUpdate() == 1) {
                 sqlCmd = "SELECT * FROM sports ORDER BY sid DESC LIMIT 1;";
                 ResultSet sportResult = connection.createStatement().executeQuery(sqlCmd);
                 if (sportResult.next()) {
                     sport = new Sport(
-                            sportResult.getInt("sid"),
-                            sportResult.getString("name"),
-                            sportResult.getString("description"));
+                        sportResult.getInt("sid"),
+                        sportResult.getString("name"),
+                        sportResult.getString("description"));
                 }
                 connection.commit();
             }

@@ -1,14 +1,14 @@
-package pt.isel.ls.Utils;
+package pt.isel.ls.utils;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.postgresql.util.PSQLException;
-import pt.isel.ls.Commands.RequestHandler;
-import pt.isel.ls.Commands.RequestResult;
-import pt.isel.ls.Exceptions.AppException;
-import pt.isel.ls.Exceptions.RouteAlreadyExistsException;
-import pt.isel.ls.Exceptions.RouteNotFoundException;
+import pt.isel.ls.commands.RequestHandler;
+import pt.isel.ls.commands.RequestResult;
+import pt.isel.ls.exceptions.AppException;
+import pt.isel.ls.exceptions.RouteAlreadyExistsException;
+import pt.isel.ls.exceptions.RouteNotFoundException;
 import pt.isel.ls.Path.Router;
 import pt.isel.ls.Request.Method;
 import pt.isel.ls.Request.Request;
@@ -16,7 +16,7 @@ import pt.isel.ls.Request.Request;
 import java.sql.*;
 import java.util.Optional;
 
-import static pt.isel.ls.Utils.Utils.getDataSource;
+import static pt.isel.ls.utils.Utils.getDataSource;
 
 public class UtilTests {
 
@@ -173,8 +173,10 @@ public class UtilTests {
     @Test
     public void test_existing_routing() throws AppException {
         Router router = new Router();
-        router.addRoute("GET", "/abc/{id}/123", request -> new RequestResult(200, null, "Success"));
-        Optional<RequestResult> res = router.findRoute(new Request(Method.getMethod("GET"), "/abc/2/123"));
+        router.addRoute("GET", "/abc/{id}/123", request -> Optional.of(new RequestResult(200, null, "Success")));
+        Request request = new Request(Method.getMethod("GET"), "/abc/2/123");
+        RequestHandler handler = router.findRoute(request);
+        Optional<RequestResult> res = handler.execute(request);
         assert res.isPresent();
         assert res.get().message.equals("Success");
     }
@@ -183,13 +185,15 @@ public class UtilTests {
     @Test(expected= RouteNotFoundException.class)
     public void test_non_existing_routing() throws AppException {
         Router router = new Router();
-        Optional<RequestResult> res = router.findRoute(new Request(Method.getMethod("GET"), "/abc/2/123"));
+        Request request = new Request(Method.getMethod("GET"), "/abc/2/123");
+        RequestHandler handler = router.findRoute(request);
     }
 
     @Test(expected=RouteAlreadyExistsException.class)
     public void test_already_existing_routing() throws AppException {
         Router router = new Router();
-        router.addRoute("GET", "/abc/{id}/123", request -> new RequestResult(200, null, "Success"));
-        router.addRoute("GET", "/abc/{id}/123", request -> new RequestResult(200, null, "Success"));
+        Optional<RequestResult> result = Optional.of(new RequestResult(200, null, "Success"));
+        router.addRoute("GET", "/abc/{id}/123", request -> result);
+        router.addRoute("GET", "/abc/{id}/123", request -> result);
     }
 }

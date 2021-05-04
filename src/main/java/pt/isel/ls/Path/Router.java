@@ -1,20 +1,17 @@
 package pt.isel.ls.Path;
 
-import pt.isel.ls.Commands.RequestHandler;
-import pt.isel.ls.Commands.RequestResult;
-import pt.isel.ls.Exceptions.*;
+import pt.isel.ls.commands.RequestHandler;
+import pt.isel.ls.exceptions.*;
 import pt.isel.ls.Node;
 import pt.isel.ls.Request.Request;
-
 import java.util.LinkedList;
-import java.util.Optional;
 
 public class Router {
     // The head of the tree
     Node node = new Node();
     LinkedList<String> routes = new LinkedList<>();
 
-    public String print(){
+    public String print() {
         StringBuilder str = new StringBuilder();
         for (String out : routes) {
             str.append(out).append('\n');
@@ -46,22 +43,19 @@ public class Router {
         String[] allPaths = path.split("/");
 
         // Flag to check if there is already a Path in the tree so it can act accordingly
-        boolean flag = false, isVar;
+        boolean flag = false;
         String currPath;
         // Cycle that run through all the path sent
         for (int i = 1; i < allPaths.length; i++) {
-            isVar = false;
             currPath = allPaths[i];
 
             // If exists it changes the pointer to that node and put the flag to true to know a node has been found
-            if(currPath.startsWith("{") && currPath.endsWith("}")){
+            if (currPath.startsWith("{") && currPath.endsWith("}")) {
                 currPath = currPath.substring(1, currPath.length() - 1);
-                isVar = true;
             }
 
             // Checks the current tree level if the path already exists
             for (Node current : nodeFound.nodes) {
-
                 if (current.getId().equalsIgnoreCase(currPath)) {
                     nodeFound = current;
                     flag = true;
@@ -69,14 +63,21 @@ public class Router {
                 }
             }
 
-            // If the flag is false it means it didnt found the present path so it will add to the current node list creating
+            // If the flag is false it means it didnt found the present path so it will add to
+            // the current node list creating
             //a new branch in the tree
             if (!flag) {
                 Node tmp = new Node();
-                // Will set the type of path it is
-                tmp.setVariable(isVar);
-                // The id of the node has the name of the curr path
-                tmp.setId(currPath.toLowerCase());
+
+                // Checks if its a variable Path, if it is it will change the Variable flag to true
+                // and then add to the id the value
+                if (allPaths[i].startsWith("{") && allPaths[i].endsWith("}")) {
+                    tmp.setVariable(true);
+                    tmp.setId(allPaths[i].substring(1, allPaths[i].length() - 1).toLowerCase());
+                } else {
+                    // If it isn't a variable then just add "normally" leaving the Variable flag at false
+                    tmp.setId(allPaths[i].toLowerCase());
+                }
 
                 nodeFound.nodes.add(tmp);
                 nodeFound = tmp;
@@ -87,8 +88,9 @@ public class Router {
         }
 
         // If a Route already exists, just throws a exception
-        if (nodeFound.getHandler() != null)
-            throw new RouteAlreadyExistsException();
+        if (nodeFound.getHandler() != null) {
+            throw new RouteAlreadyExistsException("Route Already exists.");
+        }
 
         routes.add(method + " " + path);
 
@@ -96,7 +98,7 @@ public class Router {
         nodeFound.setHandler(requestHandler);
     }
 
-    public Optional<RequestResult> findRoute(Request request) throws AppException {
+    public RequestHandler findRoute(Request request) throws AppException {
         // Pointer that will run through the tree
         Node nodeFound = null;
 
@@ -120,13 +122,15 @@ public class Router {
         boolean flag = false;
 
         // Runs through all the paths substring
-        for (int i = 0; i < allPaths.length; i++) {
+        for (String allPath : allPaths) {
             // Cycle to check in the current ith tree level
             for (Node current : nodeFound.nodes) {
-                if (current.isVariable() || current.getId().equalsIgnoreCase(allPaths[i])) {
+                if (current.isVariable() || current.getId().equalsIgnoreCase(allPath)) {
                     // If the variable flag in the Node class is set to true it means that the current String is a value
                     //so we add it to the parameters hashmap in Request
-                    if (current.isVariable()) request.addParameter(current.getId(), allPaths[i]);
+                    if (current.isVariable()) {
+                        request.addParameter(current.getId(), allPath);
+                    }
                     // Points to the next level the path was found
                     nodeFound = current;
                     // Warns that a path was found
@@ -136,7 +140,7 @@ public class Router {
             }
             // If flag is false it means no path in the tree was valid so, the path sent was an invalid one
             if (!flag) {
-                throw new RouteNotFoundException();
+                throw new RouteNotFoundException("Route not found.");
             } else {
                 // Set it back to false to continues the iteration
                 flag = false;
@@ -144,8 +148,6 @@ public class Router {
         }
 
         // Stores the execute to then send it
-        RequestResult res = nodeFound.getHandler().execute(request);
-
-        return res == null ? Optional.empty() : Optional.of(res);
+        return nodeFound.getHandler();
     }
 }

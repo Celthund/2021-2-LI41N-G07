@@ -1,20 +1,19 @@
-package pt.isel.ls.Utils;
+package pt.isel.ls.utils;
 
 import org.postgresql.ds.PGSimpleDataSource;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
 public class Utils {
 
-    public static PGSimpleDataSource getDataSource(){
+    public static PGSimpleDataSource getDataSource() {
         Properties configs = new Properties();
-        FileInputStream config_file = null;
+        FileInputStream configFile = null;
         PGSimpleDataSource postgres = null;
         try {
-            config_file = new FileInputStream("db.properties");
-            configs.load(config_file);
+            configFile = new FileInputStream("db.properties");
+            configs.load(configFile);
             postgres = new PGSimpleDataSource();
             postgres.setURL(configs.getProperty("PSQL_DB_URL"));
             postgres.setUser(configs.getProperty("PSQL_DB_USERNAME"));

@@ -1,7 +1,6 @@
 package pt.isel.ls.Request;
 
-import pt.isel.ls.Exceptions.InvalidRequestException;
-
+import pt.isel.ls.exceptions.InvalidRequestException;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -9,13 +8,13 @@ public class Request {
     private String[] path;
     private Method method;
     // Hashmap where we store all parameters
-    final private HashMap<String, LinkedList<String>> queryStrings = new HashMap<>();
+    private final HashMap<String, LinkedList<String>> queryStrings = new HashMap<>();
 
     // Hashmap where the requested headers are stored
-    final private HashMap<String, LinkedList<String>> headers = new HashMap<>();
+    private final HashMap<String, LinkedList<String>> headers = new HashMap<>();
 
     // Hashmap to store the variable path value
-    final private HashMap<String, String> parameters = new HashMap<>();
+    private final HashMap<String, String> parameters = new HashMap<>();
 
     // Constructor if there are parameters to receive
     public Request(Method method, String path, String queryString) throws InvalidRequestException {
@@ -37,7 +36,9 @@ public class Request {
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
-        if (method != null) result.append(method).append(" ");
+        if (method != null) {
+            result.append(method).append(" ");
+        }
         if (path != null) {
             result.append("/");
             for (String s : path) {
@@ -45,8 +46,12 @@ public class Request {
             }
             result.append(" ");
         }
-        if (parameters.size() > 0) result.append(" parameters: ").append(parameters);
-        if (queryStrings.size() > 0) result.append(" queryString: ").append(queryStrings);
+        if (parameters.size() > 0) {
+            result.append(" parameters: ").append(parameters);
+        }
+        if (queryStrings.size() > 0) {
+            result.append(" queryString: ").append(queryStrings);
+        }
         return result.toString();
     }
 
@@ -83,13 +88,15 @@ public class Request {
             // Separates the name of the parameters with is value (row, row value)
             String[] keyValue = param.split("=");
             // It needs to be length too because we have just a "row" and a "value" corresponding to that row
-            if (keyValue.length != 2)
+            if (keyValue.length != 2) {
                 throw new InvalidRequestException("Query String with wrong format");
+            }
             // We opted to store multiple parameters that are equal (multiple names, emails, etc)
             if (this.queryStrings.containsKey(keyValue[0])) {
                 this.queryStrings.get(keyValue[0]).add(keyValue[1].replace("+", " "));
             } else {
-                // If the parameter doesnt yet exist we create a linklist to store the value and add that parameter to the hashmap
+                // If the parameter doesnt yet exist we create a linkedlist to store the value and add that parameter
+                // to the hashmap
                 LinkedList<String> l = new LinkedList<>();
                 l.add(keyValue[1].replace("+", " "));
                 this.queryStrings.put(keyValue[0], l);
@@ -117,14 +124,16 @@ public class Request {
             // Separates the name of the header with is value (row, row value)
             String[] keyValue = header.split(":");
             // It needs to be length too because we have just a "row" and a "value" corresponding to that row
-            if (keyValue.length != 2)
+            if (keyValue.length != 2) {
                 throw new InvalidRequestException("Query String with wrong format");
+            }
             // We opted to store multiple headers that are equal
             if (this.headers.containsKey(keyValue[0])) {
                 //Maintain replacement case the filename has separation needs
                 this.headers.get(keyValue[0]).add(keyValue[1].replace("+", " "));
             } else {
-                // If the header doesn't yet exist we create a linklist to store the value and add that header to the hashmap
+                // If the header doesn't yet exist we create a linklist to store the value and
+                // add that header to the hashmap
                 LinkedList<String> list = new LinkedList<>();
                 list.add(keyValue[1].replace("+", " "));
                 this.headers.put(keyValue[0], list);
@@ -154,7 +163,8 @@ public class Request {
         } else if (arr.length == 3) {
             setMethod(Method.getMethod(arr[0]));
             setPath(arr[1]);
-            int idxOfParameters = arr[2].indexOf("="), idxOfHeader = arr[2].indexOf(":");
+            int idxOfParameters = arr[2].indexOf("=");
+            int idxOfHeader = arr[2].indexOf(":");
 
             if (idxOfHeader > 0 && idxOfParameters > 0) {
                 if (idxOfHeader < idxOfParameters) {
@@ -163,8 +173,11 @@ public class Request {
                     setQueryStrings(arr[2]);
                 }
             } else {
-                if (idxOfHeader > 0) setHeader(arr[2]);
-                else if (idxOfParameters > 0) setQueryStrings(arr[2]);
+                if (idxOfHeader > 0) {
+                    setHeader(arr[2]);
+                } else if (idxOfParameters > 0) {
+                    setQueryStrings(arr[2]);
+                }
             }
 
         }

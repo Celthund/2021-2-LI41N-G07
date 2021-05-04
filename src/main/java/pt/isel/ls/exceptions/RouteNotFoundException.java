@@ -1,9 +1,10 @@
-package pt.isel.ls.Exceptions;
+package pt.isel.ls.exceptions;
 
 public class RouteNotFoundException extends AppException {
     public RouteNotFoundException() {
-        super();
+        super("Route not found.");
     }
+
     public RouteNotFoundException(String message) {
         super(message);
     }

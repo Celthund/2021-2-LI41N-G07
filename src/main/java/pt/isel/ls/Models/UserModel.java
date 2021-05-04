@@ -1,14 +1,12 @@
-package pt.isel.ls.Models;
+package pt.isel.ls.Models.domainclasses.Models;
 
-
-import org.postgresql.ds.PGSimpleDataSource;
-import pt.isel.ls.DataClass.User;
-import pt.isel.ls.Exceptions.ServerErrorException;
 
 import java.sql.*;
 import java.util.LinkedList;
-
-import static pt.isel.ls.Utils.Utils.getDataSource;
+import org.postgresql.ds.PGSimpleDataSource;
+import pt.isel.ls.exceptions.ServerErrorException;
+import pt.isel.ls.Models.domainclasses.Models.domainclasses.User;
+import static pt.isel.ls.utils.Utils.getDataSource;
 
 // Handles the data sent by the corresponding view
 public class UserModel {
@@ -44,11 +42,12 @@ public class UserModel {
             Connection connection = db.getConnection();
             Statement statement = connection.createStatement();
             ResultSet userResult = statement.executeQuery("SELECT * FROM users");
-            while (userResult.next())
+            while (userResult.next()) {
                 users.add(new User(
-                        userResult.getString("name"),
-                        userResult.getString("email"),
-                        userResult.getInt("uid")));
+                    userResult.getString("name"),
+                    userResult.getString("email"),
+                    userResult.getInt("uid")));
+            }
             connection.close();
         } catch (SQLException throwables) {
             throw new ServerErrorException("Server Error! Fail getting Users.");
@@ -67,7 +66,7 @@ public class UserModel {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlCmd);
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, email);
-            if (preparedStatement.executeUpdate() == 1){
+            if (preparedStatement.executeUpdate() == 1) {
                 sqlCmd = "SELECT * FROM users ORDER BY uid DESC LIMIT 1;";
                 ResultSet userResult = connection.createStatement().executeQuery(sqlCmd);
                 if (userResult.next()) {

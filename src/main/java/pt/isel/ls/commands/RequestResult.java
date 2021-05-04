@@ -1,4 +1,4 @@
-package pt.isel.ls.Commands;
+package pt.isel.ls.commands;
 
 public class RequestResult {
 

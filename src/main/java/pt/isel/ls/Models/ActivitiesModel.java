@@ -1,23 +1,24 @@
-package pt.isel.ls.Models;
-
-import org.postgresql.ds.PGSimpleDataSource;
-import pt.isel.ls.DataClass.Activity;
-import pt.isel.ls.Exceptions.BadRequestException;
-import pt.isel.ls.Exceptions.ServerErrorException;
+package pt.isel.ls.Models.domainclasses.Models;
 
 import java.sql.*;
 import java.util.LinkedList;
+import org.postgresql.ds.PGSimpleDataSource;
+import pt.isel.ls.exceptions.AppException;
+import pt.isel.ls.exceptions.BadRequestException;
+import pt.isel.ls.exceptions.ServerErrorException;
+import pt.isel.ls.Models.domainclasses.Models.domainclasses.Activity;
+import static pt.isel.ls.utils.Utils.getDataSource;
 
-import static pt.isel.ls.Utils.Utils.getDataSource;
 
 public class ActivitiesModel {
 
     // Variable used in the creation of Activity
-    final private SportsModel sports =  new SportsModel();
-    private final  UserModel users = new UserModel();
-    final private RoutesModel routes = new RoutesModel();
+    private final SportsModel sports = new SportsModel();
+    private final UserModel users = new UserModel();
+    private final RoutesModel routes = new RoutesModel();
 
-    public LinkedList<Activity> getActivitiesByTops(String sid, String orderBy, String date, String rid) throws BadRequestException, ServerErrorException {
+    public LinkedList<Activity> getActivitiesByTops(String sid, String orderBy, String date, String rid)
+            throws AppException {
         Activity activity = null;
         // Stores all the activities get from the query
         LinkedList<Activity> activites = new LinkedList<>();
@@ -25,15 +26,19 @@ public class ActivitiesModel {
         // Will concatenate the parts of the query
         StringBuilder sqlCmd = new StringBuilder("SELECT * FROM activities WHERE sid = ?");
         // If they are null it means the user didnt search for them so we dont concatenate
-        if(date != null) sqlCmd.append(" and date = ?");
-        if(rid != null) sqlCmd.append(" and rid = ?");
+        if (date != null) {
+            sqlCmd.append(" and date = ?");
+        }
+        if (rid != null) {
+            sqlCmd.append(" and rid = ?");
+        }
 
         // Checks what order the user pretends to see the query
-        if((orderBy.equals("ascending"))) {
+        if ((orderBy.equals("ascending"))) {
             sqlCmd.append(" order by duration asc;");
-        }else if(orderBy.equals("descending")){
+        } else if (orderBy.equals("descending")) {
             sqlCmd.append(" order by duration desc;");
-        }else{
+        } else {
             throw new BadRequestException("Invalid Order By");
         }
 
@@ -46,8 +51,12 @@ public class ActivitiesModel {
             // Sets the sport the user wants to search for
             preparedStatement.setInt(i++, Integer.parseInt(sid));
             // If they are null it means the user didnt search for them so we dont set the value
-            if(date != null) preparedStatement.setDate(i++, Activity.dateToDate(date));
-            if(rid != null) preparedStatement.setInt(i, Integer.parseInt(rid));
+            if (date != null) {
+                preparedStatement.setDate(i++, Activity.dateToDate(date));
+            }
+            if (rid != null) {
+                preparedStatement.setInt(i, Integer.parseInt(rid));
+            }
 
             // Executes the query
             ResultSet activityResult = preparedStatement.executeQuery();
@@ -57,12 +66,13 @@ public class ActivitiesModel {
             while (activityResult.next()) {
                 // The constructor for the Activity value holder
                 activity = new Activity(
-                        activityResult.getInt("aid"),
-                        users.getUserById(Integer.toString(activityResult.getInt("uid")) ),
-                        sports.getSportById(Integer.toString(activityResult.getInt("sid"))),
-                        (tmpRid = activityResult.getInt("rid")) == 0 ? null : routes.getRouteById(Integer.toString(tmpRid)),
-                        activityResult.getDate("date"),
-                        activityResult.getLong("duration"));
+                    activityResult.getInt("aid"),
+                    users.getUserById(Integer.toString(activityResult.getInt("uid"))),
+                    sports.getSportById(Integer.toString(activityResult.getInt("sid"))),
+                    (tmpRid = activityResult.getInt("rid")) == 0
+                        ? null : routes.getRouteById(Integer.toString(tmpRid)),
+                    activityResult.getDate("date"),
+                    activityResult.getLong("duration"));
                 activites.add(activity);
             }
             preparedStatement.close();
@@ -73,7 +83,7 @@ public class ActivitiesModel {
         return activites;
     }
 
-    public Activity getActivityByUid(String uid) throws ServerErrorException {
+    public Activity getActivityByUid(String uid) throws AppException {
         Activity activity = null;
 
         // Get the configurations to set up the DB connection
@@ -87,12 +97,12 @@ public class ActivitiesModel {
             if (activityResult.next()) {
                 int rid;
                 activity = new Activity(
-                        activityResult.getInt("aid"),
-                        users.getUserById(uid),
-                        sports.getSportById(Integer.toString(activityResult.getInt("sid"))),
-                        (rid = activityResult.getInt("rid")) == 0 ? null : routes.getRouteById(Integer.toString(rid)),
-                        activityResult.getDate("date"),
-                        activityResult.getLong("duration"));
+                    activityResult.getInt("aid"),
+                    users.getUserById(uid),
+                    sports.getSportById(Integer.toString(activityResult.getInt("sid"))),
+                    (rid = activityResult.getInt("rid")) == 0 ? null : routes.getRouteById(Integer.toString(rid)),
+                    activityResult.getDate("date"),
+                    activityResult.getLong("duration"));
             }
             preparedStatement.close();
             connection.close();
@@ -103,7 +113,8 @@ public class ActivitiesModel {
     }
 
     // Server that creates Activity
-    public Activity postActivity(String sid, String uid, String duration, String date, String rid) throws BadRequestException, ServerErrorException {
+    public Activity createActivity(String sid, String uid, String duration, String date, String rid)
+            throws AppException {
         // Transforms the String date to Date date
         Date sqlDate = Activity.dateToDate(date);
 
@@ -128,20 +139,18 @@ public class ActivitiesModel {
             String sqlCmd;
 
             // If rid is null it means the user didnt introduce it so the query will not have it
-            if(rid == null){
+            if (rid == null) {
                 sqlCmd = "INSERT INTO activities(uid, sid, date, duration) VALUES (?, ?, ?, ?);";
                 preparedStatement = connection.prepareStatement(sqlCmd);
                 preparedStatement.setInt(1, Integer.parseInt(uid));
                 preparedStatement.setInt(2, Integer.parseInt(sid));
                 preparedStatement.setDate(3, sqlDate);
                 preparedStatement.setLong(4, sqlDuration);
-            }
-
-            else {
+            } else {
                 sqlCmd = "INSERT INTO activities(uid, rid, sid, date, duration) VALUES (?, ?, ?, ?, ?);";
                 preparedStatement = connection.prepareStatement(sqlCmd);
                 preparedStatement.setInt(1, Integer.parseInt(uid));
-                preparedStatement.setInt(2,Integer.parseInt(rid));
+                preparedStatement.setInt(2, Integer.parseInt(rid));
                 preparedStatement.setInt(3, Integer.parseInt(sid));
                 preparedStatement.setDate(4, sqlDate);
                 preparedStatement.setLong(5, sqlDuration);
@@ -154,16 +163,17 @@ public class ActivitiesModel {
                 if (activityResult.next()) {
                     int checkRid;
                     activity = new Activity(
-                            activityResult.getInt("aid"),
-                            // Creates a user with the user got from the query with the value it got from the query
-                            users.getUserById(uid),
-                            // Creates a user with the value got from the query with the sid sent by the user
-                            sports.getSportById(sid),
-                            // Checks if the user pretend to get Route, if its null, just put the Route in activity to null if not it will query for the rid sent
-                            //by the user and store in activity
-                            (checkRid = activityResult.getInt("rid")) == 0 ? null : routes.getRouteById(Integer.toString(checkRid)),
-                            activityResult.getDate("date"),
-                            activityResult.getLong("duration"));
+                        activityResult.getInt("aid"),
+                        // Creates a user with the user got from the query with the value it got from the query
+                        users.getUserById(uid),
+                        // Creates a user with the value got from the query with the sid sent by the user
+                        sports.getSportById(sid),
+                        // Checks if the user pretend to get Route, if its null, just put the Route in
+                        // activity to null if not it will query for the rid sent by the user and store in activity
+                        (checkRid = activityResult.getInt("rid")) == 0
+                            ? null : routes.getRouteById(Integer.toString(checkRid)),
+                        activityResult.getDate("date"),
+                        activityResult.getLong("duration"));
                 }
 
                 connection.commit();
@@ -179,14 +189,15 @@ public class ActivitiesModel {
         return activity;
     }
 
-    public Activity getActivityByAidSid(String aid, String sid) throws ServerErrorException {
+    public Activity getActivityByAidSid(String aid, String sid) throws AppException {
         Activity activity = null;
 
         // Get the configurations to set up the DB connection
         PGSimpleDataSource db = getDataSource();
         try {
             Connection connection = db.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM activities WHERE aid = ? AND sid = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                "SELECT * FROM activities WHERE aid = ? AND sid = ?");
             preparedStatement.setInt(1, Integer.parseInt(aid));
             preparedStatement.setInt(2, Integer.parseInt(sid));
 
@@ -195,15 +206,15 @@ public class ActivitiesModel {
             if (activityResult.next()) {
                 int rid;
                 activity = new Activity(
-                        Integer.parseInt(aid),
-                        // Creates a user with the user got from the query with the value it got from the query
-                        users.getUserById(Integer.toString(activityResult.getInt("uid"))),
-                        sports.getSportById(sid),
-                        // Checks if the user pretend to get Route, if its null, just put the Route in activity to null if not it will query for the rid sent
-                        //by the user and store in activity
-                        (rid = activityResult.getInt("rid")) == 0 ? null : routes.getRouteById(Integer.toString(rid)),
-                        activityResult.getDate("date"),
-                        activityResult.getLong("duration"));
+                    Integer.parseInt(aid),
+                    // Creates a user with the user got from the query with the value it got from the query
+                    users.getUserById(Integer.toString(activityResult.getInt("uid"))),
+                    sports.getSportById(sid),
+                    // Checks if the user pretend to get Route, if its null, just put the Route in
+                    // activity to null if not it will query for the rid sent by the user and store in activity
+                    (rid = activityResult.getInt("rid")) == 0 ? null : routes.getRouteById(Integer.toString(rid)),
+                    activityResult.getDate("date"),
+                    activityResult.getLong("duration"));
             }
             preparedStatement.close();
             connection.close();
@@ -213,7 +224,7 @@ public class ActivitiesModel {
         return activity;
     }
 
-    public Activity getActivityBySid(String sid) throws ServerErrorException {
+    public Activity getActivityBySid(String sid) throws AppException {
         Activity activity = null;
 
         // Get the configurations to set up the DB connection
@@ -228,16 +239,16 @@ public class ActivitiesModel {
             if (activityResult.next()) {
                 int rid;
                 activity = new Activity(
-                        activityResult.getInt("aid"),
-                        // Creates a user with the user got from the query with the value it got from the query
-                        users.getUserById(Integer.toString(activityResult.getInt("uid"))),
-                        // Creates a user with the value got from the query with the sid sent by the user
-                        sports.getSportById(sid),
-                        // Checks if the user pretend to get Route, if its null, just put the Route in activity to null if not it will query for the rid sent
-                        //by the user and store in activity
-                        (rid = activityResult.getInt("rid")) == 0 ? null : routes.getRouteById(Integer.toString(rid)),
-                        activityResult.getDate("date"),
-                        activityResult.getLong("duration"));
+                    activityResult.getInt("aid"),
+                    // Creates a user with the user got from the query with the value it got from the query
+                    users.getUserById(Integer.toString(activityResult.getInt("uid"))),
+                    // Creates a user with the value got from the query with the sid sent by the user
+                    sports.getSportById(sid),
+                    // Checks if the user pretend to get Route, if its null, just put the Route
+                    // in activity to null if not it will query for the rid sent by the user and store in activity
+                    (rid = activityResult.getInt("rid")) == 0 ? null : routes.getRouteById(Integer.toString(rid)),
+                    activityResult.getDate("date"),
+                    activityResult.getLong("duration"));
             }
             preparedStatement.close();
             connection.close();
