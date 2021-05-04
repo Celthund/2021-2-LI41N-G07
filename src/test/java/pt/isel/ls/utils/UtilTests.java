@@ -12,10 +12,8 @@ import pt.isel.ls.exceptions.RouteNotFoundException;
 import pt.isel.ls.path.Router;
 import pt.isel.ls.request.Method;
 import pt.isel.ls.request.Request;
-
 import java.sql.*;
 import java.util.Optional;
-
 import static pt.isel.ls.utils.Utils.getDataSource;
 
 public class UtilTests {
@@ -27,10 +25,10 @@ public class UtilTests {
         connection.close();
     }
 
-    @Test(expected= PSQLException.class)
+    @Test(expected = PSQLException.class)
     public void test_wrong_server() throws SQLException {
         PGSimpleDataSource db = getDataSource();
-        db.setServerNames(new String[]{"Test_Host"});
+        db.setServerNames(new String[] {"Test_Host"});
         Connection conn = db.getConnection();
         conn.close();
     }
@@ -45,7 +43,7 @@ public class UtilTests {
     @Test(expected = PSQLException.class)
     public void test_wrong_user() throws SQLException {
         PGSimpleDataSource db = getDataSource();
-        db.setServerNames(new String[]{"Server1"});
+        db.setServerNames(new String[] {"Server1"});
         db.setUser("Wrong UserModel");
         Connection connection = db.getConnection();
         connection.close();
@@ -61,10 +59,10 @@ public class UtilTests {
 
 
     private void createTableForTests(Connection connection) throws SQLException {
-        String create = "drop table if exists students;" +
-                        "drop table if exists courses;" +
-                        "create table courses (cid serial primary key, name varchar(80));" +
-                        "create table students (number int primary key, name varchar(80), course int references courses(cid));";
+        String create = "drop table if exists students;"
+            + "drop table if exists courses;"
+            + "create table courses (cid serial primary key, name varchar(80));"
+            + "create table students (number int primary key, name varchar(80), course int references courses(cid));";
 
         Statement statement = connection.createStatement();
 
@@ -73,9 +71,10 @@ public class UtilTests {
     }
 
     private void addDataToTable(Connection connection) throws SQLException {
-        String create = "insert into courses(name) values ('LEIC');" +
-                        "insert into students(course, number, name) values (1, 12345, 'Alice');" +
-                        "insert into students(course, number, name) select cid as course, 12346 as number, 'Bob' as name from courses where name = 'LEIC'";
+        String create = "insert into courses(name) values ('LEIC');"
+            + "insert into students(course, number, name) values (1, 12345, 'Alice');"
+            + "insert into students(course, number, name) select cid as course, 12346 "
+            + "as number, 'Bob' as name from courses where name = 'LEIC'";
 
         Statement statement = connection.createStatement();
 
@@ -182,14 +181,14 @@ public class UtilTests {
     }
 
 
-    @Test(expected= RouteNotFoundException.class)
+    @Test(expected = RouteNotFoundException.class)
     public void test_non_existing_routing() throws AppException {
         Router router = new Router();
         Request request = new Request(Method.getMethod("GET"), "/abc/2/123");
-        RequestHandler handler = router.findRoute(request);
+        router.findRoute(request);
     }
 
-    @Test(expected=RouteAlreadyExistsException.class)
+    @Test(expected = RouteAlreadyExistsException.class)
     public void test_already_existing_routing() throws AppException {
         Router router = new Router();
         Optional<RequestResult> result = Optional.of(new RequestResult(200, null, "Success"));
