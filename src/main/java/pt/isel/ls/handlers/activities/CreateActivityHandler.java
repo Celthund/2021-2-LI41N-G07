@@ -1,7 +1,6 @@
 package pt.isel.ls.handlers.activities;
 
-import pt.isel.ls.commands.RequestHandler;
-import pt.isel.ls.commands.RequestResult;
+import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.models.domainclasses.Activity;
 import pt.isel.ls.exceptions.InvalidRequestException;
@@ -10,19 +9,21 @@ import pt.isel.ls.request.Request;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Optional;
+import pt.isel.ls.results.RequestResult;
+import pt.isel.ls.results.activities.CreateActivityResult;
 
 public class CreateActivityHandler implements RequestHandler {
 
     ActivitiesModel model = new ActivitiesModel();
 
-    private RequestResult createActivity(String sid, String uid, String duration, String date, String rid)
+    private CreateActivityResult createActivity(String sid, String uid, String duration, String date, String rid)
             throws AppException {
         Activity activity = model.createActivity(sid, uid, duration, date, rid);
 
         if (activity != null) {
-            return new RequestResult(200, activity, "Activity created with success with id = " + activity.id);
+            return new CreateActivityResult(200, activity, "Activity created with success with id = " + activity.id);
         }
-        return new RequestResult(500, null, "Failed to create activity.");
+        return new CreateActivityResult(500, null, "Failed to create activity.");
     }
 
     @Override

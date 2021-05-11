@@ -1,6 +1,6 @@
 package pt.isel.ls;
 
-import pt.isel.ls.commands.RequestHandler;
+import pt.isel.ls.request.RequestHandler;
 import java.util.LinkedList;
 
 public class Node {

@@ -1,27 +1,28 @@
 package pt.isel.ls.handlers.sports;
 
-import pt.isel.ls.commands.RequestHandler;
-import pt.isel.ls.commands.RequestResult;
+import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.exceptions.ServerErrorException;
 import pt.isel.ls.models.domainclasses.Sport;
 import pt.isel.ls.exceptions.InvalidRequestException;
 import pt.isel.ls.models.SportsModel;
 import pt.isel.ls.request.Request;
 import java.util.Optional;
+import pt.isel.ls.results.RequestResult;
+import pt.isel.ls.results.sports.GetSportByIdResult;
 
 public class GetSportByIdHandler implements RequestHandler {
 
     SportsModel model = new SportsModel();
 
-    public RequestResult getSportById(String sid) throws ServerErrorException {
+    public GetSportByIdResult getSportById(String sid) throws ServerErrorException {
         Sport sport = model.getSportById(sid);
         if (sport != null) {
-            return new RequestResult(
+            return new GetSportByIdResult(
                 200,
                 sport,
                 "Found sport with id = " + sid);
         }
-        return new RequestResult(404, null, "Sport not found.");
+        return new GetSportByIdResult(404, null, "Sport not found.");
     }
 
 

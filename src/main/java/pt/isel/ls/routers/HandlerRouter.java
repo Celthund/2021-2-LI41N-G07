@@ -1,12 +1,12 @@
-package pt.isel.ls.path;
+package pt.isel.ls.routers;
 
-import pt.isel.ls.commands.RequestHandler;
+import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.exceptions.*;
 import pt.isel.ls.Node;
 import pt.isel.ls.request.Request;
 import java.util.LinkedList;
 
-public class Router {
+public class HandlerRouter {
     // The head of the tree
     Node node = new Node();
     LinkedList<String> routes = new LinkedList<>();

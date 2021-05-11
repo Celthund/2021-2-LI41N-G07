@@ -1,7 +1,6 @@
 package pt.isel.ls.handlers.activities;
 
-import pt.isel.ls.commands.RequestHandler;
-import pt.isel.ls.commands.RequestResult;
+import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.models.domainclasses.Activity;
 import pt.isel.ls.exceptions.InvalidRequestException;
@@ -9,17 +8,19 @@ import pt.isel.ls.models.ActivitiesModel;
 import pt.isel.ls.request.Request;
 import java.util.HashMap;
 import java.util.Optional;
+import pt.isel.ls.results.RequestResult;
+import pt.isel.ls.results.activities.GetActivityByAidSidResult;
 
 public class GetActivityByAidSidHandler implements RequestHandler {
 
     ActivitiesModel model = new ActivitiesModel();
 
-    private RequestResult getActivityByAidSid(String aid, String sid) throws AppException {
+    private GetActivityByAidSidResult getActivityByAidSid(String aid, String sid) throws AppException {
         Activity activity = model.getActivityByAidSid(aid, sid);
         if (activity != null) {
-            return new RequestResult(200, activity, "Found activity with id = " + activity.id);
+            return new GetActivityByAidSidResult(200, activity, "Found activity with id = " + activity.id);
         }
-        return new RequestResult(500, null, "Activity not found.");
+        return new GetActivityByAidSidResult(500, null, "Activity not found.");
     }
 
     @Override

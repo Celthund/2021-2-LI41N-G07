@@ -1,24 +1,25 @@
 package pt.isel.ls.handlers.sports;
 
-import pt.isel.ls.commands.RequestHandler;
-import pt.isel.ls.commands.RequestResult;
+import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.models.domainclasses.Sport;
 import pt.isel.ls.exceptions.InvalidRequestException;
 import pt.isel.ls.models.SportsModel;
 import pt.isel.ls.request.Request;
 import java.util.Optional;
+import pt.isel.ls.results.RequestResult;
+import pt.isel.ls.results.sports.CreateSportResult;
 
 public class CreateSportHandler implements RequestHandler {
 
     SportsModel model = new SportsModel();
 
-    public RequestResult createSport(String name, String description) throws AppException {
+    public CreateSportResult createSport(String name, String description) throws AppException {
         Sport sport = model.createSport(name, description);
         if (sport != null) {
-            return new RequestResult(200, sport, "Sport created with success with id = " + sport.sid + "");
+            return new CreateSportResult(200, sport, "Sport created with success with id = " + sport.sid + "");
         }
-        return new RequestResult(500, null, "Failed to create sport.");
+        return new CreateSportResult(500, null, "Failed to create sport.");
     }
 
     @Override

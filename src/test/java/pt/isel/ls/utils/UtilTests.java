@@ -4,12 +4,12 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.postgresql.util.PSQLException;
-import pt.isel.ls.commands.RequestHandler;
-import pt.isel.ls.commands.RequestResult;
+import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.exceptions.RouteAlreadyExistsException;
 import pt.isel.ls.exceptions.RouteNotFoundException;
-import pt.isel.ls.path.Router;
+import pt.isel.ls.results.RequestResult;
+import pt.isel.ls.routers.HandlerRouter;
 import pt.isel.ls.request.Method;
 import pt.isel.ls.request.Request;
 import java.sql.*;
@@ -171,28 +171,40 @@ public class UtilTests {
 
     @Test
     public void test_existing_routing() throws AppException {
-        Router router = new Router();
-        router.addRoute("GET", "/abc/{id}/123", request -> Optional.of(new RequestResult(200, null, "Success")));
+        HandlerRouter handlerRouter = new HandlerRouter();
+        handlerRouter.addRoute("GET", "/abc/{id}/123", request -> Optional.of(new Result(200, null, "Success")));
         Request request = new Request(Method.getMethod("GET"), "/abc/2/123");
-        RequestHandler handler = router.findRoute(request);
+        RequestHandler handler = handlerRouter.findRoute(request);
         Optional<RequestResult> res = handler.execute(request);
         assert res.isPresent();
-        assert res.get().message.equals("Success");
     }
 
 
     @Test(expected = RouteNotFoundException.class)
     public void test_non_existing_routing() throws AppException {
-        Router router = new Router();
+        HandlerRouter handlerRouter = new HandlerRouter();
         Request request = new Request(Method.getMethod("GET"), "/abc/2/123");
-        router.findRoute(request);
+        handlerRouter.findRoute(request);
     }
 
     @Test(expected = RouteAlreadyExistsException.class)
     public void test_already_existing_routing() throws AppException {
-        Router router = new Router();
-        Optional<RequestResult> result = Optional.of(new RequestResult(200, null, "Success"));
-        router.addRoute("GET", "/abc/{id}/123", request -> result);
-        router.addRoute("GET", "/abc/{id}/123", request -> result);
+        HandlerRouter handlerRouter = new HandlerRouter();
+        Optional<RequestResult> result = Optional.of(new Result(200, null, "Success"));
+        handlerRouter.addRoute("GET", "/abc/{id}/123", request -> result);
+        handlerRouter.addRoute("GET", "/abc/{id}/123", request -> result);
+    }
+
+
+    class Result implements RequestResult{
+        public final int status;
+        public final Object data;
+        public final String message;
+
+        public Result(int status, Object data, String message) {
+            this.status = status;
+            this.data = data;
+            this.message = message;
+        }
     }
 }

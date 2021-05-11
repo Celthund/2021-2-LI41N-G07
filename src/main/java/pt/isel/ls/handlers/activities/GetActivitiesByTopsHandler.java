@@ -1,7 +1,6 @@
 package pt.isel.ls.handlers.activities;
 
-import pt.isel.ls.commands.RequestHandler;
-import pt.isel.ls.commands.RequestResult;
+import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.models.domainclasses.Activity;
 import pt.isel.ls.exceptions.InvalidRequestException;
@@ -9,19 +8,22 @@ import pt.isel.ls.models.ActivitiesModel;
 import pt.isel.ls.request.Request;
 import java.util.LinkedList;
 import java.util.Optional;
+import pt.isel.ls.results.RequestResult;
+import pt.isel.ls.results.activities.GetActivitiesByTopsResult;
 
 public class GetActivitiesByTopsHandler implements RequestHandler {
 
     ActivitiesModel model = new ActivitiesModel();
 
-    private RequestResult getActivitiesByTops(String sid, String orderBy, String date, String rid)
+    private GetActivitiesByTopsResult getActivitiesByTops(String sid, String orderBy, String date, String rid)
             throws AppException {
         LinkedList<Activity> activities = model.getActivitiesByTops(sid, orderBy, date, rid);
 
         if (activities != null) {
-            return new RequestResult(200, activities, String.format("Found %s activities", activities.size()));
+            return new GetActivitiesByTopsResult(200, activities,
+                String.format("Found %s activities", activities.size()));
         }
-        return new RequestResult(404, null, "No activities found");
+        return new GetActivitiesByTopsResult(404, null, "No activities found");
     }
 
 
