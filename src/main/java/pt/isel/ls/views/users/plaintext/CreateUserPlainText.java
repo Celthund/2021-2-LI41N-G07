@@ -6,7 +6,6 @@ import pt.isel.ls.results.users.CreateUserResult;
 import pt.isel.ls.views.View;
 
 public class CreateUserPlainText implements View {
-
     @Override
     public String getRepresentation(RequestResult requestResult) {
         User user = ((CreateUserResult) requestResult).data;

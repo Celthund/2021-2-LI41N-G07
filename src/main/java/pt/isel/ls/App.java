@@ -1,30 +1,24 @@
 package pt.isel.ls;
 
+import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.results.OptionResult;
-import pt.isel.ls.results.users.CreateUserResult;
-import pt.isel.ls.results.users.GetAllUsersResult;
-import pt.isel.ls.results.users.GetUserByIdResult;
+import pt.isel.ls.results.sports.*;
+import pt.isel.ls.results.users.*;
+import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.routers.HandlerRouter;
+import pt.isel.ls.routers.ViewRouter;
 import pt.isel.ls.request.Request;
 import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.handlers.activities.*;
-import pt.isel.ls.handlers.routes.CreateRouteHandler;
-import pt.isel.ls.handlers.routes.GetAllRoutesHandler;
-import pt.isel.ls.handlers.routes.GetRouteByIdHandler;
-import pt.isel.ls.handlers.sports.CreateSportHandler;
-import pt.isel.ls.handlers.sports.GetAllSportsHandler;
-import pt.isel.ls.handlers.sports.GetSportByIdHandler;
+import pt.isel.ls.handlers.routes.*;
+import pt.isel.ls.handlers.sports.*;
 import pt.isel.ls.handlers.users.*;
-import pt.isel.ls.exceptions.AppException;
+import pt.isel.ls.views.OptionPlainText;
+import pt.isel.ls.views.sports.plaintext.*;
+import pt.isel.ls.views.users.plaintext.*;
+import pt.isel.ls.views.View;
 import java.util.Optional;
 import java.util.Scanner;
-import pt.isel.ls.results.RequestResult;
-import pt.isel.ls.routers.ViewRouter;
-import pt.isel.ls.views.OptionPlainText;
-import pt.isel.ls.views.View;
-import pt.isel.ls.views.users.plaintext.CreateUserPlainText;
-import pt.isel.ls.views.users.plaintext.GetAllUsersPlainText;
-import pt.isel.ls.views.users.plaintext.GetUserByIdPlainText;
 
 public class App {
 
@@ -112,11 +106,17 @@ public class App {
     }
 
     private static void registerViews() throws AppException {
+
+        //Little trick for Options
+        viewRouter.addView(OptionResult.class, "text/html", new OptionPlainText());
+
         viewRouter.addView(GetAllUsersResult.class, "text/plain", new GetAllUsersPlainText());
         viewRouter.addView(GetUserByIdResult.class, "text/plain", new GetUserByIdPlainText());
         viewRouter.addView(CreateUserResult.class, "text/plain", new CreateUserPlainText());
 
-        //Little trick for Options
-        viewRouter.addView(OptionResult.class, "text/html", new OptionPlainText());
+        viewRouter.addView(GetAllSportsResult.class, "text/plain", new GetAllSportsPlainText());
+        viewRouter.addView(GetSportByIdResult.class, "text/plain", new GetSportByIdPlainText());
+        viewRouter.addView(CreateSportResult.class, "text/plain", new CreateSportPlainText());
+
     }
 }
