@@ -2,14 +2,14 @@ package pt.isel.ls.views.builders.html;
 
 import pt.isel.ls.views.builders.html.parts.*;
 
-public class HTMLBuilder {
+public class HtmlBuilder {
 
-    public static HTML html(Element... elements) {
-        return new HTML(elements);
+    public static Html html(Element... elements) {
+        return new Html(elements);
     }
 
-    public static HTML html(String content) {
-        return new HTML(content);
+    public static Html html(String content) {
+        return new Html(content);
     }
 
     public static Head head(Element... elements) {
