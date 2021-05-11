@@ -1,6 +1,6 @@
-package pt.isel.ls.views.html;
+package pt.isel.ls.views.builders.html;
 
-import pt.isel.ls.views.html.parts.*;
+import pt.isel.ls.views.builders.html.parts.*;
 
 public class HTMLBuilder {
 

@@ -1,7 +1,7 @@
-package pt.isel.ls.views.html.parts;
+package pt.isel.ls.views.builders.html.parts;
 
 
-import pt.isel.ls.views.html.Element;
+import pt.isel.ls.views.builders.html.Element;
 
 public class H1 extends Element {
 

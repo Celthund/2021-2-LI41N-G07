@@ -1,4 +1,4 @@
-package pt.isel.ls.views.html;
+package pt.isel.ls.views.builders.html;
 
 import java.util.ArrayList;
 import java.util.Arrays;
