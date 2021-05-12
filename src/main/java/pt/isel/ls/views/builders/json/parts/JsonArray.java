@@ -7,16 +7,20 @@ import pt.isel.ls.views.builders.json.JsonElement;
 import java.util.Arrays;
 
 public class JsonArray extends JsonElement {
-
+    String content;
     public JsonArray(JsonElement... elements) {
         super(elements);
     }
 
-    public JsonArray(String ... content) {
+    public JsonArray(String content) {
         super(content);
+        this.content = content;
 
     }
 
+    public String getArray(){
+        return beginTag() + content + endTag();
+    }
     @Override
     protected String beginTag() {
         return "[";
@@ -26,4 +30,6 @@ public class JsonArray extends JsonElement {
     protected String endTag() {
         return "]";
     }
+
+
 }

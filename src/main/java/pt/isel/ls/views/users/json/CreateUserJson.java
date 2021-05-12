@@ -6,23 +6,25 @@ import static pt.isel.ls.views.builders.json.JsonBuilder.*;
 
 public class CreateUserJson {
 
-    static JsonElement element1 = newJson(
+    static JsonElement element1 = createJson(
             put("User1", 1),
-            put(1, 2),
-            put(1, "1User"),
-            put("User1", "User1"),
-            put(null, null),
-            put(null, 2)
+            put("wtf is happening", createJsonArray("ola", 1, true))
     );
-    static JsonElement element2 = newJson(
-            put("jorge", 2),
-            put(3, 2),
-            put(2, "user"),
-            put("string1", "string2")
+
+
+    static JsonElement element2 = createJson(
+            put("elemento", element1)
+    );
+
+    static JsonElement element3 = createJson(
+            put("elemento", element1),
+            put(true, element1),
+            put("jorge", createJsonArray("value", 2, true))
     );
 
     public static void print(){
-        System.out.println(element1);
+        System.out.println(element3);
     }
+
 
 }

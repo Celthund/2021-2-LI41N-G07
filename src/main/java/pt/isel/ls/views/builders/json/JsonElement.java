@@ -15,19 +15,9 @@ public abstract class JsonElement {
         this.elements = asList(elements);
         content = null;
     }
-
     public JsonElement(String content) {
         elements = new ArrayList<>();
         this.content = content;
-    }
-    protected JsonElement(String ... contents){
-        elements = new ArrayList<>();
-        List<String> values = Arrays.asList(contents);
-        String tmp = "";
-        for (String value : values) {
-            tmp += " " + value + ",";
-        };
-        content = tmp.substring(0, tmp.length() -1);
     }
 
     protected abstract String beginTag();
@@ -39,12 +29,8 @@ public abstract class JsonElement {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(beginTag()).append('\n');
 
-        if (content != null) {
-            stringBuilder.append('\t').append(content);
-        }
-
         for (JsonElement element : elements) {
-            stringBuilder.append(element.toString(""));
+            stringBuilder.append(element.toString(",\n"));
         }
 
         stringBuilder.deleteCharAt(stringBuilder.length() - 2).append(endTag());
@@ -53,17 +39,16 @@ public abstract class JsonElement {
 
     private String toString(String tabs) {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(tabs).append(beginTag());
 
         if (content != null) {
-            stringBuilder.append(content);
+            stringBuilder.append(" ").append(content);
         }
 
         for (JsonElement element : elements) {
-            stringBuilder.append(element.toString(""));
+            stringBuilder.append(element.toString(tabs));
         }
 
-        stringBuilder.append(tabs).append(endTag()).append("\n");
+        stringBuilder.append(tabs);
         return stringBuilder.toString();
     }
 }

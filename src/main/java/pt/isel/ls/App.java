@@ -41,8 +41,6 @@ public class App {
             CreateUserResult a = new CreateUserResult(1, new User("TesteUser ", "usermail@mail.com", 2),"MsgUserTeste");
             System.out.println(new CreateUserHtml().getRepresentation(a));
             CreateUserJson.print();
-            CreateUserResult b = new CreateUserResult(1, new User("Json ", "usermail@mail.com", 2),"MsgUserTeste");
-
             registerRoutes();
             registerViews();
         } catch (AppException e) {
