@@ -1,5 +1,6 @@
 package pt.isel.ls;
 
+import pt.isel.ls.models.domainclasses.User;
 import pt.isel.ls.results.OptionResult;
 import pt.isel.ls.results.users.CreateUserResult;
 import pt.isel.ls.results.users.GetAllUsersResult;
@@ -22,6 +23,8 @@ import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.routers.ViewRouter;
 import pt.isel.ls.views.OptionPlainText;
 import pt.isel.ls.views.View;
+import pt.isel.ls.views.users.html.CreateUserHtml;
+import pt.isel.ls.views.users.json.CreateUserJson;
 import pt.isel.ls.views.users.plaintext.CreateUserPlainText;
 import pt.isel.ls.views.users.plaintext.GetAllUsersPlainText;
 import pt.isel.ls.views.users.plaintext.GetUserByIdPlainText;
@@ -35,6 +38,11 @@ public class App {
     public static void main(String[] args) {
         // Method that register the routes
         try {
+            CreateUserResult a = new CreateUserResult(1, new User("TesteUser ", "usermail@mail.com", 2),"MsgUserTeste");
+            System.out.println(new CreateUserHtml().getRepresentation(a));
+            CreateUserJson.print();
+            CreateUserResult b = new CreateUserResult(1, new User("Json ", "usermail@mail.com", 2),"MsgUserTeste");
+
             registerRoutes();
             registerViews();
         } catch (AppException e) {
@@ -116,7 +124,7 @@ public class App {
         viewRouter.addView(GetUserByIdResult.class, "text/plain", new GetUserByIdPlainText());
         viewRouter.addView(CreateUserResult.class, "text/plain", new CreateUserPlainText());
 
-        //Little trick for Options
+        // Little trick for Options
         viewRouter.addView(OptionResult.class, "text/html", new OptionPlainText());
     }
 }
