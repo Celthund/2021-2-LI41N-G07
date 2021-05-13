@@ -1,5 +1,6 @@
 package pt.isel.ls.views.users.json.routes;
 
+import pt.isel.ls.exceptions.InvalidJsonException;
 import pt.isel.ls.models.domainclasses.Route;
 import pt.isel.ls.models.domainclasses.Sport;
 import pt.isel.ls.results.RequestResult;
@@ -14,7 +15,7 @@ import static pt.isel.ls.views.builders.json.JsonBuilder.*;
 
 public class GetAllRoutesJson implements View {
     @Override
-    public String getRepresentation(RequestResult requestResult) {
+    public String getRepresentation(RequestResult requestResult) throws InvalidJsonException {
         LinkedList<Route> routes = ((GetAllRoutesResult) requestResult).data;
         LinkedList<JsonObject> objects = new LinkedList<>();
 

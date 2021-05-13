@@ -1,5 +1,6 @@
 package pt.isel.ls.views.builders.json;
 
+import pt.isel.ls.exceptions.InvalidJsonException;
 import pt.isel.ls.views.builders.json.parts.*;
 
 import java.util.Arrays;
@@ -11,7 +12,7 @@ public class JsonBuilder {
         return new JsonObject(newObj);
     }
 
-    public static JsonPut jsonPut(Object key, Object value){
+    public static JsonPut jsonPut(Object key, Object value) throws InvalidJsonException {
         LinkedList<JsonElement> newJsonObject = new LinkedList<>();
         if(key == null){
             newJsonObject.add(new JsonKey("null"));
@@ -20,40 +21,20 @@ public class JsonBuilder {
             newJsonObject.add(new JsonKey(key.toString()));
         }
         else{
-            System.out.println("WRONG KEY PROPERTY!");
-            System.exit(-1);
+            throw new InvalidJsonException("Invalid Key!");
         }
 
         String newVal = getValueString(value);
-        if(newVal == null) {
-            System.out.println("WRONG VALUE PROPERTY!");
-            System.exit(-1);
-        } else{
-            newJsonObject.add(new JsonValue(newVal));
-        }
+        newJsonObject.add(new JsonValue(newVal));
 
         return new JsonPut(newJsonObject);
     }
 
-    public static JsonArray jsonArray(Object ... values){
+    public static JsonArray jsonArray(Object ... values) throws InvalidJsonException {
         StringBuilder builder = new StringBuilder();
 
         for (Object value : values) {
-            String newVal = getValueString(value);
-            if(newVal == null) {
-                if(value instanceof List){
-                    for (Object listVal : (List)value) {
-                        builder.append(getValueString(listVal)).append(", ");
-                    }
-                }
-                else {
-                    System.out.println("WRONG VALUE PROPERTY!");
-                    System.exit(-1);
-                }
-            }
-            if(newVal != null){
-                builder.append(newVal);
-            }
+            builder.append(getValueString(value));
             builder.append(", ");
         }
         builder.deleteCharAt(builder.length() - 2);
@@ -61,7 +42,7 @@ public class JsonBuilder {
     }
 
 
-    private static String getValueString(Object object) {
+    private static String getValueString(Object object) throws InvalidJsonException {
         if(object == null)
             return "\"" + "null" + "\"";
         if (object instanceof Number || object instanceof Boolean)
@@ -70,7 +51,15 @@ public class JsonBuilder {
             return "\"" + object + "\"";
         if(object instanceof JsonElement)
             return object.toString();
+        if (object instanceof List) {
+            StringBuilder builder = new StringBuilder();
+            for (Object listVal : (List) object) {
+                builder.append(getValueString(listVal)).append(", ");
+            }
+            builder.deleteCharAt(builder.length() - 2);
+            return builder.toString();
+        }
 
-        return null;
+        throw new InvalidJsonException("Invalid Value!");
     }
 }

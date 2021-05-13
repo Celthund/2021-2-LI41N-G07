@@ -1,5 +1,6 @@
 package pt.isel.ls.views.users.json.users;
 
+import pt.isel.ls.exceptions.InvalidJsonException;
 import pt.isel.ls.models.domainclasses.User;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.users.GetAllUsersResult;
@@ -12,7 +13,7 @@ import java.util.LinkedList;
 
 public class GetAllUsersJson implements View {
     @Override
-    public String getRepresentation(RequestResult requestResult) {
+    public String getRepresentation(RequestResult requestResult) throws InvalidJsonException {
         LinkedList<User> users = ((GetAllUsersResult) requestResult).data;
         LinkedList<JsonObject> objects = new LinkedList<>();
 
