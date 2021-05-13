@@ -1,5 +1,4 @@
 package pt.isel.ls.views.builders.json.parts;
-
 import pt.isel.ls.views.builders.json.JsonElement;
 
 public class JsonKey extends JsonElement {

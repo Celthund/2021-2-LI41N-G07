@@ -1,27 +1,26 @@
-package pt.isel.ls.views.users.json.routes;
+package pt.isel.ls.views.users.json.activities;
 
 import pt.isel.ls.exceptions.InvalidJsonException;
-import pt.isel.ls.models.domainclasses.Route;
+import pt.isel.ls.models.domainclasses.Activity;
 import pt.isel.ls.results.RequestResult;
-import pt.isel.ls.results.routes.GetAllRoutesResult;
+import pt.isel.ls.results.activities.GetActivitiesByTopsResult;
 import pt.isel.ls.views.builders.json.parts.JsonObject;
 
 import java.util.LinkedList;
 
 import static pt.isel.ls.views.builders.json.JsonBuilder.*;
 
-public class GetAllRoutesJson extends AbstractRouteJson {
+public class GetActivitiesByTopsJson extends AbstractActivityJson{
     @Override
     public String getRepresentation(RequestResult requestResult) throws InvalidJsonException {
-        LinkedList<Route> routes = ((GetAllRoutesResult) requestResult).data;
+        LinkedList<Activity> activities = ((GetActivitiesByTopsResult) requestResult).data;
         LinkedList<JsonObject> objects = new LinkedList<>();
-
-        for (Route route : routes) {
-            objects.add(getRouteJson(route));
+        for (Activity activity: activities) {
+            objects.add(getActivityJson(activity));
         }
 
         return jsonObject(
-                jsonPut("Routes", jsonArray(objects))
+                jsonPut("Activities", jsonArray(objects))
         ).toString();
     }
 }

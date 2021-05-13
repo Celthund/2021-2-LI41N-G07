@@ -1,6 +1,7 @@
 package pt.isel.ls;
 
 import pt.isel.ls.results.OptionResult;
+import pt.isel.ls.results.activities.*;
 import pt.isel.ls.results.routes.CreateRouteResult;
 import pt.isel.ls.results.routes.GetAllRoutesResult;
 import pt.isel.ls.results.routes.GetRouteByIdResult;
@@ -28,6 +29,7 @@ import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.routers.ViewRouter;
 import pt.isel.ls.views.OptionPlainText;
 import pt.isel.ls.views.View;
+import pt.isel.ls.views.users.json.activities.*;
 import pt.isel.ls.views.users.json.routes.CreateRouteJson;
 import pt.isel.ls.views.users.json.routes.GetAllRoutesJson;
 import pt.isel.ls.views.users.json.routes.GetRouteByIdJson;
@@ -126,11 +128,16 @@ public class App {
         handlerRouter.addRoute("POST", "/sports/{sid}/activities", new CreateActivityHandler());
     }
 
+    //Creates all the views
     private static void registerViews() throws AppException {
+
+        //-----------------------------Creates the views for Plain Text--------------------------------------//
         viewRouter.addView(GetAllUsersResult.class, "text/plain", new GetAllUsersPlainText());
         viewRouter.addView(GetUserByIdResult.class, "text/plain", new GetUserByIdPlainText());
         viewRouter.addView(CreateUserResult.class, "text/plain", new CreateUserPlainText());
 
+
+        //-----------------------------Creates the views for Json--------------------------------------//
         viewRouter.addView(CreateUserResult.class, "application/json", new CreateUserJson());
         viewRouter.addView(GetUserByIdResult.class, "application/json", new GetUserByIdJson());
         viewRouter.addView(GetAllUsersResult.class, "application/json", new GetAllUsersJson());
@@ -143,7 +150,14 @@ public class App {
         viewRouter.addView(GetRouteByIdResult.class, "application/json", new GetRouteByIdJson());
         viewRouter.addView(GetAllRoutesResult.class, "application/json", new GetAllRoutesJson());
 
-        // Little trick for Options
+        viewRouter.addView(CreateActivityResult.class, "application/json", new CreateActivityJson());
+        viewRouter.addView(GetActivityByAidSidResult.class, "application/json", new GetActivityByAidSidJson());
+        viewRouter.addView(GetActivityBySidResult.class, "application/json", new GetActivityBySidJson());
+        viewRouter.addView(GetActivityByUidResult.class, "application/json", new GetActivityByUidJson());
+        viewRouter.addView(GetActivitiesByTopsResult.class, "application/json", new GetActivitiesByTopsJson());
+
+
+        //-----------------------------Creates the view for OPTION------------------------------------//
         viewRouter.addView(OptionResult.class, "text/html", new OptionPlainText());
     }
 }
