@@ -4,8 +4,11 @@ import pt.isel.ls.exceptions.InvalidJsonException;
 import pt.isel.ls.models.domainclasses.Sport;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.sports.GetSportByIdResult;
+import pt.isel.ls.views.View;
 
-public class GetSportByIdJson extends AbstractSportJson {
+import static pt.isel.ls.views.users.json.JsonGetter.*;
+
+public class GetSportByIdJson implements View {
     @Override
     public String getRepresentation(RequestResult requestResult) throws InvalidJsonException {
         Sport sport = ((GetSportByIdResult) requestResult).data;

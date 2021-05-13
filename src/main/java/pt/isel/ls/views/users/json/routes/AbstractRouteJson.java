@@ -5,8 +5,7 @@ import pt.isel.ls.models.domainclasses.Route;
 import pt.isel.ls.views.View;
 import pt.isel.ls.views.builders.json.parts.JsonObject;
 
-import static pt.isel.ls.views.builders.json.JsonBuilder.jsonObject;
-import static pt.isel.ls.views.builders.json.JsonBuilder.jsonPut;
+import static pt.isel.ls.views.builders.json.JsonBuilder.*;
 
 public abstract class AbstractRouteJson implements View {
     protected JsonObject getRouteJson(Route route) throws InvalidJsonException {
