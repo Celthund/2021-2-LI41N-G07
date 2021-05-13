@@ -1,23 +1,22 @@
 package pt.isel.ls.views.builders.json.parts;
+
 import pt.isel.ls.views.builders.json.JsonElement;
 
+import java.util.LinkedList;
 
-public class Json extends JsonElement {
-    public Json(JsonElement ... elements ){
-        super(elements);
-    }
+public class JsonPut extends JsonElement {
 
-    public Json(String content ){
-        super(content);
+    public JsonPut(LinkedList<JsonElement> json){
+        super(json);
     }
 
     @Override
     protected String beginTag() {
-        return "{";
+        return "";
     }
 
     @Override
     protected String endTag() {
-        return "}";
+        return "";
     }
 }

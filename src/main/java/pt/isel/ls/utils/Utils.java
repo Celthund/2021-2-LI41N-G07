@@ -1,6 +1,7 @@
 package pt.isel.ls.utils;
 
 import org.postgresql.ds.PGSimpleDataSource;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;

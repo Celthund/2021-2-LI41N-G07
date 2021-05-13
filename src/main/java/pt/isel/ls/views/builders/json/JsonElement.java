@@ -1,8 +1,6 @@
 package pt.isel.ls.views.builders.json;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -15,6 +13,12 @@ public abstract class JsonElement {
         this.elements = asList(elements);
         content = null;
     }
+
+    public JsonElement(List<JsonElement> elements){
+        this.elements = elements;
+        content = null;
+    }
+
     public JsonElement(String content) {
         elements = new ArrayList<>();
         this.content = content;
@@ -26,29 +30,40 @@ public abstract class JsonElement {
 
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder(), tabs = new StringBuilder();
         stringBuilder.append(beginTag()).append('\n');
 
+        if (content != null) {
+            stringBuilder.append('\t').append(content).append('\n');
+        }
+
         for (JsonElement element : elements) {
-            stringBuilder.append(element.toString(",\n"));
+            stringBuilder.append('\t').append(element.toStringObject("")).append(",\n");
         }
 
         stringBuilder.deleteCharAt(stringBuilder.length() - 2).append(endTag());
         return stringBuilder.toString();
     }
 
-    private String toString(String tabs) {
+    private String toStringObject(String tabs) {
         StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(tabs).append(beginTag());
 
         if (content != null) {
-            stringBuilder.append(" ").append(content);
+
+            if(content.contains("{") || content.contains("[")){
+                stringBuilder.append(content.replace("\n", "\n\t"));
+            }else
+                stringBuilder.append(content);
         }
 
         for (JsonElement element : elements) {
-            stringBuilder.append(element.toString(tabs));
+            stringBuilder.append(element.toStringObject(""));
         }
 
-        stringBuilder.append(tabs);
+        stringBuilder.append(tabs).append(endTag());
         return stringBuilder.toString();
     }
+
+
 }

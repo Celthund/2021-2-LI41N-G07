@@ -1,7 +1,12 @@
 package pt.isel.ls;
 
-import pt.isel.ls.models.domainclasses.User;
 import pt.isel.ls.results.OptionResult;
+import pt.isel.ls.results.routes.CreateRouteResult;
+import pt.isel.ls.results.routes.GetAllRoutesResult;
+import pt.isel.ls.results.routes.GetRouteByIdResult;
+import pt.isel.ls.results.sports.CreateSportResult;
+import pt.isel.ls.results.sports.GetAllSportsResult;
+import pt.isel.ls.results.sports.GetSportByIdResult;
 import pt.isel.ls.results.users.CreateUserResult;
 import pt.isel.ls.results.users.GetAllUsersResult;
 import pt.isel.ls.results.users.GetUserByIdResult;
@@ -23,8 +28,15 @@ import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.routers.ViewRouter;
 import pt.isel.ls.views.OptionPlainText;
 import pt.isel.ls.views.View;
-import pt.isel.ls.views.users.html.CreateUserHtml;
-import pt.isel.ls.views.users.json.CreateUserJson;
+import pt.isel.ls.views.users.json.routes.CreateRouteJson;
+import pt.isel.ls.views.users.json.routes.GetAllRoutesJson;
+import pt.isel.ls.views.users.json.routes.GetRouteByIdJson;
+import pt.isel.ls.views.users.json.sports.CreateSportJson;
+import pt.isel.ls.views.users.json.sports.GetAllSportsJson;
+import pt.isel.ls.views.users.json.sports.GetSportByIdJson;
+import pt.isel.ls.views.users.json.users.CreateUserJson;
+import pt.isel.ls.views.users.json.users.GetAllUsersJson;
+import pt.isel.ls.views.users.json.users.GetUserByIdJson;
 import pt.isel.ls.views.users.plaintext.CreateUserPlainText;
 import pt.isel.ls.views.users.plaintext.GetAllUsersPlainText;
 import pt.isel.ls.views.users.plaintext.GetUserByIdPlainText;
@@ -38,9 +50,6 @@ public class App {
     public static void main(String[] args) {
         // Method that register the routes
         try {
-            CreateUserResult a = new CreateUserResult(1, new User("TesteUser ", "usermail@mail.com", 2),"MsgUserTeste");
-            System.out.println(new CreateUserHtml().getRepresentation(a));
-            CreateUserJson.print();
             registerRoutes();
             registerViews();
         } catch (AppException e) {
@@ -121,6 +130,18 @@ public class App {
         viewRouter.addView(GetAllUsersResult.class, "text/plain", new GetAllUsersPlainText());
         viewRouter.addView(GetUserByIdResult.class, "text/plain", new GetUserByIdPlainText());
         viewRouter.addView(CreateUserResult.class, "text/plain", new CreateUserPlainText());
+
+        viewRouter.addView(CreateUserResult.class, "application/json", new CreateUserJson());
+        viewRouter.addView(GetUserByIdResult.class, "application/json", new GetUserByIdJson());
+        viewRouter.addView(GetAllUsersResult.class, "application/json", new GetAllUsersJson());
+
+        viewRouter.addView(CreateSportResult.class, "application/json", new CreateSportJson());
+        viewRouter.addView(GetSportByIdResult.class, "application/json", new GetSportByIdJson());
+        viewRouter.addView(GetAllSportsResult.class, "application/json", new GetAllSportsJson());
+
+        viewRouter.addView(CreateRouteResult.class, "application/json", new CreateRouteJson());
+        viewRouter.addView(GetRouteByIdResult.class, "application/json", new GetRouteByIdJson());
+        viewRouter.addView(GetAllRoutesResult.class, "application/json", new GetAllRoutesJson());
 
         // Little trick for Options
         viewRouter.addView(OptionResult.class, "text/html", new OptionPlainText());
