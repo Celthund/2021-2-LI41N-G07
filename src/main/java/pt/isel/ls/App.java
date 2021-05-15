@@ -19,11 +19,17 @@ import pt.isel.ls.handlers.users.*;
 import pt.isel.ls.routers.ViewRouter;
 import pt.isel.ls.views.OptionPlainText;
 import pt.isel.ls.views.View;
+import pt.isel.ls.views.activities.json.*;
+import pt.isel.ls.views.routes.json.CreateRouteJson;
+import pt.isel.ls.views.routes.json.GetAllRoutesJson;
+import pt.isel.ls.views.routes.json.GetRouteByIdJson;
+import pt.isel.ls.views.sports.json.CreateSportJson;
+import pt.isel.ls.views.sports.json.GetAllSportsJson;
+import pt.isel.ls.views.sports.json.GetSportByIdJson;
 import pt.isel.ls.views.sports.plaintext.*;
-import pt.isel.ls.views.users.json.activities.*;
-import pt.isel.ls.views.users.json.routes.*;
-import pt.isel.ls.views.users.json.sports.*;
-import pt.isel.ls.views.users.json.users.*;
+import pt.isel.ls.views.users.json.CreateUserJson;
+import pt.isel.ls.views.users.json.GetAllUsersJson;
+import pt.isel.ls.views.users.json.GetUserByIdJson;
 import pt.isel.ls.views.users.plaintext.*;
 
 public class App {
@@ -38,6 +44,7 @@ public class App {
             registerRoutes();
             registerViews();
         } catch (AppException e) {
+            e.printStackTrace();
             System.out.print(e.getMessage());
         }
 
@@ -116,12 +123,13 @@ public class App {
 
         //-----------------------------Creates the views for Plain Text--------------------------------------//
 
-        //Little trick for Options
-        viewRouter.addView(OptionResult.class, "text/html", new OptionPlainText());
-
         viewRouter.addView(GetAllUsersResult.class, "text/plain", new GetAllUsersPlainText());
         viewRouter.addView(GetUserByIdResult.class, "text/plain", new GetUserByIdPlainText());
         viewRouter.addView(CreateUserResult.class, "text/plain", new CreateUserPlainText());
+
+        viewRouter.addView(GetAllSportsResult.class, "text/plain", new GetAllSportsPlainText());
+        viewRouter.addView(GetSportByIdResult.class, "text/plain", new GetSportByIdPlainText());
+        viewRouter.addView(CreateSportResult.class, "text/plain", new CreateSportPlainText());
 
 
         //-----------------------------Creates the views for Json--------------------------------------//
@@ -146,9 +154,5 @@ public class App {
 
         //-----------------------------Creates the view for OPTION------------------------------------//
         viewRouter.addView(OptionResult.class, "text/html", new OptionPlainText());
-        viewRouter.addView(GetAllSportsResult.class, "text/plain", new GetAllSportsPlainText());
-        viewRouter.addView(GetSportByIdResult.class, "text/plain", new GetSportByIdPlainText());
-        viewRouter.addView(CreateSportResult.class, "text/plain", new CreateSportPlainText());
-
     }
 }

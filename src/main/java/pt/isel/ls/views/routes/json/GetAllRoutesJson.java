@@ -1,4 +1,4 @@
-package pt.isel.ls.views.users.json.routes;
+package pt.isel.ls.views.routes.json;
 
 import pt.isel.ls.exceptions.InvalidJsonException;
 import pt.isel.ls.models.domainclasses.Route;
@@ -8,7 +8,7 @@ import pt.isel.ls.views.View;
 import pt.isel.ls.views.builders.json.parts.JsonObject;
 import java.util.LinkedList;
 
-import static pt.isel.ls.views.users.json.JsonGetter.*;
+import static pt.isel.ls.views.builders.json.JsonGetter.*;
 import static pt.isel.ls.views.builders.json.JsonBuilder.*;
 
 public class GetAllRoutesJson implements View {

@@ -1,4 +1,4 @@
-package pt.isel.ls.views.users.json.sports;
+package pt.isel.ls.views.sports.json;
 
 import pt.isel.ls.exceptions.InvalidJsonException;
 import pt.isel.ls.models.domainclasses.Sport;
@@ -9,7 +9,7 @@ import pt.isel.ls.views.builders.json.parts.JsonObject;
 
 import java.util.LinkedList;
 
-import static pt.isel.ls.views.users.json.JsonGetter.*;
+import static pt.isel.ls.views.builders.json.JsonGetter.*;
 import static pt.isel.ls.views.builders.json.JsonBuilder.*;
 
 public class GetAllSportsJson implements View {

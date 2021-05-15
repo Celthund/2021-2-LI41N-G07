@@ -1,4 +1,4 @@
-package pt.isel.ls.views.users.json.users;
+package pt.isel.ls.views.users.json;
 
 import pt.isel.ls.exceptions.InvalidJsonException;
 import pt.isel.ls.models.domainclasses.User;
@@ -9,7 +9,7 @@ import pt.isel.ls.views.builders.json.parts.JsonObject;
 import java.util.LinkedList;
 
 import static pt.isel.ls.views.builders.json.JsonBuilder.*;
-import static pt.isel.ls.views.users.json.JsonGetter.*;
+import static pt.isel.ls.views.builders.json.JsonGetter.*;
 
 
 public class GetAllUsersJson implements View {
