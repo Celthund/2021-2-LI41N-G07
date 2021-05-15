@@ -7,6 +7,7 @@ import pt.isel.ls.exceptions.InvalidRequestException;
 import pt.isel.ls.models.ActivitiesModel;
 import pt.isel.ls.request.Request;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Optional;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.activities.GetActivityBySidResult;
@@ -16,9 +17,10 @@ public class GetActivityBySidHandler implements RequestHandler {
     ActivitiesModel model = new ActivitiesModel();
 
     private GetActivityBySidResult getActivityBySid(String sid) throws AppException {
-        Activity activity = model.getActivityBySid(sid);
-        if (activity != null) {
-            return new GetActivityBySidResult(200, activity, "Found activity with id = " + activity.aid);
+        LinkedList<Activity> activities = model.getActivityBySid(sid);
+        if (activities != null) {
+            return new GetActivityBySidResult(200, activities, "Found "+ activities.size()
+                    + " activities with sid = " + sid);
         }
         return new GetActivityBySidResult(500, null, "Activity not found.");
     }

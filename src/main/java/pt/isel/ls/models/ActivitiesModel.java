@@ -19,7 +19,7 @@ public class ActivitiesModel {
 
     public LinkedList<Activity> getActivitiesByTops(String sid, String orderBy, String date, String rid)
             throws AppException {
-        Activity activity = null;
+
         // Stores all the activities get from the query
         LinkedList<Activity> activities = new LinkedList<>();
 
@@ -62,19 +62,9 @@ public class ActivitiesModel {
             ResultSet activityResult = preparedStatement.executeQuery();
 
             // Value to get the route value (in case its not null)
-            int tmpRid;
-            while (activityResult.next()) {
-                // The constructor for the Activity value holder
-                activity = new Activity(
-                    activityResult.getInt("aid"),
-                    users.getUserById(Integer.toString(activityResult.getInt("uid"))),
-                    sports.getSportById(Integer.toString(activityResult.getInt("sid"))),
-                    (tmpRid = activityResult.getInt("rid")) == 0
-                        ? null : routes.getRouteById(Integer.toString(tmpRid)),
-                    activityResult.getDate("date"),
-                    activityResult.getLong("duration"));
-                activities.add(activity);
-            }
+            activities = createActivityList(activityResult);
+
+
             preparedStatement.close();
             connection.close();
         } catch (SQLException throwable) {
@@ -83,8 +73,8 @@ public class ActivitiesModel {
         return activities;
     }
 
-    public Activity getActivityByUid(String uid) throws AppException {
-        Activity activity = null;
+    public LinkedList<Activity> getActivitiesByUid(String uid) throws AppException {
+        LinkedList<Activity> activities;
 
         // Get the configurations to set up the DB connection
         PGSimpleDataSource db = getDataSource();
@@ -94,22 +84,16 @@ public class ActivitiesModel {
             preparedStatement.setInt(1, Integer.parseInt(uid));
 
             ResultSet activityResult = preparedStatement.executeQuery();
-            if (activityResult.next()) {
-                int rid;
-                activity = new Activity(
-                    activityResult.getInt("aid"),
-                    users.getUserById(uid),
-                    sports.getSportById(Integer.toString(activityResult.getInt("sid"))),
-                    (rid = activityResult.getInt("rid")) == 0 ? null : routes.getRouteById(Integer.toString(rid)),
-                    activityResult.getDate("date"),
-                    activityResult.getLong("duration"));
-            }
+            // Value to get the route value (in case its not null)
+
+            activities = createActivityList(activityResult);
+
             preparedStatement.close();
             connection.close();
         } catch (SQLException throwable) {
             throw new ServerErrorException("Server Error! Fail getting Activity.");
         }
-        return activity;
+        return activities;
     }
 
     // Server that creates Activity
@@ -224,8 +208,8 @@ public class ActivitiesModel {
         return activity;
     }
 
-    public Activity getActivityBySid(String sid) throws AppException {
-        Activity activity = null;
+    public LinkedList<Activity> getActivityBySid(String sid) throws AppException {
+        LinkedList<Activity> activities = null;
 
         // Get the configurations to set up the DB connection
         PGSimpleDataSource db = getDataSource();
@@ -236,25 +220,35 @@ public class ActivitiesModel {
 
             ResultSet activityResult = preparedStatement.executeQuery();
             // Creates the activity with value it got from the query
-            if (activityResult.next()) {
-                int rid;
-                activity = new Activity(
-                    activityResult.getInt("aid"),
-                    // Creates a user with the user got from the query with the value it got from the query
-                    users.getUserById(Integer.toString(activityResult.getInt("uid"))),
-                    // Creates a user with the value got from the query with the sid sent by the user
-                    sports.getSportById(sid),
-                    // Checks if the user pretend to get Route, if its null, just put the Route
-                    // in activity to null if not it will query for the rid sent by the user and store in activity
-                    (rid = activityResult.getInt("rid")) == 0 ? null : routes.getRouteById(Integer.toString(rid)),
-                    activityResult.getDate("date"),
-                    activityResult.getLong("duration"));
-            }
+
+            activities = createActivityList(activityResult);
+
             preparedStatement.close();
             connection.close();
         } catch (SQLException throwable) {
             throw new ServerErrorException("Server Error! Fail getting Activity.");
         }
-        return activity;
+        return activities;
+    }
+
+    private LinkedList<Activity> createActivityList(ResultSet activityResult) throws SQLException, ServerErrorException {
+        LinkedList<Activity> activities = new LinkedList<>();
+        Activity activity = null;
+
+        int tmpRid;
+        while (activityResult.next()) {
+            // The constructor for the Activity value holder
+            activity = new Activity(
+                    activityResult.getInt("aid"),
+                    users.getUserById(Integer.toString(activityResult.getInt("uid"))),
+                    sports.getSportById(Integer.toString(activityResult.getInt("sid"))),
+                    (tmpRid = activityResult.getInt("rid")) == 0
+                            ? null : routes.getRouteById(Integer.toString(tmpRid)),
+                    activityResult.getDate("date"),
+                    activityResult.getLong("duration"));
+            activities.add(activity);
+        }
+
+        return activities;
     }
 }

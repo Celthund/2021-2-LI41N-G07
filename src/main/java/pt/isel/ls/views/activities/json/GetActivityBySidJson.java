@@ -5,14 +5,23 @@ import pt.isel.ls.models.domainclasses.Activity;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.activities.GetActivityBySidResult;
 import pt.isel.ls.views.View;
+import pt.isel.ls.views.builders.json.parts.JsonObject;
 
+import java.util.LinkedList;
+
+import static pt.isel.ls.views.builders.json.JsonBuilder.*;
 import static pt.isel.ls.views.builders.json.JsonGetter.*;
 
 public class GetActivityBySidJson implements View {
     @Override
     public String getRepresentation(RequestResult requestResult) throws InvalidJsonException {
-        Activity activity = ((GetActivityBySidResult) requestResult).data;
+        LinkedList<Activity> activities = ((GetActivityBySidResult) requestResult).data;
+        LinkedList<JsonObject> objects = new LinkedList<>();
 
-        return getActivityJson(activity).toString();
+        for (Activity activity : activities){
+            objects.add(getActivityJson(activity));
+        }
+
+        return jsonObject(jsonPut("Sports", jsonArray(objects))).toString();
     }
 }

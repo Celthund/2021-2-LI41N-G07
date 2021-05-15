@@ -7,6 +7,8 @@ import pt.isel.ls.views.View;
 
 import java.util.LinkedList;
 
+import static pt.isel.ls.views.builders.plaintext.PlainTextGetter.getSportPlainText;
+
 public class GetAllSportsPlainText implements View {
 
     @Override
@@ -14,13 +16,7 @@ public class GetAllSportsPlainText implements View {
         LinkedList<Sport> sports = ((GetAllSportsResult) requestResult).data;
         StringBuilder stringBuilder = new StringBuilder();
         for (Sport sport : sports) {
-            stringBuilder.append("Sport {sid: ")
-                    .append(sport.sid)
-                    .append(", name: ")
-                    .append(sport.name)
-                    .append(", description: ")
-                    .append(sport.description)
-                    .append("}\n");
+            stringBuilder.append(getSportPlainText(sport));
         }
         return stringBuilder.toString();
     }

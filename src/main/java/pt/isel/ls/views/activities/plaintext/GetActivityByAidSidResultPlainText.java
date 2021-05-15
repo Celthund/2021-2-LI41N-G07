@@ -2,15 +2,15 @@ package pt.isel.ls.views.activities.plaintext;
 
 import pt.isel.ls.models.domainclasses.Activity;
 import pt.isel.ls.results.RequestResult;
-import pt.isel.ls.results.activities.CreateActivityResult;
+import pt.isel.ls.results.activities.GetActivityByAidSidResult;
 import pt.isel.ls.views.View;
 
 import static pt.isel.ls.views.builders.plaintext.PlainTextGetter.getActivityPlainText;
 
-public class CreateActivityPlainText implements View {
+public class GetActivityByAidSidResultPlainText implements View {
     @Override
     public String getRepresentation(RequestResult requestResult) {
-        Activity activity = ((CreateActivityResult) requestResult).data;
+        Activity activity = ((GetActivityByAidSidResult)requestResult).data;
 
         return getActivityPlainText(activity);
     }

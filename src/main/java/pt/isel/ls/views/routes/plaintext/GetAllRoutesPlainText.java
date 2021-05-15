@@ -7,21 +7,15 @@ import pt.isel.ls.views.View;
 
 import java.util.LinkedList;
 
+import static pt.isel.ls.views.builders.plaintext.PlainTextGetter.getRoutePlainText;
+
 public class GetAllRoutesPlainText implements View {
     @Override
     public String getRepresentation(RequestResult requestResult) {
         LinkedList<Route> routers = ((GetAllRoutesResult) requestResult).data;
         StringBuilder stringBuilder = new StringBuilder();
         for (Route route : routers) {
-            stringBuilder.append("Route {rid: ")
-                    .append(route.rid)
-                    .append(", distance: ")
-                    .append(route.distance)
-                    .append(", startLocation: ")
-                    .append(route.startLocation)
-                    .append(", endLocation: ")
-                    .append(route.endLocation)
-                    .append("}\n");
+            stringBuilder.append(getRoutePlainText(route));
         }
         return stringBuilder.toString();
     }

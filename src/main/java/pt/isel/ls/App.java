@@ -20,23 +20,15 @@ import pt.isel.ls.routers.ViewRouter;
 import pt.isel.ls.views.OptionPlainText;
 import pt.isel.ls.views.View;
 import pt.isel.ls.views.activities.json.*;
-import pt.isel.ls.views.activities.plaintext.CreateActivityPlainText;
+import pt.isel.ls.views.activities.plaintext.*;
 import pt.isel.ls.views.routes.html.*;
-import pt.isel.ls.views.routes.json.CreateRouteJson;
-import pt.isel.ls.views.routes.json.GetAllRoutesJson;
-import pt.isel.ls.views.routes.json.GetRouteByIdJson;
-import pt.isel.ls.views.routes.plaintext.CreateRoutePlainText;
-import pt.isel.ls.views.routes.plaintext.GetAllRoutesPlainText;
-import pt.isel.ls.views.routes.plaintext.GetRouteByIdPlainText;
+import pt.isel.ls.views.routes.json.*;
+import pt.isel.ls.views.routes.plaintext.*;
 import pt.isel.ls.views.sports.html.*;
-import pt.isel.ls.views.sports.json.CreateSportJson;
-import pt.isel.ls.views.sports.json.GetAllSportsJson;
-import pt.isel.ls.views.sports.json.GetSportByIdJson;
+import pt.isel.ls.views.sports.json.*;
 import pt.isel.ls.views.sports.plaintext.*;
 import pt.isel.ls.views.users.html.*;
-import pt.isel.ls.views.users.json.CreateUserJson;
-import pt.isel.ls.views.users.json.GetAllUsersJson;
-import pt.isel.ls.views.users.json.GetUserByIdJson;
+import pt.isel.ls.views.users.json.*;
 import pt.isel.ls.views.users.plaintext.*;
 
 public class App {
@@ -143,6 +135,10 @@ public class App {
         viewRouter.addView(CreateRouteResult.class, "text/plain", new CreateRoutePlainText());
 
         viewRouter.addView(CreateActivityResult.class, "text/plain", new CreateActivityPlainText());
+        viewRouter.addView(GetActivitiesByTopsResult.class, "text/plain", new GetActivitiesByTopsPlainText());
+        viewRouter.addView(GetActivityByAidSidResult.class, "text/plain", new GetActivityByAidSidResultPlainText());
+        viewRouter.addView(GetActivityBySidResult.class, "text/plain", new GetActivityBySidResultPlainText());
+        viewRouter.addView(GetActivityByUidResult.class, "text/plain", new GetActivityByUidResultPlainText());
 
         //-----------------------------Creates the views for Json--------------------------------------//
         viewRouter.addView(CreateUserResult.class, "application/json", new CreateUserJson());
