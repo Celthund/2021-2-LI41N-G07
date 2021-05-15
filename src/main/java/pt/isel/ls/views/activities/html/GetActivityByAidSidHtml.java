@@ -3,7 +3,7 @@ package pt.isel.ls.views.activities.html;
 import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.models.domainclasses.Activity;
 import pt.isel.ls.results.RequestResult;
-import pt.isel.ls.results.activities.GetActivitiesByTopsResult;
+import pt.isel.ls.results.activities.GetActivityByAidSidResult;
 import pt.isel.ls.views.View;
 import pt.isel.ls.views.builders.html.Element;
 
@@ -13,17 +13,15 @@ import static pt.isel.ls.views.builders.html.HtmlBuilder.*;
 import static pt.isel.ls.views.builders.html.HtmlGetter.getActivityHTMLTableHeader;
 import static pt.isel.ls.views.builders.html.HtmlGetter.getActivityHTMLTableRow;
 
-public class GetActivitiesByTopsHtml implements View {
+public class GetActivityByAidSidHtml implements View {
     @Override
     public String getRepresentation(RequestResult requestResult) throws AppException {
-        LinkedList<Activity> activities = ((GetActivitiesByTopsResult) requestResult).data;
+        Activity activity = ((GetActivityByAidSidResult) requestResult).data;
         LinkedList<Element> elements = new LinkedList<>();
 
         elements.addAll(getActivityHTMLTableHeader());
 
-        for (Activity activity : activities) {
-            elements.add(tr(getActivityHTMLTableRow(activity).toArray(new Element[0])));
-        }
+        elements.add(tr(getActivityHTMLTableRow(activity).toArray(new Element[0])));
 
         Element html =
                 html(

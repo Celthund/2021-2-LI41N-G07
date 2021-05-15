@@ -58,6 +58,28 @@ public class HtmlGetter {
         return elements;
     }
 
+    public static LinkedList<Element> getActivityHTMLTableHeader(){
+        LinkedList<Element> elements = new LinkedList<>();
+
+        elements.add(tr(
+                th("Activity Id"),
+                th("Date"),
+                th("Duration"),
+                th("User Id"),
+                th("User Name"),
+                th("User Email"),
+                th("Sport Id"),
+                th("Sport Name"),
+                th("Sport Description"),
+                th("Router Id"),
+                th("Start Location"),
+                th("End Location"),
+                th("Distance")
+        ));
+
+        return elements;
+    }
+
     public static LinkedList<Element> getActivityHTMLTableRow(Activity activity) {
         LinkedList<Element> elements = new LinkedList<>();
 
@@ -74,8 +96,6 @@ public class HtmlGetter {
         if (activity.route != null) {
             elements.addAll(getRouteHTMLTableRow(activity.route));
         }
-
-
 
         return elements;
     }

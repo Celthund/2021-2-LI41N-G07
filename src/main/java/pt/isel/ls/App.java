@@ -1,7 +1,6 @@
 package pt.isel.ls;
 
 import java.io.FileNotFoundException;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -24,6 +23,7 @@ import pt.isel.ls.handlers.users.*;
 import pt.isel.ls.routers.ViewRouter;
 import pt.isel.ls.views.OptionPlainText;
 import pt.isel.ls.views.View;
+import pt.isel.ls.views.activities.html.*;
 import pt.isel.ls.views.activities.json.*;
 import pt.isel.ls.views.activities.plaintext.*;
 import pt.isel.ls.views.routes.html.*;
@@ -153,8 +153,8 @@ public class App {
         viewRouter.addView(CreateActivityResult.class, "text/plain", new CreateActivityPlainText());
         viewRouter.addView(GetActivitiesByTopsResult.class, "text/plain", new GetActivitiesByTopsPlainText());
         viewRouter.addView(GetActivityByAidSidResult.class, "text/plain", new GetActivityByAidSidResultPlainText());
-        viewRouter.addView(GetActivityBySidResult.class, "text/plain", new GetActivityBySidResultPlainText());
-        viewRouter.addView(GetActivityByUidResult.class, "text/plain", new GetActivityByUidResultPlainText());
+        viewRouter.addView(GetActivitiesBySidResult.class, "text/plain", new GetActivitiesBySidResultPlainText());
+        viewRouter.addView(GetActivitiesByUidResult.class, "text/plain", new GetActivitiesByUidResultPlainText());
 
         //-----------------------------Creates the views for Json--------------------------------------//
         viewRouter.addView(CreateUserResult.class, "application/json", new CreateUserJson());
@@ -171,8 +171,8 @@ public class App {
 
         viewRouter.addView(CreateActivityResult.class, "application/json", new CreateActivityJson());
         viewRouter.addView(GetActivityByAidSidResult.class, "application/json", new GetActivityByAidSidJson());
-        viewRouter.addView(GetActivityBySidResult.class, "application/json", new GetActivityBySidJson());
-        viewRouter.addView(GetActivityByUidResult.class, "application/json", new GetActivityByUidJson());
+        viewRouter.addView(GetActivitiesBySidResult.class, "application/json", new GetActivitiesBySidJson());
+        viewRouter.addView(GetActivitiesByUidResult.class, "application/json", new GetActivitiesByUidJson());
         viewRouter.addView(GetActivitiesByTopsResult.class, "application/json", new GetActivitiesByTopsJson());
 
 
@@ -190,7 +190,11 @@ public class App {
         viewRouter.addView(GetAllRoutesResult.class, "text/html", new GetAllRoutesHtml());
         viewRouter.addView(GetRouteByIdResult.class, "text/html", new GetRouteByIdHtml());
 
-
+        viewRouter.addView(CreateActivityResult.class, "text/html", new CreateActivityHtml());
+        viewRouter.addView(GetActivitiesBySidResult.class, "text/html", new GetActivitiesBySidHtml());
+        viewRouter.addView(GetActivitiesByTopsResult.class, "text/html", new GetActivitiesByTopsHtml());
+        viewRouter.addView(GetActivitiesByUidResult.class, "text/html", new GetActivitiesByUidHtml());
+        viewRouter.addView(GetActivityByAidSidResult.class, "text/html", new GetActivityByAidSidHtml());
 
         //-----------------------------Creates the view for OPTION------------------------------------//
         viewRouter.addView(OptionResult.class, "text/html", new OptionPlainText());
