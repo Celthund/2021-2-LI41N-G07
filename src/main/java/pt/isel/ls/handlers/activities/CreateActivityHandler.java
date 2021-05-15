@@ -21,7 +21,7 @@ public class CreateActivityHandler implements RequestHandler {
         Activity activity = model.createActivity(sid, uid, duration, date, rid);
 
         if (activity != null) {
-            return new CreateActivityResult(200, activity, "Activity created with success with id = " + activity.id);
+            return new CreateActivityResult(200, activity, "Activity created with success with id = " + activity.aid);
         }
         return new CreateActivityResult(500, null, "Failed to create activity.");
     }

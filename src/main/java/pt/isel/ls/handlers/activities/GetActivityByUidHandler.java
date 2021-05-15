@@ -19,7 +19,7 @@ public class GetActivityByUidHandler implements RequestHandler {
         Activity activity = model.getActivityByUid(uid);
 
         if (activity != null) {
-            return new GetActivityByUidResult(200, activity, "Found user activity with id = " + activity.id);
+            return new GetActivityByUidResult(200, activity, "Found user activity with id = " + activity.aid);
         }
 
         return new GetActivityByUidResult(404, null, "Activity not found");

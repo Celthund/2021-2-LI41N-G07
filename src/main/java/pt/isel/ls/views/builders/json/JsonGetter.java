@@ -46,7 +46,7 @@ public class JsonGetter {
 
         return jsonObject(
                 //aid, uid, rid, sid, date, duration
-                jsonPut("Activity ID", activity.id),
+                jsonPut("Activity ID", activity.aid),
                 jsonPut("User", userJsonObject),
                 jsonPut("Sports", sportJsonObject),
                 jsonPut("Route", routeJsonObject),

@@ -21,11 +21,11 @@ public class ActivitiesModel {
             throws AppException {
         Activity activity = null;
         // Stores all the activities get from the query
-        LinkedList<Activity> activites = new LinkedList<>();
+        LinkedList<Activity> activities = new LinkedList<>();
 
         // Will concatenate the parts of the query
         StringBuilder sqlCmd = new StringBuilder("SELECT * FROM activities WHERE sid = ?");
-        // If they are null it means the user didnt search for them so we dont concatenate
+        // If they are null it means the user didn't search for them so we don't concatenate
         if (date != null) {
             sqlCmd.append(" and date = ?");
         }
@@ -73,14 +73,14 @@ public class ActivitiesModel {
                         ? null : routes.getRouteById(Integer.toString(tmpRid)),
                     activityResult.getDate("date"),
                     activityResult.getLong("duration"));
-                activites.add(activity);
+                activities.add(activity);
             }
             preparedStatement.close();
             connection.close();
         } catch (SQLException throwable) {
             throw new ServerErrorException("Server Error! Fail getting Activities.");
         }
-        return activites;
+        return activities;
     }
 
     public Activity getActivityByUid(String uid) throws AppException {

@@ -18,7 +18,7 @@ public class GetActivityBySidHandler implements RequestHandler {
     private GetActivityBySidResult getActivityBySid(String sid) throws AppException {
         Activity activity = model.getActivityBySid(sid);
         if (activity != null) {
-            return new GetActivityBySidResult(200, activity, "Found activity with id = " + activity.id);
+            return new GetActivityBySidResult(200, activity, "Found activity with id = " + activity.aid);
         }
         return new GetActivityBySidResult(500, null, "Activity not found.");
     }

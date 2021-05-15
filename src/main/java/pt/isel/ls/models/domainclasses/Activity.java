@@ -4,15 +4,15 @@ import java.sql.Date;
 import java.util.concurrent.TimeUnit;
 
 public class Activity {
-    public final int id;
+    public final int aid;
     public long duration;
     public final User user;
     public final Route route;
     public final Date date;
     public final Sport sport;
 
-    public Activity(int id, User user, Sport sport, Route route, Date date, long duration) {
-        this.id = id;
+    public Activity(int aid, User user, Sport sport, Route route, Date date, long duration) {
+        this.aid = aid;
         this.duration = duration;
         this.sport = sport;
         this.user = user;
@@ -23,7 +23,7 @@ public class Activity {
     @Override
     public String toString() {
         return "Activity {"
-                + "id=" + id
+                + "id=" + aid
                 + ", duration=" + durationToString(duration)
                 + ", user=" + (user != null ? user.toString() : "null")
                 + ", sport=" + (sport != null ? sport.toString() : "null")

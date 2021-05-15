@@ -20,9 +20,13 @@ import pt.isel.ls.routers.ViewRouter;
 import pt.isel.ls.views.OptionPlainText;
 import pt.isel.ls.views.View;
 import pt.isel.ls.views.activities.json.*;
+import pt.isel.ls.views.activities.plaintext.CreateActivityPlainText;
 import pt.isel.ls.views.routes.json.CreateRouteJson;
 import pt.isel.ls.views.routes.json.GetAllRoutesJson;
 import pt.isel.ls.views.routes.json.GetRouteByIdJson;
+import pt.isel.ls.views.routes.plaintext.CreateRoutePlainText;
+import pt.isel.ls.views.routes.plaintext.GetAllRoutesPlainText;
+import pt.isel.ls.views.routes.plaintext.GetRouteByIdPlainText;
 import pt.isel.ls.views.sports.json.CreateSportJson;
 import pt.isel.ls.views.sports.json.GetAllSportsJson;
 import pt.isel.ls.views.sports.json.GetSportByIdJson;
@@ -131,6 +135,11 @@ public class App {
         viewRouter.addView(GetSportByIdResult.class, "text/plain", new GetSportByIdPlainText());
         viewRouter.addView(CreateSportResult.class, "text/plain", new CreateSportPlainText());
 
+        viewRouter.addView(GetAllRoutesResult.class, "text/plain", new GetAllRoutesPlainText());
+        viewRouter.addView(GetRouteByIdResult.class, "text/plain", new GetRouteByIdPlainText());
+        viewRouter.addView(CreateRouteResult.class, "text/plain", new CreateRoutePlainText());
+
+        viewRouter.addView(CreateActivityResult.class, "text/plain", new CreateActivityPlainText());
 
         //-----------------------------Creates the views for Json--------------------------------------//
         viewRouter.addView(CreateUserResult.class, "application/json", new CreateUserJson());
