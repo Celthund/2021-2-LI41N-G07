@@ -2,13 +2,13 @@ package pt.isel.ls.views.builders.html.parts;
 
 import pt.isel.ls.views.builders.html.Element;
 
-public class HTML extends Element {
+public class Html extends Element {
 
-    public HTML(Element... elements) {
+    public Html(Element... elements) {
         super(elements);
     }
 
-    public HTML(String content) {
+    public Html(String content) {
         super(content);
     }
 

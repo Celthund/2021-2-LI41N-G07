@@ -19,6 +19,7 @@ public abstract class Element {
     }
 
     protected abstract String beginTag();
+
     protected abstract String endTag();
 
     @Override
@@ -26,11 +27,11 @@ public abstract class Element {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(beginTag()).append('\n');
 
-        if(content != null){
+        if (content != null) {
             stringBuilder.append('\t').append(content).append('\n');
         }
 
-        for (Element element: elements) {
+        for (Element element : elements) {
             stringBuilder.append(element.toString("\t"));
         }
 
@@ -42,11 +43,11 @@ public abstract class Element {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(tabs).append(beginTag()).append('\n');
 
-        if(content != null){
+        if (content != null) {
             stringBuilder.append(tabs).append('\t').append(content).append('\n');
         }
 
-        for (Element element: elements) {
+        for (Element element : elements) {
             stringBuilder.append(element.toString(tabs + "\t"));
         }
 

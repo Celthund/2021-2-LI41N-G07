@@ -1,24 +1,40 @@
 package pt.isel.ls;
 
-import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.results.OptionResult;
-import pt.isel.ls.results.sports.*;
-import pt.isel.ls.results.users.*;
-import pt.isel.ls.results.RequestResult;
+import pt.isel.ls.results.users.CreateUserResult;
+import pt.isel.ls.results.users.GetAllUsersResult;
+import pt.isel.ls.results.users.GetUserByIdResult;
 import pt.isel.ls.routers.HandlerRouter;
-import pt.isel.ls.routers.ViewRouter;
 import pt.isel.ls.request.Request;
 import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.handlers.activities.*;
-import pt.isel.ls.handlers.routes.*;
-import pt.isel.ls.handlers.sports.*;
+import pt.isel.ls.handlers.routes.CreateRouteHandler;
+import pt.isel.ls.handlers.routes.GetAllRoutesHandler;
+import pt.isel.ls.handlers.routes.GetRouteByIdHandler;
+import pt.isel.ls.handlers.sports.CreateSportHandler;
+import pt.isel.ls.handlers.sports.GetAllSportsHandler;
+import pt.isel.ls.handlers.sports.GetSportByIdHandler;
 import pt.isel.ls.handlers.users.*;
-import pt.isel.ls.views.OptionPlainText;
-import pt.isel.ls.views.sports.plaintext.*;
-import pt.isel.ls.views.users.plaintext.*;
-import pt.isel.ls.views.View;
+import pt.isel.ls.exceptions.AppException;
 import java.util.Optional;
 import java.util.Scanner;
+import pt.isel.ls.results.RequestResult;
+import pt.isel.ls.routers.ViewRouter;
+import pt.isel.ls.views.OptionPlainText;
+import pt.isel.ls.views.View;
+import pt.isel.ls.views.users.json.activities.*;
+import pt.isel.ls.views.users.json.routes.CreateRouteJson;
+import pt.isel.ls.views.users.json.routes.GetAllRoutesJson;
+import pt.isel.ls.views.users.json.routes.GetRouteByIdJson;
+import pt.isel.ls.views.users.json.sports.CreateSportJson;
+import pt.isel.ls.views.users.json.sports.GetAllSportsJson;
+import pt.isel.ls.views.users.json.sports.GetSportByIdJson;
+import pt.isel.ls.views.users.json.users.CreateUserJson;
+import pt.isel.ls.views.users.json.users.GetAllUsersJson;
+import pt.isel.ls.views.users.json.users.GetUserByIdJson;
+import pt.isel.ls.views.users.plaintext.CreateUserPlainText;
+import pt.isel.ls.views.users.plaintext.GetAllUsersPlainText;
+import pt.isel.ls.views.users.plaintext.GetUserByIdPlainText;
 
 public class App {
 
@@ -105,7 +121,10 @@ public class App {
         handlerRouter.addRoute("POST", "/sports/{sid}/activities", new CreateActivityHandler());
     }
 
+    //Creates all the views
     private static void registerViews() throws AppException {
+
+        //-----------------------------Creates the views for Plain Text--------------------------------------//
 
         //Little trick for Options
         viewRouter.addView(OptionResult.class, "text/html", new OptionPlainText());
@@ -114,6 +133,29 @@ public class App {
         viewRouter.addView(GetUserByIdResult.class, "text/plain", new GetUserByIdPlainText());
         viewRouter.addView(CreateUserResult.class, "text/plain", new CreateUserPlainText());
 
+
+        //-----------------------------Creates the views for Json--------------------------------------//
+        viewRouter.addView(CreateUserResult.class, "application/json", new CreateUserJson());
+        viewRouter.addView(GetUserByIdResult.class, "application/json", new GetUserByIdJson());
+        viewRouter.addView(GetAllUsersResult.class, "application/json", new GetAllUsersJson());
+
+        viewRouter.addView(CreateSportResult.class, "application/json", new CreateSportJson());
+        viewRouter.addView(GetSportByIdResult.class, "application/json", new GetSportByIdJson());
+        viewRouter.addView(GetAllSportsResult.class, "application/json", new GetAllSportsJson());
+
+        viewRouter.addView(CreateRouteResult.class, "application/json", new CreateRouteJson());
+        viewRouter.addView(GetRouteByIdResult.class, "application/json", new GetRouteByIdJson());
+        viewRouter.addView(GetAllRoutesResult.class, "application/json", new GetAllRoutesJson());
+
+        viewRouter.addView(CreateActivityResult.class, "application/json", new CreateActivityJson());
+        viewRouter.addView(GetActivityByAidSidResult.class, "application/json", new GetActivityByAidSidJson());
+        viewRouter.addView(GetActivityBySidResult.class, "application/json", new GetActivityBySidJson());
+        viewRouter.addView(GetActivityByUidResult.class, "application/json", new GetActivityByUidJson());
+        viewRouter.addView(GetActivitiesByTopsResult.class, "application/json", new GetActivitiesByTopsJson());
+
+
+        //-----------------------------Creates the view for OPTION------------------------------------//
+        viewRouter.addView(OptionResult.class, "text/html", new OptionPlainText());
         viewRouter.addView(GetAllSportsResult.class, "text/plain", new GetAllSportsPlainText());
         viewRouter.addView(GetSportByIdResult.class, "text/plain", new GetSportByIdPlainText());
         viewRouter.addView(CreateSportResult.class, "text/plain", new CreateSportPlainText());
