@@ -60,25 +60,52 @@ public class HtmlBuilder {
         return new LI(content);
     }
 
-    public static Table table(String content){ return new Table(content);}
+    public static Table table(String content) {
+        return new Table(content);
+    }
 
-    public static Table table(Element... elements){return new Table(elements);}
+    public static Table table(Element... elements) {
+        return new Table(elements);
+    }
 
-    public static TR tr(Element... elements){ return new TR(elements);}
+    public static TR tr(Element... elements) {
+        return new TR(elements);
+    }
 
-    public static TD td(String content){return new TD(content);}
+    public static TD td(String content) {
+        return new TD(content);
+    }
 
-    public static TH th(String content){return new TH(content);}
+    public static TH th(String content) {
+        return new TH(content);
+    }
 
-    public static TH th(Element... elements){return new TH(elements);}
+    public static TH th(Element... elements) {
+        return new TH(elements);
+    }
 
-    public static DD dd(Element... elements){ return new DD(elements);}
-    public static DD dd(String content){ return new DD(content);}
+    public static DD dd(Element... elements) {
+        return new DD(elements);
+    }
 
-    public static DL dl(Element... elements){ return new DL(elements);}
-    public static DL dl(String content){ return new DL(content);}
+    public static DD dd(String content) {
+        return new DD(content);
+    }
 
-    public static DT dt(Element... elements){ return new DT(elements);}
-    public static DT dt(String content){ return new DT(content);}
+    public static DL dl(Element... elements) {
+        return new DL(elements);
+    }
+
+    public static DL dl(String content) {
+        return new DL(content);
+    }
+
+    public static DT dt(Element... elements) {
+        return new DT(elements);
+    }
+
+    public static DT dt(String content) {
+        return new DT(content);
+    }
 
 }

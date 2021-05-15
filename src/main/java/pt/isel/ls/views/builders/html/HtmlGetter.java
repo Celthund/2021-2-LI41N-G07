@@ -1,22 +1,20 @@
 package pt.isel.ls.views.builders.html;
 
 import pt.isel.ls.models.domainclasses.*;
-
 import java.util.LinkedList;
-
 import static pt.isel.ls.models.domainclasses.Activity.durationToString;
 import static pt.isel.ls.views.builders.html.HtmlBuilder.*;
 
 public class HtmlGetter {
 
-    public static LinkedList<Element> getActivityHTMLList(Activity activity) {
+    public static LinkedList<Element> getActivityHtmlList(Activity activity) {
         LinkedList<Element> elements = new LinkedList<>();
 
-        elements.addAll(getUserHTMLList(activity.user));
-        elements.addAll(getSportHTMLList(activity.sport));
+        elements.addAll(getUserHtmlList(activity.user));
+        elements.addAll(getSportHtmlList(activity.sport));
 
         if (activity.route != null) {
-            elements.addAll(getRouteHTMLList(activity.route));
+            elements.addAll(getRouteHtmlList(activity.route));
         }
 
         elements.add(dt("Date: " + activity.date));
@@ -27,7 +25,7 @@ public class HtmlGetter {
     }
 
 
-    public static LinkedList<Element> getSportHTMLList(Sport sport) {
+    public static LinkedList<Element> getSportHtmlList(Sport sport) {
         LinkedList<Element> elements = new LinkedList<>();
 
         elements.add(dt("Sport id: " + sport.sid));
@@ -37,7 +35,7 @@ public class HtmlGetter {
         return elements;
     }
 
-    public static LinkedList<Element> getRouteHTMLList(Route route) {
+    public static LinkedList<Element> getRouteHtmlList(Route route) {
         LinkedList<Element> elements = new LinkedList<>();
 
         elements.add(dt("Route id: " + route.rid));
@@ -48,7 +46,7 @@ public class HtmlGetter {
         return elements;
     }
 
-    public static LinkedList<Element> getUserHTMLList(User user) {
+    public static LinkedList<Element> getUserHtmlList(User user) {
         LinkedList<Element> elements = new LinkedList<>();
 
         elements.add(dt("User id: " + user.id));
@@ -58,29 +56,29 @@ public class HtmlGetter {
         return elements;
     }
 
-    public static LinkedList<Element> getActivityHTMLTableHeader(){
+    public static LinkedList<Element> getActivityHtmlTableHeader() {
         LinkedList<Element> elements = new LinkedList<>();
 
         elements.add(tr(
-                th("Activity Id"),
-                th("Date"),
-                th("Duration"),
-                th("User Id"),
-                th("User Name"),
-                th("User Email"),
-                th("Sport Id"),
-                th("Sport Name"),
-                th("Sport Description"),
-                th("Router Id"),
-                th("Start Location"),
-                th("End Location"),
-                th("Distance")
+            th("Activity Id"),
+            th("Date"),
+            th("Duration"),
+            th("User Id"),
+            th("User Name"),
+            th("User Email"),
+            th("Sport Id"),
+            th("Sport Name"),
+            th("Sport Description"),
+            th("Router Id"),
+            th("Start Location"),
+            th("End Location"),
+            th("Distance")
         ));
 
         return elements;
     }
 
-    public static LinkedList<Element> getActivityHTMLTableRow(Activity activity) {
+    public static LinkedList<Element> getActivityHtmlTableRow(Activity activity) {
         LinkedList<Element> elements = new LinkedList<>();
 
         // User id, Name, Email, Sport id, Name, Description, Route id
@@ -90,29 +88,29 @@ public class HtmlGetter {
         elements.add(td(activity.date.toString()));
         elements.add(td(durationToString(activity.duration)));
 
-        elements.addAll(getUserHTMLTableRow(activity.user));
-        elements.addAll(getSportHTMLTableRow(activity.sport));
+        elements.addAll(getUserHtmlTableRow(activity.user));
+        elements.addAll(getSportHtmlTableRow(activity.sport));
 
         if (activity.route != null) {
-            elements.addAll(getRouteHTMLTableRow(activity.route));
+            elements.addAll(getRouteHtmlTableRow(activity.route));
         }
 
         return elements;
     }
 
 
-    public static LinkedList<Element> getSportHTMLTableRow(Sport sport) {
+    public static LinkedList<Element> getSportHtmlTableRow(Sport sport) {
         LinkedList<Element> elements = new LinkedList<>();
 
         // Sport id, Name, Description
         elements.add(td(Integer.toString(sport.sid)));
-        elements.add(td( sport.name));
+        elements.add(td(sport.name));
         elements.add(td(sport.description));
 
         return elements;
     }
 
-    public static LinkedList<Element> getRouteHTMLTableRow(Route route) {
+    public static LinkedList<Element> getRouteHtmlTableRow(Route route) {
         LinkedList<Element> elements = new LinkedList<>();
 
         // Route id, Start Location, End Location, Distance
@@ -125,7 +123,7 @@ public class HtmlGetter {
         return elements;
     }
 
-    public static LinkedList<Element> getUserHTMLTableRow(User user) {
+    public static LinkedList<Element> getUserHtmlTableRow(User user) {
         LinkedList<Element> elements = new LinkedList<>();
 
         // User id, Name, Email

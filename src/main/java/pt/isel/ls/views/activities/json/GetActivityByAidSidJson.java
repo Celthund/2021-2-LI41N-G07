@@ -5,7 +5,6 @@ import pt.isel.ls.models.domainclasses.Activity;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.activities.GetActivityByAidSidResult;
 import pt.isel.ls.views.View;
-
 import static pt.isel.ls.views.builders.json.JsonGetter.*;
 
 public class GetActivityByAidSidJson implements View {

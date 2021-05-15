@@ -2,7 +2,7 @@ package pt.isel.ls.views.builders.html.parts;
 
 import pt.isel.ls.views.builders.html.Element;
 
-public class Table extends Element{
+public class Table extends Element {
 
     public Table(Element... elements) {
         super(elements);

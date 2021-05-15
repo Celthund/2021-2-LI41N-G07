@@ -91,13 +91,12 @@ public class App {
 
                 String res = view.getRepresentation(requestResult);
                 HashMap<String, LinkedList<String>> headers = request.getHeaders();
-                if (headers.containsKey("file-name")){
+                if (headers.containsKey("file-name")) {
                     PrintWriter printWriter = new PrintWriter(headers.get("file-name").getFirst());
                     printWriter.print(res);
                 } else {
                     System.out.println(res);
                 }
-
 
 
             } else {
@@ -174,7 +173,6 @@ public class App {
         viewRouter.addView(GetActivitiesBySidResult.class, "application/json", new GetActivitiesBySidJson());
         viewRouter.addView(GetActivitiesByUidResult.class, "application/json", new GetActivitiesByUidJson());
         viewRouter.addView(GetActivitiesByTopsResult.class, "application/json", new GetActivitiesByTopsJson());
-
 
 
         //-----------------------------Creates the views for html--------------------------------------//

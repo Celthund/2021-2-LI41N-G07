@@ -14,8 +14,9 @@ public class GetAllUsersHtml implements View {
         LinkedList<User> users = ((GetAllUsersResult) requestResult).getData();
         LinkedList<Element> elements = new LinkedList<>();
 
-        if(users == null)
+        if (users == null) {
             users = new LinkedList<>();
+        }
 
         elements.add(tr(
             th("ID"),

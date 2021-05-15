@@ -1,6 +1,6 @@
 package pt.isel.ls.results;
 
-public abstract class RequestResult <T> {
+public abstract class RequestResult<T> {
     private final int status;
     private final T data;
     private final String message;
@@ -11,7 +11,7 @@ public abstract class RequestResult <T> {
         this.message = message;
     }
 
-    public T getData(){
+    public T getData() {
         return data;
     }
 

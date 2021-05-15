@@ -2,16 +2,14 @@ package pt.isel.ls.views.builders.json;
 
 import pt.isel.ls.exceptions.InvalidJsonException;
 import pt.isel.ls.views.builders.json.parts.*;
-
 import java.sql.Date;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 public class JsonBuilder {
     // Method that creates the Json method object by receiving JsonPut variables and sending to the
     //JsonElement Constructor
-    public static JsonObject jsonObject(JsonPut ... newObj){
+    public static JsonObject jsonObject(JsonPut... newObj) {
         return new JsonObject(newObj);
     }
 
@@ -22,11 +20,11 @@ public class JsonBuilder {
 
         // If it receives null it will just write the string null if not it will check if its
         //any of the compatibles key types if not just throws an exeption
-        if(key == null){
+        if (key == null) {
             newJsonObject.add(new JsonKey("null"));
-        }else if(key instanceof Number || key instanceof String || key instanceof Boolean){
+        } else if (key instanceof Number || key instanceof String || key instanceof Boolean) {
             newJsonObject.add(new JsonKey(key.toString()));
-        } else{
+        } else {
             throw new InvalidJsonException("Invalid Key!");
         }
         String newVal = getValueString(value);
@@ -38,7 +36,7 @@ public class JsonBuilder {
     }
 
     // It creates an Array of Json values
-    public static JsonArray jsonArray(Object ... values) throws InvalidJsonException {
+    public static JsonArray jsonArray(Object... values) throws InvalidJsonException {
         StringBuilder builder = new StringBuilder();
 
         // For every value in the parameters it checks for valid values and writes them
@@ -59,18 +57,22 @@ public class JsonBuilder {
     //writes it accordingly
     private static String getValueString(Object object) throws InvalidJsonException {
         // A null object in Json is represented by "null"
-        if(object == null)
+        if (object == null) {
             return "\"" + "null" + "\"";
+        }
         // A number (int, double, float...) is represented just with the value
-        if (object instanceof Number || object instanceof Boolean)
+        if (object instanceof Number || object instanceof Boolean) {
             return object.toString();
+        }
         // A String is represented with quotations
-        if (object instanceof String || object instanceof Date)
+        if (object instanceof String || object instanceof Date) {
             return "\"" + object + "\"";
+        }
         // If its an JsonElement it means its a JsonObject or a JsonArray, so it just calls
         //the toString() method of them that handles the formatting
-        if(object instanceof JsonElement)
+        if (object instanceof JsonElement) {
             return object.toString();
+        }
         // If it has a list as a parameters it will run through the list adding all the value
         //(separating them by commas) and returning has a string
         if (object instanceof List) {

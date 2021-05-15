@@ -6,9 +6,8 @@ import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.activities.CreateActivityResult;
 import pt.isel.ls.views.View;
 import pt.isel.ls.views.builders.html.Element;
-
 import static pt.isel.ls.views.builders.html.HtmlBuilder.*;
-import static pt.isel.ls.views.builders.html.HtmlGetter.getActivityHTMLList;
+import static pt.isel.ls.views.builders.html.HtmlGetter.getActivityHtmlList;
 
 public class CreateActivityHtml implements View {
     @Override
@@ -16,15 +15,15 @@ public class CreateActivityHtml implements View {
         Activity activity = ((CreateActivityResult) requestResult).getData();
 
         Element html =
-                html(
-                        head(
-                                title("Activity " + activity.aid)
-                        ),
-                        body(
-                                h1("Activity " + activity.aid),
-                                dl(getActivityHTMLList(activity).toArray(new Element[0]))
-                        )
-                );
+            html(
+                head(
+                    title("Activity " + activity.aid)
+                ),
+                body(
+                    h1("Activity " + activity.aid),
+                    dl(getActivityHtmlList(activity).toArray(new Element[0]))
+                )
+            );
         return html.toString();
     }
 }

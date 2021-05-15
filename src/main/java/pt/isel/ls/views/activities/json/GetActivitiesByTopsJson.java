@@ -7,7 +7,6 @@ import pt.isel.ls.results.activities.GetActivitiesByTopsResult;
 import pt.isel.ls.views.View;
 import pt.isel.ls.views.builders.json.parts.JsonObject;
 import java.util.LinkedList;
-
 import static pt.isel.ls.views.builders.json.JsonGetter.*;
 import static pt.isel.ls.views.builders.json.JsonBuilder.*;
 

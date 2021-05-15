@@ -11,6 +11,7 @@ public class JsonArray extends JsonElement {
     protected String beginTag() {
         return "[";
     }
+
     @Override
     protected String endTag() {
         return "]";

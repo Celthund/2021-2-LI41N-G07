@@ -1,7 +1,6 @@
 package pt.isel.ls.views.builders.json.parts;
 
 import pt.isel.ls.views.builders.json.JsonElement;
-
 import java.util.List;
 
 public class JsonObject extends JsonElement {
@@ -18,6 +17,7 @@ public class JsonObject extends JsonElement {
     protected String beginTag() {
         return "{";
     }
+
     @Override
     protected String endTag() {
         return "}";

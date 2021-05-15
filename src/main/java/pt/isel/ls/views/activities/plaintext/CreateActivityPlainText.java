@@ -4,7 +4,6 @@ import pt.isel.ls.models.domainclasses.Activity;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.activities.CreateActivityResult;
 import pt.isel.ls.views.View;
-
 import static pt.isel.ls.views.builders.plaintext.PlainTextGetter.getActivityPlainText;
 
 public class CreateActivityPlainText implements View {

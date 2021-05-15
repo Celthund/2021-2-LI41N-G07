@@ -20,8 +20,8 @@ public class GetActivityByUidHandler implements RequestHandler {
         LinkedList<Activity> activities = model.getActivitiesByUid(uid);
 
         if (activities != null) {
-            return new GetActivitiesByUidResult(200, activities, "Found "+ activities.size()
-                    + " activities with uid = " + uid);
+            return new GetActivitiesByUidResult(200, activities, "Found " + activities.size()
+                + " activities with uid = " + uid);
         }
 
         return new GetActivitiesByUidResult(404, null, "Activity not found");

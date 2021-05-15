@@ -5,7 +5,6 @@ import pt.isel.ls.models.domainclasses.User;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.users.CreateUserResult;
 import pt.isel.ls.views.View;
-
 import static pt.isel.ls.views.builders.json.JsonGetter.*;
 
 public class CreateUserJson implements View {

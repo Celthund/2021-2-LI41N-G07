@@ -6,9 +6,7 @@ import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.sports.GetAllSportsResult;
 import pt.isel.ls.views.View;
 import pt.isel.ls.views.builders.json.parts.JsonObject;
-
 import java.util.LinkedList;
-
 import static pt.isel.ls.views.builders.json.JsonGetter.*;
 import static pt.isel.ls.views.builders.json.JsonBuilder.*;
 

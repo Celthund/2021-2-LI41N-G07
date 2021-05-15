@@ -6,12 +6,10 @@ import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.activities.GetActivityByAidSidResult;
 import pt.isel.ls.views.View;
 import pt.isel.ls.views.builders.html.Element;
-
 import java.util.LinkedList;
-
 import static pt.isel.ls.views.builders.html.HtmlBuilder.*;
-import static pt.isel.ls.views.builders.html.HtmlGetter.getActivityHTMLTableHeader;
-import static pt.isel.ls.views.builders.html.HtmlGetter.getActivityHTMLTableRow;
+import static pt.isel.ls.views.builders.html.HtmlGetter.getActivityHtmlTableHeader;
+import static pt.isel.ls.views.builders.html.HtmlGetter.getActivityHtmlTableRow;
 
 public class GetActivityByAidSidHtml implements View {
     @Override
@@ -19,9 +17,9 @@ public class GetActivityByAidSidHtml implements View {
         Activity activity = ((GetActivityByAidSidResult) requestResult).getData();
         LinkedList<Element> elements = new LinkedList<>();
 
-        elements.addAll(getActivityHTMLTableHeader());
+        elements.addAll(getActivityHtmlTableHeader());
 
-        elements.add(tr(getActivityHTMLTableRow(activity).toArray(new Element[0])));
+        elements.add(tr(getActivityHtmlTableRow(activity).toArray(new Element[0])));
 
         Element html =
                 html(

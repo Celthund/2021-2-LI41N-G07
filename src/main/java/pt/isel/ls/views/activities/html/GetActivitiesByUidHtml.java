@@ -3,16 +3,12 @@ package pt.isel.ls.views.activities.html;
 import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.models.domainclasses.Activity;
 import pt.isel.ls.results.RequestResult;
-import pt.isel.ls.results.activities.GetActivitiesBySidResult;
 import pt.isel.ls.results.activities.GetActivitiesByUidResult;
 import pt.isel.ls.views.View;
 import pt.isel.ls.views.builders.html.Element;
-
 import java.util.LinkedList;
-
 import static pt.isel.ls.views.builders.html.HtmlBuilder.*;
-import static pt.isel.ls.views.builders.html.HtmlGetter.getActivityHTMLTableHeader;
-import static pt.isel.ls.views.builders.html.HtmlGetter.getActivityHTMLTableRow;
+import static pt.isel.ls.views.builders.html.HtmlGetter.*;
 
 public class GetActivitiesByUidHtml implements View {
     @Override
@@ -20,10 +16,10 @@ public class GetActivitiesByUidHtml implements View {
         LinkedList<Activity> activities = ((GetActivitiesByUidResult) requestResult).getData();
         LinkedList<Element> elements = new LinkedList<>();
 
-        elements.addAll(getActivityHTMLTableHeader());
+        elements.addAll(getActivityHtmlTableHeader());
 
         for (Activity activity : activities) {
-            elements.add(tr(getActivityHTMLTableRow(activity).toArray(new Element[0])));
+            elements.add(tr(getActivityHtmlTableRow(activity).toArray(new Element[0])));
         }
 
         Element html =

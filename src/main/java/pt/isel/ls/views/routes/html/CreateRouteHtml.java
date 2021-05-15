@@ -6,7 +6,6 @@ import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.routes.CreateRouteResult;
 import pt.isel.ls.views.View;
 import pt.isel.ls.views.builders.html.Element;
-
 import static pt.isel.ls.views.builders.html.HtmlBuilder.*;
 import static pt.isel.ls.views.builders.html.HtmlBuilder.li;
 

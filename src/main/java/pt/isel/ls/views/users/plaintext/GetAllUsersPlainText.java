@@ -5,7 +5,6 @@ import pt.isel.ls.models.domainclasses.User;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.users.GetAllUsersResult;
 import pt.isel.ls.views.View;
-
 import static pt.isel.ls.views.builders.plaintext.PlainTextGetter.getUserPlainText;
 
 public class GetAllUsersPlainText implements View {

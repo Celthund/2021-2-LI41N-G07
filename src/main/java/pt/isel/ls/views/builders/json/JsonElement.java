@@ -2,7 +2,6 @@ package pt.isel.ls.views.builders.json;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import static java.util.Arrays.asList;
 
 public abstract class JsonElement {
@@ -14,7 +13,7 @@ public abstract class JsonElement {
         content = null;
     }
 
-    public JsonElement(List<JsonElement> elements){
+    public JsonElement(List<JsonElement> elements) {
         this.elements = elements;
         content = null;
     }
@@ -30,7 +29,7 @@ public abstract class JsonElement {
 
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder(), tabs = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(beginTag()).append('\n');
 
         if (content != null) {
@@ -51,10 +50,11 @@ public abstract class JsonElement {
 
         if (content != null) {
 
-            if(content.contains("{") || content.contains("[")){
+            if (content.contains("{") || content.contains("[")) {
                 stringBuilder.append(content.replace("\n", "\n\t"));
-            }else
+            } else {
                 stringBuilder.append(content);
+            }
         }
 
         for (JsonElement element : elements) {

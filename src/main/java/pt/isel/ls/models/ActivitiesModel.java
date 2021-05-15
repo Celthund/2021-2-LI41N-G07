@@ -17,8 +17,8 @@ public class ActivitiesModel {
     private final UserModel users = new UserModel();
     private final RoutesModel routes = new RoutesModel();
 
-    public LinkedList<Activity> getActivitiesByTops(String sid, String orderBy, String date, String rid, String distance)
-            throws AppException {
+    public LinkedList<Activity> getActivitiesByTops(String sid, String orderBy, String date,
+                                                    String rid, String distance) throws AppException {
 
         // Stores all the activities get from the query
         LinkedList<Activity> activities;
@@ -26,9 +26,9 @@ public class ActivitiesModel {
         // Will concatenate the parts of the query
         StringBuilder sqlCmd = new StringBuilder("SELECT * FROM activities");
 
-        if(distance == null){
+        if (distance == null) {
             sqlCmd.append(" WHERE sid = ?");
-        }else{
+        } else {
             sqlCmd.append(" INNER JOIN ROUTES on activities.rid = routes.rid WHERE sid = ? and distance > ?");
         }
         // If they are null it means the user didn't search for them so we don't concatenate
@@ -57,7 +57,7 @@ public class ActivitiesModel {
             // Sets the sport the user wants to search for
             preparedStatement.setInt(i++, Integer.parseInt(sid));
 
-            if(distance != null){
+            if (distance != null) {
                 preparedStatement.setInt(i++, Integer.parseInt(distance));
             }
             // If they are null it means the user didnt search for them so we dont set the value
@@ -241,7 +241,8 @@ public class ActivitiesModel {
         return activities;
     }
 
-    private LinkedList<Activity> createActivityList(ResultSet activityResult) throws SQLException, ServerErrorException {
+    private LinkedList<Activity> createActivityList(ResultSet activityResult)
+            throws SQLException, ServerErrorException {
         LinkedList<Activity> activities = new LinkedList<>();
         Activity activity = null;
 
@@ -249,13 +250,13 @@ public class ActivitiesModel {
         while (activityResult.next()) {
             // The constructor for the Activity value holder
             activity = new Activity(
-                    activityResult.getInt("aid"),
-                    users.getUserById(Integer.toString(activityResult.getInt("uid"))),
-                    sports.getSportById(Integer.toString(activityResult.getInt("sid"))),
-                    (tmpRid = activityResult.getInt("rid")) == 0
-                            ? null : routes.getRouteById(Integer.toString(tmpRid)),
-                    activityResult.getDate("date"),
-                    activityResult.getLong("duration"));
+                activityResult.getInt("aid"),
+                users.getUserById(Integer.toString(activityResult.getInt("uid"))),
+                sports.getSportById(Integer.toString(activityResult.getInt("sid"))),
+                (tmpRid = activityResult.getInt("rid")) == 0
+                    ? null : routes.getRouteById(Integer.toString(tmpRid)),
+                activityResult.getDate("date"),
+                activityResult.getLong("duration"));
             activities.add(activity);
         }
 

@@ -11,7 +11,7 @@ public class CreateUserHtml implements View {
     @Override
     public String getRepresentation(RequestResult<?> requestResult) {
         User user = ((CreateUserResult) requestResult).getData();
-        if (user == null)
+        if (user == null) {
             return html(
                 head(
                     title("User not found")
@@ -20,7 +20,7 @@ public class CreateUserHtml implements View {
                     h1("User not found")
                 )
             ).toString();
-
+        }
         return html(
             head(
                 title("User " + user.id)
