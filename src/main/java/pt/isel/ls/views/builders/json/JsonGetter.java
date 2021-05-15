@@ -1,12 +1,10 @@
 package pt.isel.ls.views.builders.json;
 
 import pt.isel.ls.exceptions.InvalidJsonException;
-import pt.isel.ls.models.domainclasses.Activity;
-import pt.isel.ls.models.domainclasses.Route;
-import pt.isel.ls.models.domainclasses.Sport;
-import pt.isel.ls.models.domainclasses.User;
+import pt.isel.ls.models.domainclasses.*;
 import pt.isel.ls.views.builders.json.parts.JsonObject;
 
+import static pt.isel.ls.models.domainclasses.Activity.durationToString;
 import static pt.isel.ls.views.builders.json.JsonBuilder.jsonObject;
 import static pt.isel.ls.views.builders.json.JsonBuilder.jsonPut;
 
@@ -51,7 +49,7 @@ public class JsonGetter {
                 jsonPut("Sports", sportJsonObject),
                 jsonPut("Route", routeJsonObject),
                 jsonPut("Date", activity.date),
-                jsonPut("Duration", activity.duration)
+                jsonPut("Duration", durationToString(activity.duration))
         );
     }
 }

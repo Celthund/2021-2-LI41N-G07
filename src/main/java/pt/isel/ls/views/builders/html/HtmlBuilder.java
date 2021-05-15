@@ -72,4 +72,13 @@ public class HtmlBuilder {
 
     public static TH th(Element... elements){return new TH(elements);}
 
+    public static DD dd(Element... elements){ return new DD(elements);}
+    public static DD dd(String content){ return new DD(content);}
+
+    public static DL dl(Element... elements){ return new DL(elements);}
+    public static DL dl(String content){ return new DL(content);}
+
+    public static DT dt(Element... elements){ return new DT(elements);}
+    public static DT dt(String content){ return new DT(content);}
+
 }

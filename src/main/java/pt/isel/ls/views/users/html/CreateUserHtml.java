@@ -19,10 +19,10 @@ public class CreateUserHtml implements View {
                 ),
                 body(
                     h1("User ID: " + user.id),
-                    ul(
-                        li("id: " + user.id),
-                        li("name: " + user.name),
-                        li("email: " + user.email)
+                    dl(
+                        dt("id: " + user.id),
+                        dt("name: " + user.name),
+                        dt("email: " + user.email)
                     )
                 )
             );
