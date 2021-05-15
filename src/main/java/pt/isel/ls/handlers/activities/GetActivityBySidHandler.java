@@ -10,19 +10,19 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Optional;
 import pt.isel.ls.results.RequestResult;
-import pt.isel.ls.results.activities.GetActivityBySidResult;
+import pt.isel.ls.results.activities.GetActivitiesBySidResult;
 
 public class GetActivityBySidHandler implements RequestHandler {
 
     ActivitiesModel model = new ActivitiesModel();
 
-    private GetActivityBySidResult getActivityBySid(String sid) throws AppException {
+    private GetActivitiesBySidResult getActivityBySid(String sid) throws AppException {
         LinkedList<Activity> activities = model.getActivityBySid(sid);
         if (activities != null) {
-            return new GetActivityBySidResult(200, activities, "Found "+ activities.size()
+            return new GetActivitiesBySidResult(200, activities, "Found "+ activities.size()
                     + " activities with sid = " + sid);
         }
-        return new GetActivityBySidResult(500, null, "Activity not found.");
+        return new GetActivitiesBySidResult(500, null, "Activity not found.");
     }
 
     @Override

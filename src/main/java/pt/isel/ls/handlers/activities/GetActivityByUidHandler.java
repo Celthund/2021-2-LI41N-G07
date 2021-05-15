@@ -10,21 +10,21 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Optional;
 import pt.isel.ls.results.RequestResult;
-import pt.isel.ls.results.activities.GetActivityByUidResult;
+import pt.isel.ls.results.activities.GetActivitiesByUidResult;
 
 public class GetActivityByUidHandler implements RequestHandler {
 
     ActivitiesModel model = new ActivitiesModel();
 
-    private GetActivityByUidResult getActivityByUid(String uid) throws AppException {
+    private GetActivitiesByUidResult getActivityByUid(String uid) throws AppException {
         LinkedList<Activity> activities = model.getActivitiesByUid(uid);
 
         if (activities != null) {
-            return new GetActivityByUidResult(200, activities, "Found "+ activities.size()
+            return new GetActivitiesByUidResult(200, activities, "Found "+ activities.size()
                     + " activities with uid = " + uid);
         }
 
-        return new GetActivityByUidResult(404, null, "Activity not found");
+        return new GetActivitiesByUidResult(404, null, "Activity not found");
     }
 
 
