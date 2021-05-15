@@ -60,4 +60,16 @@ public class HtmlBuilder {
         return new LI(content);
     }
 
+    public static Table table(String content){ return new Table(content);}
+
+    public static Table table(Element... elements){return new Table(elements);}
+
+    public static TR tr(Element... elements){ return new TR(elements);}
+
+    public static TD td(String content){return new TD(content);}
+
+    public static TH th(String content){return new TH(content);}
+
+    public static TH th(Element... elements){return new TH(elements);}
+
 }

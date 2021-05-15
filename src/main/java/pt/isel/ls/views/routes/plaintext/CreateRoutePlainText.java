@@ -8,7 +8,7 @@ import pt.isel.ls.results.users.CreateUserResult;
 import pt.isel.ls.views.View;
 
 public class CreateRoutePlainText {
-
+/*
         @Override
         public String getRepresentation(RequestResult requestResult) {
             Route route = ((CreateRouteResult) requestResult).data;
@@ -16,4 +16,6 @@ public class CreateRoutePlainText {
             stringBuilder.append("Route {id: ").append(
                     user.id).append(" , name: ").append(user.name).append(" , email: ").append(user.email).append("}\n");
             return stringBuilder.toString();
+            */
+
 }

@@ -20,13 +20,22 @@ import pt.isel.ls.routers.ViewRouter;
 import pt.isel.ls.views.OptionPlainText;
 import pt.isel.ls.views.View;
 import pt.isel.ls.views.activities.json.*;
+import pt.isel.ls.views.routes.html.CreateRouteHtml;
+import pt.isel.ls.views.routes.html.GetAllRoutesHtml;
+import pt.isel.ls.views.routes.html.GetRouteByIdHtml;
 import pt.isel.ls.views.routes.json.CreateRouteJson;
 import pt.isel.ls.views.routes.json.GetAllRoutesJson;
 import pt.isel.ls.views.routes.json.GetRouteByIdJson;
+import pt.isel.ls.views.sports.html.CreateSportHtml;
+import pt.isel.ls.views.sports.html.GetAllSportsHtml;
+import pt.isel.ls.views.sports.html.GetSportByIdHtml;
 import pt.isel.ls.views.sports.json.CreateSportJson;
 import pt.isel.ls.views.sports.json.GetAllSportsJson;
 import pt.isel.ls.views.sports.json.GetSportByIdJson;
 import pt.isel.ls.views.sports.plaintext.*;
+import pt.isel.ls.views.users.html.CreateUserHtml;
+import pt.isel.ls.views.users.html.GetAllUsersHtml;
+import pt.isel.ls.views.users.html.GetUserByIdHtml;
 import pt.isel.ls.views.users.json.CreateUserJson;
 import pt.isel.ls.views.users.json.GetAllUsersJson;
 import pt.isel.ls.views.users.json.GetUserByIdJson;
@@ -150,6 +159,22 @@ public class App {
         viewRouter.addView(GetActivityBySidResult.class, "application/json", new GetActivityBySidJson());
         viewRouter.addView(GetActivityByUidResult.class, "application/json", new GetActivityByUidJson());
         viewRouter.addView(GetActivitiesByTopsResult.class, "application/json", new GetActivitiesByTopsJson());
+
+
+
+        //-----------------------------Creates the views for html--------------------------------------//
+        viewRouter.addView(CreateUserResult.class, "text/html", new CreateUserHtml());
+        viewRouter.addView(GetAllUsersResult.class, "text/html", new GetAllUsersHtml());
+        viewRouter.addView(GetUserByIdResult.class, "text/html", new GetUserByIdHtml());
+
+        viewRouter.addView(CreateSportResult.class, "text/html", new CreateSportHtml());
+        viewRouter.addView(GetAllSportsResult.class, "text/html", new GetAllSportsHtml());
+        viewRouter.addView(GetSportByIdResult.class, "text/html", new GetSportByIdHtml());
+
+        viewRouter.addView(CreateRouteResult.class, "text/html", new CreateRouteHtml());
+        viewRouter.addView(GetAllRoutesResult.class, "text/html", new GetAllRoutesHtml());
+        viewRouter.addView(GetRouteByIdResult.class, "text/html", new GetRouteByIdHtml());
+
 
 
         //-----------------------------Creates the view for OPTION------------------------------------//
