@@ -25,33 +25,36 @@ public abstract class Element {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(beginTag()).append('\n');
+        stringBuilder.append(beginTag());
 
         if (content != null) {
-            stringBuilder.append('\t').append(content).append('\n');
+            stringBuilder.append(content);
+        } else {
+            stringBuilder.append('\n');
         }
-
         for (Element element : elements) {
             stringBuilder.append(element.toString("\t"));
         }
-
         stringBuilder.append(endTag()).append('\n');
         return stringBuilder.toString();
     }
 
     private String toString(String tabs) {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(tabs).append(beginTag()).append('\n');
+        stringBuilder.append(tabs).append(beginTag());
 
         if (content != null) {
-            stringBuilder.append(tabs).append('\t').append(content).append('\n');
+            stringBuilder.append(content);
+        } else {
+            stringBuilder.append('\n');
         }
-
         for (Element element : elements) {
             stringBuilder.append(element.toString(tabs + "\t"));
         }
-
-        stringBuilder.append(tabs).append(endTag()).append('\n');
+        if (elements.size() > 0) {
+            stringBuilder.append(tabs);
+        }
+        stringBuilder.append(endTag()).append('\n');
         return stringBuilder.toString();
     }
 }
