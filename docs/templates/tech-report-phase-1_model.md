@@ -8,17 +8,17 @@ Este documento contém os aspectos relevantes do desenho e implementação da fa
 
 ### Modelação conceptual ###
 
-O seguinte diagrama apresenta JsonKey modelo entidade-associação para JsonKey informação gerida pelo sistema. 
+O seguinte diagrama apresenta a modelo entidade-associação para a informação gerida pelo sistema. 
 
-(_include an image or JsonKey link to the conceptual diagram_)
+(_include an image or a link to the conceptual diagram_)
 
 Destacam-se os seguintes aspectos deste modelo:
 
-* (_include JsonKey list of relevant design issues_)
+* (_include a list of relevant design issues_)
 
 O modelo conceptual apresenta ainda as seguintes restrições:
 
-* (_include JsonKey list of relevant design issues_)
+* (_include a list of relevant design issues_)
     
 ### Modelação física ###
 
@@ -26,7 +26,7 @@ O modelo físico da base de dados está presente em (_link to the SQL script wit
 
 Destacam-se os seguintes aspectos deste modelo:
 
-* (_include JsonKey list of relevant design issues_)
+* (_include a list of relevant design issues_)
 
 ## Organização do software
 
@@ -46,7 +46,7 @@ Destacam-se os seguintes aspectos deste modelo:
 
 (_describe how connections are created, used and disposed_, namely its relation with transaction scopes).
 
-### Acesso JsonKey dados
+### Acesso a dados
 
 (_describe any created classes to help on data access_).
 

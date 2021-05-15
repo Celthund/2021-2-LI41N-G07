@@ -8,7 +8,7 @@ Este documento contém os aspectos relevantes do desenho e implementação da fa
 
 ### Modelação conceptual ###
 
-O seguinte diagrama apresenta o modelo entidade-associação para JsonKey informação gerida pelo sistema. 
+O seguinte diagrama apresenta o modelo entidade-associação para a informação gerida pelo sistema. 
 
 ![Diagrama Entidade-associação](ERDiagram.png)
 
@@ -26,13 +26,13 @@ Destacam-se os seguintes aspectos deste modelo:
 
 O modelo conceptual apresenta ainda as seguintes restrições:
 
-* Na relação `users` atributo `email` contém JsonKey restrição `unique` por forma JsonKey assegurar que não existem duplicados do mesmo.
+* Na relação `users` atributo `email` contém a restrição `unique` por forma a assegurar que não existem duplicados do mesmo.
 * Na relação  `activities`:
-    * `sid` é referência para JsonKey chave primária da relação `sports.sid`
+    * `sid` é referência para a chave primária da relação `sports.sid`
     
-    * `uid` é referência para JsonKey chave primária da relação `users.uid`
+    * `uid` é referência para a chave primária da relação `users.uid`
     
-    * `rid` é referência para JsonKey chave primária da relação `routes.rid` sendo este atributo facultativo (`NULL`) pois JsonKey actividade não obriga à associação de uma rota pre-existente.
+    * `rid` é referência para a chave primária da relação `routes.rid` sendo este atributo facultativo (`NULL`) pois a actividade não obriga à associação de uma rota pre-existente.
     
 ### Modelação física ###
 
@@ -46,34 +46,34 @@ Destacam-se os seguintes aspectos deste modelo:
 
 ### Processamento de comandos
 
-Para o processamento de comandos foi criada JsonKey classe `Request` que realiza o `parse` da `String` recebida. Este `parse` 
-separa JsonKey `String` nas suas propriedades como por exemplo `method`, `path`, etc...
-Por sua vez, o Request é passado ao Router para encontrar JsonKey route e executar o handler correspondente.
+Para o processamento de comandos foi criada a classe `Request` que realiza o `parse` da `String` recebida. Este `parse` 
+separa a `String` nas suas propriedades como por exemplo `method`, `path`, etc...
+Por sua vez, o Request é passado ao Router para encontrar a route e executar o handler correspondente.
 
 ### Encaminhamento dos comandos
 
 A verificação da instrução é realizada pelo método `findRoute` da classe `Router` que recebe o request 
 referido na secção anterior e o processa percorrendo uma árvore n-ária definida com todos os caminhos possíveis registados na aplicação. 
-Esta árvore começa com o primeiro nível JsonKey corresponder ao `method` e os seguintes níveis JsonKey todas JsonKey subdivisões do `path`,
-como as subdivisões podem conter valores variáveis, foi criado uma flag boleana que ao ser verdadeira ignora JsonKey pesquisa do valor na àrvore pois este
-será um parâmetro JsonKey fornecer JsonKey quando da execução do metodo.
-Concluida JsonKey validação, é executado o metodo `execute` do ultimo nó encontrado passando o request como argumento. 
-Finalmente o nó que recebe o request, verifica o método e também JsonKey existência de parâmetros 
+Esta árvore começa com o primeiro nível a corresponder ao `method` e os seguintes níveis a todas a subdivisões do `path`,
+como as subdivisões podem conter valores variáveis, foi criado uma flag boleana que ao ser verdadeira ignora a pesquisa do valor na àrvore pois este
+será um parâmetro a fornecer a quando da execução do metodo.
+Concluida a validação, é executado o metodo `execute` do ultimo nó encontrado passando o request como argumento. 
+Finalmente o nó que recebe o request, verifica o método e também a existência de parâmetros 
 executanto o metodo correspondente à chamada assim que validado.
 
 
 ### Gestão de ligações
 
-Cada modelo é responsável por pedir JsonKey criação de um novo datasource ao package Utils, realizar as queries necessárias 
+Cada modelo é responsável por pedir a criação de um novo datasource ao package Utils, realizar as queries necessárias 
 ao seu propósito e finalmente garantindo o encerramento de todas as ligações que possam existir com o datasource.
 
-### Acesso JsonKey dados
+### Acesso a dados
 
 Foram desenvolvidas classes para representar cada area do problema, nomeadamente `user`, `sports`, `activities` e `routes` de modo
-JsonKey abstrair as transações de dados da base de dados. Estas classes devolvem sempre representações unitárias de uma identidade
-como por exemplo, JsonKey classe `UserModel` irá sempre retornar instâncias de `User`.  
+a abstrair as transações de dados da base de dados. Estas classes devolvem sempre representações unitárias de uma identidade
+como por exemplo, a classe `UserModel` irá sempre retornar instâncias de `User`.  
 
-Na maioria dos casos, as queries são de sintaxe trivial. Nas inserções, de forma JsonKey retornar uma representação unitária, 
+Na maioria dos casos, as queries são de sintaxe trivial. Nas inserções, de forma a retornar uma representação unitária, 
 é feita uma query extra para procura da entrada acabada de inserir.
 
 ### Processamento de erros
@@ -88,7 +88,7 @@ Todos estas exceções têm uma mensagem que é apresentada ao utilizador.
 
 ## Avaliação crítica
 
-Fazer com que os modelos recebam os tipos de argumentos corretos e serem as views JsonKey validar e modificar para o tipo correto
+Fazer com que os modelos recebam os tipos de argumentos corretos e serem as views a validar e modificar para o tipo correto
 os dados que venham do utilizador.
-Criar uma maior abstração na criação de views com objetivo de diminuir JsonKey complexidade do `execute`.
+Criar uma maior abstração na criação de views com objetivo de diminuir a complexidade do `execute`.
 Implementar uma maior variedade de testes.
