@@ -1,40 +1,30 @@
 package pt.isel.ls;
 
-import pt.isel.ls.results.OptionResult;
-import pt.isel.ls.results.users.CreateUserResult;
-import pt.isel.ls.results.users.GetAllUsersResult;
-import pt.isel.ls.results.users.GetUserByIdResult;
-import pt.isel.ls.routers.HandlerRouter;
-import pt.isel.ls.request.Request;
-import pt.isel.ls.request.RequestHandler;
-import pt.isel.ls.handlers.activities.*;
-import pt.isel.ls.handlers.routes.CreateRouteHandler;
-import pt.isel.ls.handlers.routes.GetAllRoutesHandler;
-import pt.isel.ls.handlers.routes.GetRouteByIdHandler;
-import pt.isel.ls.handlers.sports.CreateSportHandler;
-import pt.isel.ls.handlers.sports.GetAllSportsHandler;
-import pt.isel.ls.handlers.sports.GetSportByIdHandler;
-import pt.isel.ls.handlers.users.*;
 import pt.isel.ls.exceptions.AppException;
 import java.util.Optional;
 import java.util.Scanner;
+import pt.isel.ls.routers.HandlerRouter;
+import pt.isel.ls.request.Request;
+import pt.isel.ls.request.RequestHandler;
+import pt.isel.ls.results.OptionResult;
 import pt.isel.ls.results.RequestResult;
+import pt.isel.ls.results.users.*;
+import pt.isel.ls.results.routes.*;
+import pt.isel.ls.results.activities.*;
+import pt.isel.ls.results.sports.*;
+import pt.isel.ls.handlers.activities.*;
+import pt.isel.ls.handlers.sports.*;
+import pt.isel.ls.handlers.routes.*;
+import pt.isel.ls.handlers.users.*;
 import pt.isel.ls.routers.ViewRouter;
 import pt.isel.ls.views.OptionPlainText;
 import pt.isel.ls.views.View;
+import pt.isel.ls.views.sports.plaintext.*;
 import pt.isel.ls.views.users.json.activities.*;
-import pt.isel.ls.views.users.json.routes.CreateRouteJson;
-import pt.isel.ls.views.users.json.routes.GetAllRoutesJson;
-import pt.isel.ls.views.users.json.routes.GetRouteByIdJson;
-import pt.isel.ls.views.users.json.sports.CreateSportJson;
-import pt.isel.ls.views.users.json.sports.GetAllSportsJson;
-import pt.isel.ls.views.users.json.sports.GetSportByIdJson;
-import pt.isel.ls.views.users.json.users.CreateUserJson;
-import pt.isel.ls.views.users.json.users.GetAllUsersJson;
-import pt.isel.ls.views.users.json.users.GetUserByIdJson;
-import pt.isel.ls.views.users.plaintext.CreateUserPlainText;
-import pt.isel.ls.views.users.plaintext.GetAllUsersPlainText;
-import pt.isel.ls.views.users.plaintext.GetUserByIdPlainText;
+import pt.isel.ls.views.users.json.routes.*;
+import pt.isel.ls.views.users.json.sports.*;
+import pt.isel.ls.views.users.json.users.*;
+import pt.isel.ls.views.users.plaintext.*;
 
 public class App {
 
