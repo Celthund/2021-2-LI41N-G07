@@ -11,7 +11,7 @@ import static pt.isel.ls.views.builders.json.JsonGetter.*;
 public class GetSportByIdJson implements View {
     @Override
     public String getRepresentation(RequestResult requestResult) throws InvalidJsonException {
-        Sport sport = ((GetSportByIdResult) requestResult).data;
+        Sport sport = ((GetSportByIdResult) requestResult).getData();
         return getSportJson(sport).toString();
     }
 }

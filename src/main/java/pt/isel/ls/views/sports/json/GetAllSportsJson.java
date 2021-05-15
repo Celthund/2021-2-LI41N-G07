@@ -15,7 +15,7 @@ import static pt.isel.ls.views.builders.json.JsonBuilder.*;
 public class GetAllSportsJson implements View {
     @Override
     public String getRepresentation(RequestResult requestResult) throws InvalidJsonException {
-        LinkedList<Sport> sports = ((GetAllSportsResult) requestResult).data;
+        LinkedList<Sport> sports = ((GetAllSportsResult) requestResult).getData();
         LinkedList<JsonObject> objects = new LinkedList<>();
 
         for (Sport sport : sports) {

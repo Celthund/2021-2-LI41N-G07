@@ -12,7 +12,7 @@ public class GetAllUsersPlainText implements View {
 
     @Override
     public String getRepresentation(RequestResult requestResult) {
-        LinkedList<User> users = ((GetAllUsersResult) requestResult).data;
+        LinkedList<User> users = ((GetAllUsersResult) requestResult).getData();
         StringBuilder stringBuilder = new StringBuilder();
         for (User user : users) {
             stringBuilder.append(getUserPlainText(user));

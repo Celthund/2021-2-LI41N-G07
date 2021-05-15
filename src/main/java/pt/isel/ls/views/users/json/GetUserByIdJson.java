@@ -11,7 +11,7 @@ public class GetUserByIdJson implements View {
 
     @Override
     public String getRepresentation(RequestResult requestResult) throws InvalidJsonException {
-        User user = ((GetUserByIdResult)requestResult).data;
+        User user = ((GetUserByIdResult)requestResult).getData();
         return getUserJson(user).toString();
     }
 }

@@ -1,13 +1,7 @@
 package pt.isel.ls.results;
 
-public class OptionResult implements RequestResult {
-    public final int status;
-    public final Object data;
-    public final String message;
-
+public class OptionResult extends RequestResult<Object> {
     public OptionResult(int status, Object data, String message) {
-        this.status = status;
-        this.data = data;
-        this.message = message;
+        super(status, data, message);
     }
 }

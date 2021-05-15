@@ -12,7 +12,7 @@ import static pt.isel.ls.views.builders.plaintext.PlainTextGetter.getRoutePlainT
 public class GetAllRoutesPlainText implements View {
     @Override
     public String getRepresentation(RequestResult requestResult) {
-        LinkedList<Route> routers = ((GetAllRoutesResult) requestResult).data;
+        LinkedList<Route> routers = ((GetAllRoutesResult) requestResult).getData();
         StringBuilder stringBuilder = new StringBuilder();
         for (Route route : routers) {
             stringBuilder.append(getRoutePlainText(route));

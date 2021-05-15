@@ -13,7 +13,7 @@ import static pt.isel.ls.views.builders.html.HtmlGetter.getActivityHTMLList;
 public class CreateActivityHtml implements View {
     @Override
     public String getRepresentation(RequestResult requestResult) throws AppException {
-        Activity activity = ((CreateActivityResult) requestResult).data;
+        Activity activity = ((CreateActivityResult) requestResult).getData();
 
         Element html =
                 html(

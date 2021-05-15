@@ -11,7 +11,7 @@ import static pt.isel.ls.views.builders.json.JsonGetter.*;
 public class GetActivityByAidSidJson implements View {
     @Override
     public String getRepresentation(RequestResult requestResult) throws InvalidJsonException {
-        Activity activity = ((GetActivityByAidSidResult) requestResult).data;
+        Activity activity = ((GetActivityByAidSidResult) requestResult).getData();
 
         return getActivityJson(activity).toString();
 

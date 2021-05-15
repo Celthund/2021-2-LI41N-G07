@@ -13,7 +13,7 @@ public class GetAllSportsPlainText implements View {
 
     @Override
     public String getRepresentation(RequestResult requestResult) {
-        LinkedList<Sport> sports = ((GetAllSportsResult) requestResult).data;
+        LinkedList<Sport> sports = ((GetAllSportsResult) requestResult).getData();
         StringBuilder stringBuilder = new StringBuilder();
         for (Sport sport : sports) {
             stringBuilder.append(getSportPlainText(sport));

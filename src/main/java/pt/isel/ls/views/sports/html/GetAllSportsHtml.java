@@ -16,7 +16,7 @@ import static pt.isel.ls.views.builders.html.HtmlBuilder.*;
 public class GetAllSportsHtml implements View {
     @Override
     public String getRepresentation(RequestResult requestResult) throws InvalidJsonException {
-        LinkedList<Sport> sports = ((GetAllSportsResult) requestResult).data;
+        LinkedList<Sport> sports = ((GetAllSportsResult) requestResult).getData();
         LinkedList<Element> elements = new LinkedList<>();
 
         elements.add(tr(

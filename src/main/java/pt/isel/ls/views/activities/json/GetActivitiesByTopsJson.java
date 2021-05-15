@@ -14,7 +14,7 @@ import static pt.isel.ls.views.builders.json.JsonBuilder.*;
 public class GetActivitiesByTopsJson implements View {
     @Override
     public String getRepresentation(RequestResult requestResult) throws InvalidJsonException {
-        LinkedList<Activity> activities = ((GetActivitiesByTopsResult) requestResult).data;
+        LinkedList<Activity> activities = ((GetActivitiesByTopsResult) requestResult).getData();
         LinkedList<JsonObject> objects = new LinkedList<>();
         for (Activity activity: activities) {
             objects.add(getActivityJson(activity));

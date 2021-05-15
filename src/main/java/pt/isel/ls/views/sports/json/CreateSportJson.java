@@ -9,7 +9,7 @@ import pt.isel.ls.views.View;
 public class CreateSportJson implements View {
     @Override
     public String getRepresentation(RequestResult requestResult) throws InvalidJsonException {
-        Sport sport = ((CreateSportResult) requestResult).data;
+        Sport sport = ((CreateSportResult) requestResult).getData();
         return (sport).toString();
     }
 }

@@ -196,15 +196,10 @@ public class UtilTests {
     }
 
 
-    class Result implements RequestResult{
-        public final int status;
-        public final Object data;
-        public final String message;
+    class Result extends RequestResult<Object> {
 
         public Result(int status, Object data, String message) {
-            this.status = status;
-            this.data = data;
-            this.message = message;
+            super(status, data, message);
         }
     }
 }

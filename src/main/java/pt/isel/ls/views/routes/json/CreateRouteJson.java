@@ -11,7 +11,7 @@ import static pt.isel.ls.views.builders.json.JsonGetter.*;
 public class CreateRouteJson implements View {
     @Override
     public String getRepresentation(RequestResult requestResult) throws InvalidJsonException {
-        Route route = ((CreateRouteResult) requestResult).data;
+        Route route = ((CreateRouteResult) requestResult).getData();
         return getRouteJson(route).toString();
     }
 }

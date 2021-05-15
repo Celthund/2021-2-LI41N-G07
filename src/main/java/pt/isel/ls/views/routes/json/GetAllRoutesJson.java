@@ -14,7 +14,7 @@ import static pt.isel.ls.views.builders.json.JsonBuilder.*;
 public class GetAllRoutesJson implements View {
     @Override
     public String getRepresentation(RequestResult requestResult) throws InvalidJsonException {
-        LinkedList<Route> routes = ((GetAllRoutesResult) requestResult).data;
+        LinkedList<Route> routes = ((GetAllRoutesResult) requestResult).getData();
         LinkedList<JsonObject> objects = new LinkedList<>();
 
         for (Route route : routes) {

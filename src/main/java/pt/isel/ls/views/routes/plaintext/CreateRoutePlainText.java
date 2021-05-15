@@ -11,7 +11,7 @@ public class CreateRoutePlainText implements View {
 
     @Override
     public String getRepresentation(RequestResult requestResult) {
-        Route route = ((CreateRouteResult) requestResult).data;
+        Route route = ((CreateRouteResult) requestResult).getData();
         return getRoutePlainText(route);
     }
 }

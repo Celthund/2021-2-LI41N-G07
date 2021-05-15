@@ -11,7 +11,7 @@ import static pt.isel.ls.views.builders.json.JsonGetter.*;
 public class CreateUserJson implements View {
     @Override
     public String getRepresentation(RequestResult requestResult) throws InvalidJsonException {
-        User user = ((CreateUserResult) requestResult).data;
+        User user = ((CreateUserResult) requestResult).getData();
         return getUserJson(user).toString();
     }
 }

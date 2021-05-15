@@ -5,6 +5,6 @@ import pt.isel.ls.results.RequestResult;
 
 public interface View {
 
-    String getRepresentation(RequestResult requestResult) throws AppException;
+    String getRepresentation(RequestResult<?> requestResult) throws AppException;
 
 }

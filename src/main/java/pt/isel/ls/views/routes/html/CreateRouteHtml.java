@@ -13,7 +13,7 @@ import static pt.isel.ls.views.builders.html.HtmlBuilder.li;
 public class CreateRouteHtml implements View {
     @Override
     public String getRepresentation(RequestResult requestResult) throws InvalidJsonException {
-        Route route = ((CreateRouteResult) requestResult).data;
+        Route route = ((CreateRouteResult) requestResult).getData();
         Element html =
                 html(
                         head(

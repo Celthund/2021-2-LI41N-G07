@@ -13,7 +13,7 @@ import static pt.isel.ls.views.builders.html.HtmlBuilder.li;
 public class GetUserByIdHtml implements View {
     @Override
     public String getRepresentation(RequestResult requestResult) throws AppException {
-        User user = ((GetUserByIdResult) requestResult).data;
+        User user = ((GetUserByIdResult) requestResult).getData();
         Element html =
                 html(
                         head(

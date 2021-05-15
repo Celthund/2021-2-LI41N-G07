@@ -16,7 +16,7 @@ import static pt.isel.ls.views.builders.html.HtmlGetter.getActivityHTMLTableRow;
 public class GetActivitiesByTopsHtml implements View {
     @Override
     public String getRepresentation(RequestResult requestResult) throws AppException {
-        LinkedList<Activity> activities = ((GetActivitiesByTopsResult) requestResult).data;
+        LinkedList<Activity> activities = ((GetActivitiesByTopsResult) requestResult).getData();
         LinkedList<Element> elements = new LinkedList<>();
 
         elements.addAll(getActivityHTMLTableHeader());

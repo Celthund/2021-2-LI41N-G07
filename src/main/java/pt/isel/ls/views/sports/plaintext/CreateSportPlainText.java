@@ -10,7 +10,7 @@ import static pt.isel.ls.views.builders.plaintext.PlainTextGetter.getSportPlainT
 public class CreateSportPlainText implements View {
     @Override
     public String getRepresentation(RequestResult requestResult) {
-        Sport sport = ((CreateSportResult) requestResult).data;
+        Sport sport = ((CreateSportResult) requestResult).getData();
 
         return getSportPlainText(sport);
     }

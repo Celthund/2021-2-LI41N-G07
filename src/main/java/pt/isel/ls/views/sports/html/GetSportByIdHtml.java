@@ -13,7 +13,7 @@ import static pt.isel.ls.views.builders.html.HtmlBuilder.li;
 public class GetSportByIdHtml implements View {
     @Override
     public String getRepresentation(RequestResult requestResult) throws InvalidJsonException {
-        Sport sport = ((CreateSportResult) requestResult).data;
+        Sport sport = ((CreateSportResult) requestResult).getData();
         Element html =
                 html(
                         head(

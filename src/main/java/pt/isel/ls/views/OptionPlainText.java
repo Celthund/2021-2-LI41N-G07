@@ -7,6 +7,6 @@ public class OptionPlainText implements View {
 
     @Override
     public String getRepresentation(RequestResult requestResult) {
-        return ((OptionResult) requestResult).message;
+        return requestResult.getMessage();
     }
 }

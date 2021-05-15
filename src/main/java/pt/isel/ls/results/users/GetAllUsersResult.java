@@ -4,15 +4,9 @@ import java.util.LinkedList;
 import pt.isel.ls.models.domainclasses.User;
 import pt.isel.ls.results.RequestResult;
 
-public class GetAllUsersResult implements RequestResult {
-
-    public final int status;
-    public final LinkedList<User> data;
-    public final String message;
+public class GetAllUsersResult extends RequestResult<LinkedList<User>> {
 
     public GetAllUsersResult(int status, LinkedList<User> data, String message) {
-        this.status = status;
-        this.data = data;
-        this.message = message;
+        super(status, data, message);
     }
 }

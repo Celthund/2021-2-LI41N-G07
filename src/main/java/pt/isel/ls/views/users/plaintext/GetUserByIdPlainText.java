@@ -10,7 +10,7 @@ import static pt.isel.ls.views.builders.plaintext.PlainTextGetter.getUserPlainTe
 public class GetUserByIdPlainText implements View {
     @Override
     public String getRepresentation(RequestResult requestResult) {
-        User user = ((GetUserByIdResult) requestResult).data;
+        User user = ((GetUserByIdResult) requestResult).getData();
 
         return getUserPlainText(user);
     }

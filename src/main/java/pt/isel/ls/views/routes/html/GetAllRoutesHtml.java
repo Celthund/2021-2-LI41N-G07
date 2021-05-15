@@ -14,7 +14,7 @@ import static pt.isel.ls.views.builders.html.HtmlBuilder.*;
 public class GetAllRoutesHtml implements View {
     @Override
     public String getRepresentation(RequestResult requestResult) throws InvalidJsonException {
-        LinkedList<Route> routes = ((GetAllRoutesResult) requestResult).data;
+        LinkedList<Route> routes = ((GetAllRoutesResult) requestResult).getData();
         LinkedList<Element> elements = new LinkedList<>();
 
         elements.add(tr(

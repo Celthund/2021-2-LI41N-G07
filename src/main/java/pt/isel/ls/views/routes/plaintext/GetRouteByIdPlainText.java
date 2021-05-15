@@ -10,7 +10,7 @@ import static pt.isel.ls.views.builders.plaintext.PlainTextGetter.getRoutePlainT
 public class GetRouteByIdPlainText implements View {
     @Override
     public String getRepresentation(RequestResult requestResult) {
-        Route route = ((GetRouteByIdResult) requestResult).data;
+        Route route = ((GetRouteByIdResult) requestResult).getData();
 
         return getRoutePlainText(route);
     }

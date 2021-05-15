@@ -11,7 +11,7 @@ public class GetSportByIdPlainText implements View {
 
     @Override
     public String getRepresentation(RequestResult requestResult) {
-        Sport sport = ((GetSportByIdResult) requestResult).data;
+        Sport sport = ((GetSportByIdResult) requestResult).getData();
 
         return getSportPlainText(sport);
     }

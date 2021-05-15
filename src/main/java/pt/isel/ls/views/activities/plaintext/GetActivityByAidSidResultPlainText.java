@@ -10,7 +10,7 @@ import static pt.isel.ls.views.builders.plaintext.PlainTextGetter.getActivityPla
 public class GetActivityByAidSidResultPlainText implements View {
     @Override
     public String getRepresentation(RequestResult requestResult) {
-        Activity activity = ((GetActivityByAidSidResult)requestResult).data;
+        Activity activity = ((GetActivityByAidSidResult)requestResult).getData();
 
         return getActivityPlainText(activity);
     }
