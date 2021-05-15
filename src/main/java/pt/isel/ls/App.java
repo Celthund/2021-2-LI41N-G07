@@ -1,5 +1,10 @@
 package pt.isel.ls;
 
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.LinkedList;
 import pt.isel.ls.exceptions.AppException;
 import java.util.Optional;
 import java.util.Scanner;
@@ -83,11 +88,22 @@ public class App {
                 }
                 RequestResult requestResult = result.get();
                 View view = viewRouter.findView(requestResult.getClass(), accept);
-                System.out.println(view.getRepresentation(requestResult));
+
+                String res = view.getRepresentation(requestResult);
+                HashMap<String, LinkedList<String>> headers = request.getHeaders();
+                if (headers.containsKey("file-name")){
+                    PrintWriter printWriter = new PrintWriter(headers.get("file-name").getFirst());
+                    printWriter.print(res);
+                } else {
+                    System.out.println(res);
+                }
+
+
+
             } else {
                 System.out.println("Error getting result");
             }
-        } catch (AppException e) {
+        } catch (AppException | FileNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
