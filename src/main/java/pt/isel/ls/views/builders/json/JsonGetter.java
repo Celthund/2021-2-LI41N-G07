@@ -25,7 +25,7 @@ public class JsonGetter {
     }
     public static JsonObject getRouteJson(Route route) throws InvalidJsonException {
         return jsonObject(
-                jsonPut("Sport ID", route.rid),
+                jsonPut("Route ID", route.rid),
                 jsonPut("StartLocation", route.startLocation),
                 jsonPut("EndLocation", route.endLocation),
                 jsonPut("Distance", route.distance)

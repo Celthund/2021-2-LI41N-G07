@@ -17,7 +17,7 @@ public class JsonBuilder {
 
     // This method is where we add values to the object, it has key and a value
     public static JsonPut jsonPut(Object key, Object value) throws InvalidJsonException {
-        // List that will contain the key in the first position and the value in the secon
+        // List that will contain the key in the first position and the value in the second
         LinkedList<JsonElement> newJsonObject = new LinkedList<>();
 
         // If it receives null it will just write the string null if not it will check if its

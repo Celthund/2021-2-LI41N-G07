@@ -17,14 +17,20 @@ public class ActivitiesModel {
     private final UserModel users = new UserModel();
     private final RoutesModel routes = new RoutesModel();
 
-    public LinkedList<Activity> getActivitiesByTops(String sid, String orderBy, String date, String rid)
+    public LinkedList<Activity> getActivitiesByTops(String sid, String orderBy, String date, String rid, String distance)
             throws AppException {
 
         // Stores all the activities get from the query
-        LinkedList<Activity> activities = new LinkedList<>();
+        LinkedList<Activity> activities;
 
         // Will concatenate the parts of the query
-        StringBuilder sqlCmd = new StringBuilder("SELECT * FROM activities WHERE sid = ?");
+        StringBuilder sqlCmd = new StringBuilder("SELECT * FROM activities");
+
+        if(distance == null){
+            sqlCmd.append(" WHERE sid = ?");
+        }else{
+            sqlCmd.append(" INNER JOIN ROUTES on activities.rid = routes.rid WHERE sid = ? and distance > ?");
+        }
         // If they are null it means the user didn't search for them so we don't concatenate
         if (date != null) {
             sqlCmd.append(" and date = ?");
@@ -50,6 +56,10 @@ public class ActivitiesModel {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlCmd.toString());
             // Sets the sport the user wants to search for
             preparedStatement.setInt(i++, Integer.parseInt(sid));
+
+            if(distance != null){
+                preparedStatement.setInt(i++, Integer.parseInt(distance));
+            }
             // If they are null it means the user didnt search for them so we dont set the value
             if (date != null) {
                 preparedStatement.setDate(i++, Activity.dateToDate(date));
