@@ -34,9 +34,10 @@ public class GetActivitiesByUidHandler implements RequestHandler {
         HashMap<String, LinkedList<String>> queryString = request.getQueryStrings();
 
         if (parameters.containsKey("uid")) {
+            String skip = queryString.containsKey("skip") ? queryString.get("skip").getFirst() : null;
+            String top = queryString.containsKey("top") ? queryString.get("top").getFirst() : null;
             return Optional
-                .of(getActivitiesByUid(parameters.get("uid"), queryString.get("skip").getFirst(),
-                        queryString.get("top").getFirst()));
+                .of(getActivitiesByUid(parameters.get("uid"), skip, top));
         }
         throw new InvalidRequestException();
     }

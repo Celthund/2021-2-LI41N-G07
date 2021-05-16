@@ -4,7 +4,6 @@ import pt.isel.ls.models.domainclasses.Activity;
 import pt.isel.ls.models.domainclasses.Route;
 import pt.isel.ls.models.domainclasses.Sport;
 import pt.isel.ls.models.domainclasses.User;
-
 import static pt.isel.ls.models.domainclasses.Activity.durationToString;
 
 public class PlainTextGetter {
