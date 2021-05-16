@@ -334,7 +334,6 @@ public class ActivitiesModel {
             }
             connection.close();
         } catch (SQLException throwable) {
-            throwable.printStackTrace();
             throw new ServerErrorException("Server Error! Fail getting Activity.");
         }
         // Returns all the activity removed
