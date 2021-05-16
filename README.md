@@ -9,8 +9,8 @@ Software Laboratory, 2019/2020, Spring semester
 
 The file db.properties needs to be filled with the correct login details for this project to work.
 
-### For developers
+### Environment Variables that need to be set
 
-After you change the db.properties you should run the following line so git ignores the db.properties file:
-
-`git update-index --assume-unchanged db.properties`
+PSQL_DB_URL =jdbc:postgresql://<host>:<port>/<database>
+PSQL_DB_USERNAME=<user>
+PSQL_DB_PASSWORD=<password>
