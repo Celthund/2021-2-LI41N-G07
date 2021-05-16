@@ -33,7 +33,7 @@ public class GetActivitiesBySidHandler implements RequestHandler {
         if (parameters.containsKey("sid")) {
             String skip = queryString.containsKey("skip") ? queryString.get("skip").getFirst() : null;
             String top = queryString.containsKey("top") ? queryString.get("top").getFirst() : null;
-            return Optional.of(getActivitiesBySid(queryString.get("sid").getFirst(), skip, top));
+            return Optional.of(getActivitiesBySid(parameters.get("sid"), skip, top));
         }
 
         throw new InvalidRequestException();
