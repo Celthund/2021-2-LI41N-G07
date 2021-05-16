@@ -247,7 +247,7 @@ public class ActivitiesModel {
             Connection connection = db.getConnection();
             PreparedStatement preparedStatement;
 
-            StringBuilder sqlCmd = new StringBuilder("SELECT * FROM activities WHERE sid = ?");
+            StringBuilder sqlCmd = new StringBuilder("SELECT * FROM activities WHERE ts_deleted is NULL sid = ?");
 
             //Paging implementation
             if (skip != null && top != null) {
