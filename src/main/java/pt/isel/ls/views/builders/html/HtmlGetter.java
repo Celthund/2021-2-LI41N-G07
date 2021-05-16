@@ -10,6 +10,8 @@ import static pt.isel.ls.views.builders.html.HtmlBuilder.*;
 
 public class HtmlGetter {
 
+    // Static method that returns the code with the User Information ordered appropriated
+    // The user information is received in the parameter
     public static LinkedList<Element> getActivityHtmlList(Activity activity) {
         LinkedList<Element> elements = new LinkedList<>();
 
@@ -27,6 +29,8 @@ public class HtmlGetter {
         return elements;
     }
 
+    // Static method that returns the code with the Sport Information ordered appropriated
+    // The sport information is received in the parameter
     public static LinkedList<Element> getSportHtmlList(Sport sport) {
         LinkedList<Element> elements = new LinkedList<>();
 
@@ -37,6 +41,8 @@ public class HtmlGetter {
         return elements;
     }
 
+    // Static method that returns the code with the Route Information ordered appropriated
+    // The route information is received in the parameter
     public static LinkedList<Element> getRouteHtmlList(Route route) {
         LinkedList<Element> elements = new LinkedList<>();
 
@@ -48,6 +54,8 @@ public class HtmlGetter {
         return elements;
     }
 
+    // Static method that returns the code with the Activity Information ordered appropriated
+    // The activity information is received in the parameter
     public static LinkedList<Element> getUserHtmlList(User user) {
         LinkedList<Element> elements = new LinkedList<>();
 

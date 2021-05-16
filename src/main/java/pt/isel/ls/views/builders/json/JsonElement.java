@@ -5,19 +5,23 @@ import static java.util.Arrays.asList;
 import java.util.List;
 
 public abstract class JsonElement {
+    // List to store the elements, the elements are one of the Json class
     private final List<JsonElement> elements;
     private final String content;
 
+    // Constructor to receive an indeterminated array of elements
     public JsonElement(JsonElement... elements) {
         this.elements = asList(elements);
         content = null;
     }
 
+    // Constructor to receive a list of elements
     public JsonElement(List<JsonElement> elements) {
         this.elements = elements;
         content = null;
     }
 
+    // // Constructor to receive a string that will be written in the json object
     public JsonElement(String content) {
         elements = new ArrayList<>();
         this.content = content;
@@ -27,6 +31,7 @@ public abstract class JsonElement {
 
     protected abstract String endTag();
 
+    // Formats the text to match an Json object
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();

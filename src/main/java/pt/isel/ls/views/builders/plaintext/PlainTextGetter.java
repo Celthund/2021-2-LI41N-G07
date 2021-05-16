@@ -7,6 +7,8 @@ import pt.isel.ls.models.domainclasses.User;
 
 public class PlainTextGetter {
 
+    // Static method that returns the code with the User Information ordered appropriated
+    // The user information is received in the parameter
     public static String getUserPlainText(User user) {
 
         StringBuilder stringBuilder = new StringBuilder();
@@ -20,6 +22,8 @@ public class PlainTextGetter {
         return stringBuilder.toString();
     }
 
+    // Static method that returns the code with the Sport Information ordered appropriated
+    // The user information is received in the parameter
     public static String getSportPlainText(Sport sport) {
 
         StringBuilder stringBuilder = new StringBuilder();
@@ -34,6 +38,8 @@ public class PlainTextGetter {
         return stringBuilder.toString();
     }
 
+    // Static method that returns the code with the Route Information ordered appropriated
+    // The user information is received in the parameter
     public static String getRoutePlainText(Route route) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Route {rid: ")
@@ -48,6 +54,8 @@ public class PlainTextGetter {
         return stringBuilder.toString();
     }
 
+    // Static method that returns the code with the Activity Information ordered appropriated
+    // The user information is received in the parameter
     public static String getActivityPlainText(Activity activity) {
         StringBuilder stringbuilder = new StringBuilder();
         stringbuilder.append("Activity {aid: ")

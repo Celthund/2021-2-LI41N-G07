@@ -7,8 +7,7 @@ import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.exceptions.BadRequestException;
 import pt.isel.ls.exceptions.ServerErrorException;
 import pt.isel.ls.models.domainclasses.Activity;
-import java.sql.*;
-import java.util.LinkedList;
+
 import static pt.isel.ls.utils.Utils.getDataSource;
 
 
@@ -276,13 +275,18 @@ public class ActivitiesModel {
         return activities;
     }
 
+    // Method that deletes the requested activity by not showing in any more querys
     public LinkedList<Activity> deleteActivity(String uid, LinkedList<String> aid) throws AppException {
 
+        // Holder for the activities
         LinkedList<Activity> activities;
+
+        // It means the user didnt specified any activity so it just returns an empty list
         if (aid.size() == 0) {
             return new LinkedList<>();
         }
 
+        // Get the needed paramaters to be used by the prepareStatement to delete the rows
         StringBuilder numberOfAid = new StringBuilder().append("( ?");
         numberOfAid.append(", ?".repeat(aid.size() - 1));
         numberOfAid.append(")");
@@ -294,9 +298,10 @@ public class ActivitiesModel {
             Connection connection = db.getConnection();
             connection.setAutoCommit(false);
 
+            // Prepares the query by concatenating the fixed part (the part where it checks for the null ts_deleted)
+            //to the number of the aids the user sent
             PreparedStatement preparedStatement = connection.prepareStatement(
                 "SELECT * FROM activities WHERE ts_deleted IS NULL AND uid = ? AND aid IN " + numberOfAid.toString());
-
 
             preparedStatement.setInt(1, Integer.parseInt(uid));
             int i = 2;
@@ -304,13 +309,16 @@ public class ActivitiesModel {
                 preparedStatement.setInt(i++, Integer.parseInt(id));
             }
 
+            // Stores the queryResult
             ResultSet activityResult = preparedStatement.executeQuery();
-            // Creates the activity with value it got from the query
 
+            // Creates the activity with value it got from the query
             activities = createActivityList(activityResult);
             preparedStatement.close();
 
 
+            // Query that will set all those activity values to the current time
+            //effectively removing from user access
             preparedStatement = connection.prepareStatement("UPDATE activities SET ts_deleted = ? "
                 + "WHERE ts_deleted IS NULL AND uid = ? AND aid IN " + numberOfAid.toString());
             preparedStatement.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
@@ -330,15 +338,19 @@ public class ActivitiesModel {
             throwable.printStackTrace();
             throw new ServerErrorException("Server Error! Fail getting Activity.");
         }
+        // Returns all the activity removed
         return activities;
     }
 
+    // Creates a list with all the activities got from a query
     private LinkedList<Activity> createActivityList(ResultSet activityResult)
             throws SQLException, ServerErrorException {
         LinkedList<Activity> activities = new LinkedList<>();
         Activity activity = null;
 
         int tmpRid;
+        // For each row it will get the columns values, add it to an Activity "holder" and then
+        //add it to the list to be returns by this method
         while (activityResult.next()) {
             // The constructor for the Activity value holder
             activity = new Activity(
