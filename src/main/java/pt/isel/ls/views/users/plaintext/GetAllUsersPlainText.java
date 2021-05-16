@@ -18,7 +18,7 @@ public class GetAllUsersPlainText implements View {
 
         StringBuilder stringBuilder = new StringBuilder();
         for (User user : users) {
-            stringBuilder.append(getUserPlainText(user));
+            stringBuilder.append(getUserPlainText(user)).append(" ");
         }
         return stringBuilder.toString();
     }

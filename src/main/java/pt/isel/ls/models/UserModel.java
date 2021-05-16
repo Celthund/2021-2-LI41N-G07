@@ -35,6 +35,39 @@ public class UserModel {
         return user;
     }
 
+    public LinkedList<User> getAllUsers(String skip, String top) throws ServerErrorException {
+        LinkedList<User> users = new LinkedList<>();
+        PGSimpleDataSource db = getDataSource();
+        try {
+            Connection connection = db.getConnection();
+            PreparedStatement preparedStatement;
+
+            StringBuilder sqlCmd = new StringBuilder("SELECT * FROM users");
+
+            if(top != null && skip != null) {
+                sqlCmd.append(" LIMIT ? OFFSET ?");
+                preparedStatement = connection.prepareStatement(sqlCmd.toString());
+                preparedStatement.setInt(1, Integer.parseInt(top));
+                preparedStatement.setInt(2, Integer.parseInt(skip));
+            }else {
+                preparedStatement = connection.prepareStatement(sqlCmd.toString());
+            }
+
+            ResultSet userResult = preparedStatement.executeQuery();
+            while (userResult.next()) {
+                users.add(new User(
+                        userResult.getString("name"),
+                        userResult.getString("email"),
+                        userResult.getInt("uid")));
+            }
+            connection.close();
+        } catch (SQLException throwables) {
+            throw new ServerErrorException("Server Error! Fail getting Users.");
+        }
+        return users;
+    }
+
+    /*
     public LinkedList<User> getAllUsers() throws ServerErrorException {
         LinkedList<User> users = new LinkedList<>();
         PGSimpleDataSource db = getDataSource();
@@ -55,6 +88,8 @@ public class UserModel {
         return users;
     }
 
+
+     */
     public User createUser(String name, String email) throws ServerErrorException {
         User user = null;
         PGSimpleDataSource db = getDataSource();
