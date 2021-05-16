@@ -23,11 +23,11 @@ public class GetSportByIdHtml implements View {
                 title("Sport " + sport.sid)
             ),
             body(
-                h1("Sport ID" + sport.sid),
+                h1("Sport Id" + sport.sid),
                 ul(
-                    li("id " + sport.sid),
+                    li("Id " + sport.sid),
                     li("Name: " + sport.name),
-                    li("Email: " + sport.description)
+                    li("Description: " + sport.description)
                 )
             )
         ).toString();

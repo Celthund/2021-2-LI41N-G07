@@ -23,11 +23,11 @@ public class CreateSportHtml implements View {
                 title("Sport " + sport.sid)
             ),
             body(
-                h1("Sport ID" + sport.sid),
+                h1("Sport ID " + sport.sid),
                 ul(
-                    li("id " + sport.sid),
+                    li("Id " + sport.sid),
                     li("Name: " + sport.name),
-                    li("Email: " + sport.description)
+                    li("Description: " + sport.description)
                 )
             )
         ).toString();

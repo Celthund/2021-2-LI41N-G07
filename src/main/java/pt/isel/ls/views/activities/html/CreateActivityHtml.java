@@ -21,10 +21,10 @@ public class CreateActivityHtml implements View {
 
         return html(
             head(
-                title("Activity" + activity.aid)
+                title("Activity: " + activity.aid)
             ),
             body(
-                h1("Activity" + activity.aid),
+                h1("Activity: " + activity.aid),
                 dl(getActivityHtmlList(activity).toArray(new Element[0]))
             )
         ).toString();

@@ -19,14 +19,14 @@ public class CreateRouteHtml implements View {
 
         return html(
             head(
-                title("Route " + route.rid)
+                title("Route" + route.rid)
             ),
             body(
-                h1("Route ID: " + route.rid),
+                h1("Route Id: " + route.rid),
                 ul(
-                    li("id: " + route.rid),
-                    li("StartLocation: " + route.startLocation),
-                    li("EndLocation: " + route.endLocation),
+                    li("Id: " + route.rid),
+                    li("Start Location: " + route.startLocation),
+                    li("End Location: " + route.endLocation),
                     li("Distance: " + route.distance)
                 )
             )

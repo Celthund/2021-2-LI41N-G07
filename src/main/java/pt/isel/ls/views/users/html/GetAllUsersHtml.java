@@ -19,7 +19,7 @@ public class GetAllUsersHtml implements View {
         }
 
         elements.add(tr(
-            th("ID"),
+            th("Id"),
             th("Name"),
             th("Email")
 
