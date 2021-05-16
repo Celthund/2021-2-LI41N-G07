@@ -172,7 +172,7 @@ public class ActivitiesModel {
 
             // Creates a new activity with the value it got from the query
             if (preparedStatement.executeUpdate() == 1) {
-                sqlCmd = "SELECT * FROM activities WHERE IS NULL ORDER BY aid DESC LIMIT 1;";
+                sqlCmd = "SELECT * FROM activities WHERE ts_deleted IS NULL ORDER BY aid DESC LIMIT 1;";
                 ResultSet activityResult = connection.createStatement().executeQuery(sqlCmd);
                 if (activityResult.next()) {
                     int checkRid;
