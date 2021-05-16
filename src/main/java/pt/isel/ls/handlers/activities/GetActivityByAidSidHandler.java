@@ -1,13 +1,13 @@
 package pt.isel.ls.handlers.activities;
 
-import pt.isel.ls.request.RequestHandler;
-import pt.isel.ls.exceptions.AppException;
-import pt.isel.ls.models.domainclasses.Activity;
-import pt.isel.ls.exceptions.InvalidRequestException;
-import pt.isel.ls.models.ActivitiesModel;
-import pt.isel.ls.request.Request;
 import java.util.HashMap;
 import java.util.Optional;
+import pt.isel.ls.exceptions.AppException;
+import pt.isel.ls.exceptions.InvalidRequestException;
+import pt.isel.ls.models.ActivitiesModel;
+import pt.isel.ls.models.domainclasses.Activity;
+import pt.isel.ls.request.Request;
+import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.activities.GetActivityByAidSidResult;
 

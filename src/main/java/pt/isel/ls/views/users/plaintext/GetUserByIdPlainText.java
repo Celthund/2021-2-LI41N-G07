@@ -11,8 +11,9 @@ public class GetUserByIdPlainText implements View {
     public String getRepresentation(RequestResult<?> requestResult) {
         User user = ((GetUserByIdResult) requestResult).getData();
 
-        if (user == null)
+        if (user == null) {
             return requestResult.getMessage();
+        }
         return getUserPlainText(user);
     }
 }

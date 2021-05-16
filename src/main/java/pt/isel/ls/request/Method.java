@@ -7,7 +7,7 @@ public enum Method {
 
     public static Method getMethod(String method) throws InvalidRequestException {
         switch (method.toUpperCase()) {
-            case "GET" :
+            case "GET":
                 return GET;
             case "POST":
                 return POST;

@@ -11,8 +11,9 @@ public class CreateActivityPlainText implements View {
     public String getRepresentation(RequestResult<?> requestResult) {
         Activity activity = ((CreateActivityResult) requestResult).getData();
 
-        if (activity == null)
+        if (activity == null) {
             return requestResult.getMessage();
+        }
 
         return getActivityPlainText(activity);
     }

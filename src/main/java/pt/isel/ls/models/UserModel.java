@@ -1,7 +1,10 @@
 package pt.isel.ls.models;
 
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import org.postgresql.ds.PGSimpleDataSource;
 import pt.isel.ls.exceptions.ServerErrorException;
@@ -23,9 +26,9 @@ public class UserModel {
             ResultSet userResult = preparedStatement.executeQuery();
             if (userResult.next()) {
                 user = new User(
-                        userResult.getString("name"),
-                        userResult.getString("email"),
-                        userResult.getInt("uid"));
+                    userResult.getString("name"),
+                    userResult.getString("email"),
+                    userResult.getInt("uid"));
             }
             preparedStatement.close();
             connection.close();
@@ -44,21 +47,21 @@ public class UserModel {
 
             StringBuilder sqlCmd = new StringBuilder("SELECT * FROM users");
 
-            if(top != null && skip != null) {
+            if (top != null && skip != null) {
                 sqlCmd.append(" LIMIT ? OFFSET ?");
                 preparedStatement = connection.prepareStatement(sqlCmd.toString());
                 preparedStatement.setInt(1, Integer.parseInt(top));
                 preparedStatement.setInt(2, Integer.parseInt(skip));
-            }else {
+            } else {
                 preparedStatement = connection.prepareStatement(sqlCmd.toString());
             }
 
             ResultSet userResult = preparedStatement.executeQuery();
             while (userResult.next()) {
                 users.add(new User(
-                        userResult.getString("name"),
-                        userResult.getString("email"),
-                        userResult.getInt("uid")));
+                    userResult.getString("name"),
+                    userResult.getString("email"),
+                    userResult.getInt("uid")));
             }
             connection.close();
         } catch (SQLException throwables) {
@@ -83,9 +86,9 @@ public class UserModel {
                 ResultSet userResult = connection.createStatement().executeQuery(sqlCmd);
                 if (userResult.next()) {
                     user = new User(
-                            userResult.getString("name"),
-                            userResult.getString("email"),
-                            userResult.getInt("uid"));
+                        userResult.getString("name"),
+                        userResult.getString("email"),
+                        userResult.getInt("uid"));
                 }
                 connection.commit();
             }

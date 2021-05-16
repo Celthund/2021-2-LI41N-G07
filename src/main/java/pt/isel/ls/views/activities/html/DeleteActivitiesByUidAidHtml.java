@@ -16,8 +16,9 @@ public class DeleteActivitiesByUidAidHtml implements View {
     public String getRepresentation(RequestResult<?> requestResult) throws AppException {
         LinkedList<Activity> activities = ((DeleteActivitiesByUidAidResult) requestResult).getData();
 
-        if (activities == null)
+        if (activities == null) {
             activities = new LinkedList<>();
+        }
 
         LinkedList<Element> elements = new LinkedList<>(getActivityHtmlTableHeader());
 

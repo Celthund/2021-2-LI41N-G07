@@ -14,8 +14,9 @@ public class DeleteActivitiesByUidAidPlainText implements View {
         LinkedList<Activity> activities = ((DeleteActivitiesByUidAidResult) requestResult).getData();
         StringBuilder stringBuilder = new StringBuilder();
 
-        if (activities == null)
+        if (activities == null) {
             return requestResult.getMessage();
+        }
         stringBuilder.append("Deleted activities\n");
         for (Activity activity : activities) {
             stringBuilder.append(getActivityPlainText(activity)).append("\n");

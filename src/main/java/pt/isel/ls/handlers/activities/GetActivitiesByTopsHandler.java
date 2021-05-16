@@ -1,13 +1,13 @@
 package pt.isel.ls.handlers.activities;
 
-import pt.isel.ls.request.RequestHandler;
-import pt.isel.ls.exceptions.AppException;
-import pt.isel.ls.models.domainclasses.Activity;
-import pt.isel.ls.exceptions.InvalidRequestException;
-import pt.isel.ls.models.ActivitiesModel;
-import pt.isel.ls.request.Request;
 import java.util.LinkedList;
 import java.util.Optional;
+import pt.isel.ls.exceptions.AppException;
+import pt.isel.ls.exceptions.InvalidRequestException;
+import pt.isel.ls.models.ActivitiesModel;
+import pt.isel.ls.models.domainclasses.Activity;
+import pt.isel.ls.request.Request;
+import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.activities.GetActivitiesByTopsResult;
 
@@ -16,7 +16,8 @@ public class GetActivitiesByTopsHandler implements RequestHandler {
     ActivitiesModel model = new ActivitiesModel();
 
     private GetActivitiesByTopsResult getActivitiesByTops(String sid, String orderBy, String date, String rid,
-                                                          String distance, String skip, String top) throws AppException {
+                                                          String distance, String skip, String top)
+            throws AppException {
         LinkedList<Activity> activities = model.getActivitiesByTops(sid, orderBy, date, rid, distance, skip, top);
 
         if (activities != null) {
@@ -39,9 +40,9 @@ public class GetActivitiesByTopsHandler implements RequestHandler {
             String distance = request.getQueryStrings().containsKey("distance")
                 ? request.getQueryStrings().get("distance").getFirst() : null;
             String skip = request.getQueryStrings().containsKey("skip")
-                    ? request.getQueryStrings().get("skip").getFirst() : null;
+                ? request.getQueryStrings().get("skip").getFirst() : null;
             String top = request.getQueryStrings().containsKey("top")
-                    ? request.getQueryStrings().get("top").getFirst() : null;
+                ? request.getQueryStrings().get("top").getFirst() : null;
             return Optional.of(getActivitiesByTops(sid, orderBy, date, rid, distance, skip, top));
         }
         throw new InvalidRequestException();

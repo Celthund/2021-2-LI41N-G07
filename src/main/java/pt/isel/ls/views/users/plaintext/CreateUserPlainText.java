@@ -4,7 +4,6 @@ import pt.isel.ls.models.domainclasses.User;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.users.CreateUserResult;
 import pt.isel.ls.views.View;
-
 import static pt.isel.ls.views.builders.plaintext.PlainTextGetter.getUserPlainText;
 
 public class CreateUserPlainText implements View {
@@ -12,8 +11,9 @@ public class CreateUserPlainText implements View {
     public String getRepresentation(RequestResult<?> requestResult) {
         User user = ((CreateUserResult) requestResult).getData();
 
-        if (user == null)
+        if (user == null) {
             return requestResult.getMessage();
+        }
         return getUserPlainText(user);
     }
 }

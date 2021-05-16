@@ -13,9 +13,10 @@ public class CreateUserJson implements View {
     public String getRepresentation(RequestResult<?> requestResult) throws InvalidJsonException {
         User user = ((CreateUserResult) requestResult).getData();
 
-        if (user == null)
+        if (user == null) {
             return emptyDataSetJson(requestResult.getMessage(),
-                    requestResult.getStatus()).toString();
+                requestResult.getStatus()).toString();
+        }
 
         return getUserJson(user).toString();
     }

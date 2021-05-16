@@ -1,10 +1,10 @@
 package pt.isel.ls.views.builders.json;
 
-import pt.isel.ls.exceptions.InvalidJsonException;
-import pt.isel.ls.views.builders.json.parts.*;
 import java.sql.Date;
 import java.util.LinkedList;
 import java.util.List;
+import pt.isel.ls.exceptions.InvalidJsonException;
+import pt.isel.ls.views.builders.json.parts.*;
 
 public class JsonBuilder {
     // Method that creates the Json method object by receiving JsonPut variables and sending to the
@@ -47,8 +47,9 @@ public class JsonBuilder {
         }
 
         // Removes the final comma
-        if(builder.length() > 2)
+        if (builder.length() > 2) {
             builder.deleteCharAt(builder.length() - 2);
+        }
 
         // Returns the string with all the variables of the array
         return new JsonArray(builder.toString());

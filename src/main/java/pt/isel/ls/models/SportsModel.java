@@ -1,13 +1,13 @@
 package pt.isel.ls.models;
 
-import org.postgresql.ds.PGSimpleDataSource;
-import pt.isel.ls.exceptions.ServerErrorException;
-import pt.isel.ls.models.domainclasses.Sport;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
+import org.postgresql.ds.PGSimpleDataSource;
+import pt.isel.ls.exceptions.ServerErrorException;
+import pt.isel.ls.models.domainclasses.Sport;
 import static pt.isel.ls.utils.Utils.getDataSource;
 
 public class SportsModel {
@@ -24,9 +24,9 @@ public class SportsModel {
             ResultSet sportResult = preparedStatement.executeQuery();
             if (sportResult.next()) {
                 sport = new Sport(
-                        sportResult.getInt("sid"),
-                        sportResult.getString("name"),
-                        sportResult.getString("description"));
+                    sportResult.getInt("sid"),
+                    sportResult.getString("name"),
+                    sportResult.getString("description"));
             }
             preparedStatement.close();
             connection.close();
@@ -60,9 +60,9 @@ public class SportsModel {
 
             while (sportResult.next()) {
                 sports.add(new Sport(
-                        sportResult.getInt("sid"),
-                        sportResult.getString("name"),
-                        sportResult.getString("description")));
+                    sportResult.getInt("sid"),
+                    sportResult.getString("name"),
+                    sportResult.getString("description")));
             }
             connection.close();
         } catch (SQLException throwable) {
@@ -87,9 +87,9 @@ public class SportsModel {
                 ResultSet sportResult = connection.createStatement().executeQuery(sqlCmd);
                 if (sportResult.next()) {
                     sport = new Sport(
-                            sportResult.getInt("sid"),
-                            sportResult.getString("name"),
-                            sportResult.getString("description"));
+                        sportResult.getInt("sid"),
+                        sportResult.getString("name"),
+                        sportResult.getString("description"));
                 }
                 connection.commit();
             }

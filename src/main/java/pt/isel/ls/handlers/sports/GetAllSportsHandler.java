@@ -1,5 +1,7 @@
 package pt.isel.ls.handlers.sports;
 
+import java.util.LinkedList;
+import java.util.Optional;
 import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.models.SportsModel;
 import pt.isel.ls.models.domainclasses.Sport;
@@ -7,8 +9,6 @@ import pt.isel.ls.request.Request;
 import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.sports.GetAllSportsResult;
-import java.util.LinkedList;
-import java.util.Optional;
 
 public class GetAllSportsHandler implements RequestHandler {
 
@@ -26,9 +26,10 @@ public class GetAllSportsHandler implements RequestHandler {
     public Optional<RequestResult<?>> execute(Request request) throws AppException {
 
         //Implementation of paging options
-        if (request.getQueryStrings().containsKey("skip") && request.getQueryStrings().containsKey("top"))
+        if (request.getQueryStrings().containsKey("skip") && request.getQueryStrings().containsKey("top")) {
             return Optional.of(getAllSports(request.getQueryStrings().get("skip").getFirst(),
-                    request.getQueryStrings().get("top").getFirst()));
+                request.getQueryStrings().get("top").getFirst()));
+        }
 
         return Optional.of(getAllSports(null, null));
     }

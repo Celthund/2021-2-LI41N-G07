@@ -11,8 +11,9 @@ public class CreateSportPlainText implements View {
     public String getRepresentation(RequestResult<?> requestResult) {
         Sport sport = ((CreateSportResult) requestResult).getData();
 
-        if (sport == null)
+        if (sport == null) {
             return requestResult.getMessage();
+        }
         return getSportPlainText(sport);
     }
 }

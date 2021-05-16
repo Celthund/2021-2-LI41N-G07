@@ -1,8 +1,8 @@
 package pt.isel.ls.views.builders.json;
 
 import java.util.ArrayList;
-import java.util.List;
 import static java.util.Arrays.asList;
+import java.util.List;
 
 public abstract class JsonElement {
     private final List<JsonElement> elements;
@@ -40,8 +40,9 @@ public abstract class JsonElement {
             stringBuilder.append('\t').append(element.toStringObject("")).append(",\n");
         }
 
-        if(stringBuilder.length() > 2)
+        if (stringBuilder.length() > 2) {
             stringBuilder.deleteCharAt(stringBuilder.length() - 2);
+        }
 
         stringBuilder.append(endTag());
         return stringBuilder.toString();

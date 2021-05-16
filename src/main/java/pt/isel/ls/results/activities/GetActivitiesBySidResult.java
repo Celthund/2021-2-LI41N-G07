@@ -1,8 +1,8 @@
 package pt.isel.ls.results.activities;
 
+import java.util.LinkedList;
 import pt.isel.ls.models.domainclasses.Activity;
 import pt.isel.ls.results.RequestResult;
-import java.util.LinkedList;
 
 public class GetActivitiesBySidResult extends RequestResult<LinkedList<Activity>> {
 

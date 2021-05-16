@@ -7,6 +7,6 @@ import pt.isel.ls.results.RequestResult;
 public class GetActivitiesByTopsResult extends RequestResult<LinkedList<Activity>> {
 
     public GetActivitiesByTopsResult(int status, LinkedList<Activity> data, String message) {
-        super(status,  data,  message);
+        super(status, data, message);
     }
 }

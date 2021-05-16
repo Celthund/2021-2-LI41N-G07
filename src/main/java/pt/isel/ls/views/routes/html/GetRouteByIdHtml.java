@@ -13,22 +13,23 @@ public class GetRouteByIdHtml implements View {
     public String getRepresentation(RequestResult<?> requestResult) throws InvalidJsonException {
         Route route = ((GetRouteByIdResult) requestResult).getData();
 
-        if (route == null)
+        if (route == null) {
             return emptyDataSetHtml(requestResult.getMessage()).toString();
+        }
 
         return html(
-                head(
-                        title("Route " + route.rid)
-                ),
-                body(
-                        h1("Route ID: " + route.rid),
-                        ul(
-                                li("id: " + route.rid),
-                                li("StartLocation: " + route.startLocation),
-                                li("EndLocation: " + route.endLocation),
-                                li("Distance: " + route.distance)
-                        )
+            head(
+                title("Route " + route.rid)
+            ),
+            body(
+                h1("Route ID: " + route.rid),
+                ul(
+                    li("id: " + route.rid),
+                    li("StartLocation: " + route.startLocation),
+                    li("EndLocation: " + route.endLocation),
+                    li("Distance: " + route.distance)
                 )
+            )
         ).toString();
     }
 }

@@ -1,7 +1,7 @@
 package pt.isel.ls.views.builders.json.parts;
 
-import pt.isel.ls.views.builders.json.JsonElement;
 import java.util.List;
+import pt.isel.ls.views.builders.json.JsonElement;
 
 public class JsonObject extends JsonElement {
 

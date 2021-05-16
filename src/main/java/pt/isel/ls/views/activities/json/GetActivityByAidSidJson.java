@@ -13,9 +13,10 @@ public class GetActivityByAidSidJson implements View {
     public String getRepresentation(RequestResult<?> requestResult) throws InvalidJsonException {
         Activity activity = ((GetActivityByAidSidResult) requestResult).getData();
 
-        if (activity == null)
+        if (activity == null) {
             return emptyDataSetJson(requestResult.getMessage(),
-                    requestResult.getStatus()).toString();
+                requestResult.getStatus()).toString();
+        }
 
         return getActivityJson(activity).toString();
     }

@@ -16,8 +16,8 @@ public class DeleteActivitiesByUidAidHandler implements RequestHandler {
 
     ActivitiesModel model = new ActivitiesModel();
 
-    private DeleteActivitiesByUidAidResult DeleteActivitiesByUidAid(String uid, LinkedList<String> aid)
-        throws AppException{
+    private DeleteActivitiesByUidAidResult deleteActivitiesByUidAid(String uid, LinkedList<String> aid)
+            throws AppException {
         LinkedList<Activity> activities = model.deleteActivity(uid, aid);
         if (activities != null) {
             return new DeleteActivitiesByUidAidResult(200, activities, "Deleted with success "
@@ -37,7 +37,7 @@ public class DeleteActivitiesByUidAidHandler implements RequestHandler {
             && queryString.containsKey("activity")) {
             String uid = parameters.get("uid");
             LinkedList<String> aid = queryString.get("activity");
-            return Optional.of(DeleteActivitiesByUidAid(uid, aid));
+            return Optional.of(deleteActivitiesByUidAid(uid, aid));
         }
         throw new InvalidRequestException();
     }

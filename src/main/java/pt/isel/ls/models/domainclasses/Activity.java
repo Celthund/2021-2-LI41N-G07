@@ -5,11 +5,11 @@ import java.util.concurrent.TimeUnit;
 
 public class Activity {
     public final int aid;
-    public long duration;
     public final User user;
     public final Route route;
     public final Date date;
     public final Sport sport;
+    public long duration;
 
     public Activity(int aid, User user, Sport sport, Route route, Date date, long duration) {
         this.aid = aid;
@@ -18,17 +18,6 @@ public class Activity {
         this.user = user;
         this.route = route;
         this.date = date;
-    }
-
-    @Override
-    public String toString() {
-        return "Activity {"
-                + "id=" + aid
-                + ", duration=" + durationToString(duration)
-                + ", user=" + (user != null ? user.toString() : "null")
-                + ", sport=" + (sport != null ? sport.toString() : "null")
-                + ", route=" + (route != null ? route.toString() : "null")
-                + ", date=" + date + '}';
     }
 
     public static String durationToString(long duration) {
@@ -41,9 +30,9 @@ public class Activity {
         duration -= TimeUnit.SECONDS.toMillis(seconds);
 
         return (hours < 10 ? "0" + hours : hours)
-                + ":" + (minutes < 10 ? "0" + minutes : minutes)
-                + ":" + (seconds < 10 ? "0" + seconds : seconds)
-                + "." + duration;
+            + ":" + (minutes < 10 ? "0" + minutes : minutes)
+            + ":" + (seconds < 10 ? "0" + seconds : seconds)
+            + "." + duration;
     }
 
     public static long durationToLong(String duration) {
@@ -66,5 +55,16 @@ public class Activity {
             return Date.valueOf(date);
         }
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return "Activity {"
+            + "id=" + aid
+            + ", duration=" + durationToString(duration)
+            + ", user=" + (user != null ? user.toString() : "null")
+            + ", sport=" + (sport != null ? sport.toString() : "null")
+            + ", route=" + (route != null ? route.toString() : "null")
+            + ", date=" + date + '}';
     }
 }

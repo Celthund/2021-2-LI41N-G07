@@ -1,10 +1,12 @@
 package pt.isel.ls.routers;
 
-import pt.isel.ls.request.RequestHandler;
-import pt.isel.ls.exceptions.*;
-import pt.isel.ls.Node;
-import pt.isel.ls.request.Request;
 import java.util.LinkedList;
+import pt.isel.ls.Node;
+import pt.isel.ls.exceptions.AppException;
+import pt.isel.ls.exceptions.RouteAlreadyExistsException;
+import pt.isel.ls.exceptions.RouteNotFoundException;
+import pt.isel.ls.request.Request;
+import pt.isel.ls.request.RequestHandler;
 
 public class HandlerRouter {
     // The head of the tree

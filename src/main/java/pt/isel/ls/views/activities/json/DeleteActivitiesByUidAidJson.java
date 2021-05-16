@@ -17,9 +17,10 @@ public class DeleteActivitiesByUidAidJson implements View {
         LinkedList<Activity> activities = ((DeleteActivitiesByUidAidResult) requestResult).getData();
         LinkedList<JsonObject> objects = new LinkedList<>();
 
-        if (activities == null)
+        if (activities == null) {
             return emptyDataSetJson(requestResult.getMessage(),
                 requestResult.getStatus()).toString();
+        }
 
         for (Activity activity : activities) {
             objects.add(getActivityJson(activity));
