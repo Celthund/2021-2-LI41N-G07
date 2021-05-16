@@ -53,4 +53,11 @@ public class JsonGetter {
             jsonPut("Duration", durationToString(activity.duration))
         );
     }
+
+    public static JsonObject emptyDataSetJson(String message, int status) throws InvalidJsonException {
+        return jsonObject(
+                jsonPut("Message", message),
+                jsonPut("Status", status)
+        );
+    }
 }

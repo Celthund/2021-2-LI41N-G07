@@ -1,7 +1,12 @@
 package pt.isel.ls.views.builders.html;
 
-import pt.isel.ls.models.domainclasses.*;
+import pt.isel.ls.models.domainclasses.Activity;
+import pt.isel.ls.models.domainclasses.Route;
+import pt.isel.ls.models.domainclasses.Sport;
+import pt.isel.ls.models.domainclasses.User;
+
 import java.util.LinkedList;
+
 import static pt.isel.ls.models.domainclasses.Activity.durationToString;
 import static pt.isel.ls.views.builders.html.HtmlBuilder.*;
 
@@ -23,7 +28,6 @@ public class HtmlGetter {
 
         return elements;
     }
-
 
     public static LinkedList<Element> getSportHtmlList(Sport sport) {
         LinkedList<Element> elements = new LinkedList<>();
@@ -60,19 +64,19 @@ public class HtmlGetter {
         LinkedList<Element> elements = new LinkedList<>();
 
         elements.add(tr(
-            th("Activity Id"),
-            th("Date"),
-            th("Duration"),
-            th("User Id"),
-            th("User Name"),
-            th("User Email"),
-            th("Sport Id"),
-            th("Sport Name"),
-            th("Sport Description"),
-            th("Router Id"),
-            th("Start Location"),
-            th("End Location"),
-            th("Distance")
+                th("Activity Id"),
+                th("Date"),
+                th("Duration"),
+                th("User Id"),
+                th("User Name"),
+                th("User Email"),
+                th("Sport Id"),
+                th("Sport Name"),
+                th("Sport Description"),
+                th("Router Id"),
+                th("Start Location"),
+                th("End Location"),
+                th("Distance")
         ));
 
         return elements;
@@ -132,5 +136,16 @@ public class HtmlGetter {
         elements.add(td(user.email));
 
         return elements;
+    }
+
+    public static Element emptyDataSetHtml(String message) {
+        return html(
+                head(
+                        title(message)
+                ),
+                body(
+                        h1(message)
+                )
+        );
     }
 }

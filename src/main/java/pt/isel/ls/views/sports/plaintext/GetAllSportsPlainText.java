@@ -10,8 +10,12 @@ import static pt.isel.ls.views.builders.plaintext.PlainTextGetter.getSportPlainT
 public class GetAllSportsPlainText implements View {
 
     @Override
-    public String getRepresentation(RequestResult requestResult) {
+    public String getRepresentation(RequestResult<?> requestResult) {
         LinkedList<Sport> sports = ((GetAllSportsResult) requestResult).getData();
+
+        if (sports == null)
+            return requestResult.getMessage();
+
         StringBuilder stringBuilder = new StringBuilder();
         for (Sport sport : sports) {
             stringBuilder.append(getSportPlainText(sport));

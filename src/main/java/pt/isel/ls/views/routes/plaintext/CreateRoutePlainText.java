@@ -9,8 +9,12 @@ import static pt.isel.ls.views.builders.plaintext.PlainTextGetter.getRoutePlainT
 public class CreateRoutePlainText implements View {
 
     @Override
-    public String getRepresentation(RequestResult requestResult) {
+    public String getRepresentation(RequestResult<?> requestResult) {
         Route route = ((CreateRouteResult) requestResult).getData();
+
+        if (route == null)
+            return requestResult.getMessage();
+
         return getRoutePlainText(route);
     }
 }

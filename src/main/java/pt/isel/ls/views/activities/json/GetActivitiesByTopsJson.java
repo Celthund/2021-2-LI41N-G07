@@ -7,15 +7,21 @@ import pt.isel.ls.results.activities.GetActivitiesByTopsResult;
 import pt.isel.ls.views.View;
 import pt.isel.ls.views.builders.json.parts.JsonObject;
 import java.util.LinkedList;
-import static pt.isel.ls.views.builders.json.JsonGetter.*;
 import static pt.isel.ls.views.builders.json.JsonBuilder.*;
+import static pt.isel.ls.views.builders.json.JsonGetter.emptyDataSetJson;
+import static pt.isel.ls.views.builders.json.JsonGetter.getActivityJson;
 
 public class GetActivitiesByTopsJson implements View {
     @Override
-    public String getRepresentation(RequestResult requestResult) throws InvalidJsonException {
+    public String getRepresentation(RequestResult<?> requestResult) throws InvalidJsonException {
         LinkedList<Activity> activities = ((GetActivitiesByTopsResult) requestResult).getData();
         LinkedList<JsonObject> objects = new LinkedList<>();
-        for (Activity activity: activities) {
+
+        if (activities == null)
+            return emptyDataSetJson(requestResult.getMessage(),
+                    requestResult.getStatus()).toString();
+
+        for (Activity activity : activities) {
             objects.add(getActivityJson(activity));
         }
 

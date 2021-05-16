@@ -13,9 +13,13 @@ import static pt.isel.ls.views.builders.json.JsonGetter.*;
 
 public class GetAllUsersJson implements View {
     @Override
-    public String getRepresentation(RequestResult requestResult) throws InvalidJsonException {
+    public String getRepresentation(RequestResult<?> requestResult) throws InvalidJsonException {
         LinkedList<User> users = ((GetAllUsersResult) requestResult).getData();
         LinkedList<JsonObject> objects = new LinkedList<>();
+
+        if (users == null)
+            return emptyDataSetJson(requestResult.getMessage(),
+                    requestResult.getStatus()).toString();
 
         for (User user : users) {
             objects.add(getUserJson(user));

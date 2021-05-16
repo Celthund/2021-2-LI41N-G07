@@ -10,8 +10,13 @@ import static pt.isel.ls.views.builders.json.JsonGetter.*;
 public class GetUserByIdJson implements View {
 
     @Override
-    public String getRepresentation(RequestResult requestResult) throws InvalidJsonException {
+    public String getRepresentation(RequestResult<?> requestResult) throws InvalidJsonException {
         User user = ((GetUserByIdResult)requestResult).getData();
+
+        if (user == null)
+            return emptyDataSetJson(requestResult.getMessage(),
+                    requestResult.getStatus()).toString();
+
         return getUserJson(user).toString();
     }
 }

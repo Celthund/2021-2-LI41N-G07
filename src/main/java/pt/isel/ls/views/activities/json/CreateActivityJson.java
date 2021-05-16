@@ -9,8 +9,13 @@ import static pt.isel.ls.views.builders.json.JsonGetter.*;
 
 public class CreateActivityJson implements View {
     @Override
-    public String getRepresentation(RequestResult requestResult) throws InvalidJsonException {
+    public String getRepresentation(RequestResult<?> requestResult) throws InvalidJsonException {
         Activity activity = ((CreateActivityResult) requestResult).getData();
+
+        if (activity == null)
+            return emptyDataSetJson(requestResult.getMessage(),
+                    requestResult.getStatus()).toString();
+
         return getActivityJson(activity).toString();
     }
 }

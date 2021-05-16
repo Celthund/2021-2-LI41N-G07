@@ -12,9 +12,13 @@ import static pt.isel.ls.views.builders.json.JsonGetter.*;
 
 public class GetActivitiesBySidJson implements View {
     @Override
-    public String getRepresentation(RequestResult requestResult) throws InvalidJsonException {
+    public String getRepresentation(RequestResult<?> requestResult) throws InvalidJsonException {
         LinkedList<Activity> activities = ((GetActivitiesBySidResult) requestResult).getData();
         LinkedList<JsonObject> objects = new LinkedList<>();
+
+        if (activities == null)
+            return emptyDataSetJson(requestResult.getMessage(),
+                    requestResult.getStatus()).toString();
 
         for (Activity activity : activities) {
             objects.add(getActivityJson(activity));

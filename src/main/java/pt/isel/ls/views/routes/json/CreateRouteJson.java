@@ -9,8 +9,13 @@ import static pt.isel.ls.views.builders.json.JsonGetter.*;
 
 public class CreateRouteJson implements View {
     @Override
-    public String getRepresentation(RequestResult requestResult) throws InvalidJsonException {
+    public String getRepresentation(RequestResult<?> requestResult) throws InvalidJsonException {
         Route route = ((CreateRouteResult) requestResult).getData();
+
+        if (route == null)
+            return emptyDataSetJson(requestResult.getMessage(),
+                    requestResult.getStatus()).toString();
+
         return getRouteJson(route).toString();
     }
 }

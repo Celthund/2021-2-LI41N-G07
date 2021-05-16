@@ -9,8 +9,12 @@ import static pt.isel.ls.views.builders.plaintext.PlainTextGetter.getActivityPla
 
 public class GetActivitiesBySidResultPlainText implements View {
     @Override
-    public String getRepresentation(RequestResult requestResult) {
+    public String getRepresentation(RequestResult<?> requestResult) {
         LinkedList<Activity> activities = ((GetActivitiesBySidResult) requestResult).getData();
+
+        if (activities == null)
+            return requestResult.getMessage();
+
         StringBuilder stringBuilder = new StringBuilder();
         for (Activity activity : activities) {
             stringBuilder.append(getActivityPlainText(activity)).append("\n");

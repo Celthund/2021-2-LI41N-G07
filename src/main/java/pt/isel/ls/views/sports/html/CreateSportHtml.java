@@ -5,28 +5,31 @@ import pt.isel.ls.models.domainclasses.Sport;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.sports.CreateSportResult;
 import pt.isel.ls.views.View;
-import pt.isel.ls.views.builders.html.Element;
+
 import static pt.isel.ls.views.builders.html.HtmlBuilder.*;
-import static pt.isel.ls.views.builders.html.HtmlBuilder.li;
+import static pt.isel.ls.views.builders.json.JsonGetter.emptyDataSetJson;
 
 public class CreateSportHtml implements View {
     @Override
-    public String getRepresentation(RequestResult requestResult) throws InvalidJsonException {
+    public String getRepresentation(RequestResult<?> requestResult) throws InvalidJsonException {
         Sport sport = ((CreateSportResult) requestResult).getData();
-        Element html =
-            html(
+
+        if (sport == null)
+            return emptyDataSetJson(requestResult.getMessage(),
+                    requestResult.getStatus()).toString();
+
+        return html(
                 head(
-                    title("Sport " + sport.sid)
+                        title("Sport " + sport.sid)
                 ),
                 body(
-                    h1("Sport ID" + sport.sid),
-                    ul(
-                        li("id " + sport.sid),
-                        li("Name: " + sport.name),
-                        li("Email: " + sport.description)
-                    )
+                        h1("Sport ID" + sport.sid),
+                        ul(
+                                li("id " + sport.sid),
+                                li("Name: " + sport.name),
+                                li("Email: " + sport.description)
+                        )
                 )
-            );
-        return html.toString();
+        ).toString();
     }
 }

@@ -9,8 +9,11 @@ import static pt.isel.ls.views.builders.plaintext.PlainTextGetter.getSportPlainT
 public class GetSportByIdPlainText implements View {
 
     @Override
-    public String getRepresentation(RequestResult requestResult) {
+    public String getRepresentation(RequestResult<?> requestResult) {
         Sport sport = ((GetSportByIdResult) requestResult).getData();
+
+        if (sport == null)
+            return requestResult.getMessage();
 
         return getSportPlainText(sport);
     }

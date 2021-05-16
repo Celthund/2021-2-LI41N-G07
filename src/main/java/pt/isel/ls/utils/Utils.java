@@ -13,5 +13,4 @@ public class Utils {
         postgres.setPassword(getenv("PSQL_DB_PASSWORD"));
         return postgres;
     }
-
 }

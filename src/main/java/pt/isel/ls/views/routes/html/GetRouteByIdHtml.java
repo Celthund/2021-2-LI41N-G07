@@ -5,29 +5,30 @@ import pt.isel.ls.models.domainclasses.Route;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.routes.GetRouteByIdResult;
 import pt.isel.ls.views.View;
-import pt.isel.ls.views.builders.html.Element;
 import static pt.isel.ls.views.builders.html.HtmlBuilder.*;
-import static pt.isel.ls.views.builders.html.HtmlBuilder.li;
+import static pt.isel.ls.views.builders.html.HtmlGetter.emptyDataSetHtml;
 
 public class GetRouteByIdHtml implements View {
     @Override
-    public String getRepresentation(RequestResult requestResult) throws InvalidJsonException {
+    public String getRepresentation(RequestResult<?> requestResult) throws InvalidJsonException {
         Route route = ((GetRouteByIdResult) requestResult).getData();
-        Element html =
-                html(
-                        head(
-                                title("Route " + route.rid)
-                        ),
-                        body(
-                                h1("Route ID: " + route.rid),
-                                ul(
-                                        li("id: " + route.rid),
-                                        li("StartLocation: " + route.startLocation),
-                                        li("EndLocation: " + route.endLocation),
-                                        li("Distance: " + route.distance)
-                                )
+
+        if (route == null)
+            return emptyDataSetHtml(requestResult.getMessage()).toString();
+
+        return html(
+                head(
+                        title("Route " + route.rid)
+                ),
+                body(
+                        h1("Route ID: " + route.rid),
+                        ul(
+                                li("id: " + route.rid),
+                                li("StartLocation: " + route.startLocation),
+                                li("EndLocation: " + route.endLocation),
+                                li("Distance: " + route.distance)
                         )
-                );
-        return html.toString();
+                )
+        ).toString();
     }
 }

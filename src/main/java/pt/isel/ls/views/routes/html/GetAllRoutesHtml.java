@@ -7,42 +7,46 @@ import pt.isel.ls.results.routes.GetAllRoutesResult;
 import pt.isel.ls.views.View;
 import pt.isel.ls.views.builders.html.Element;
 import java.util.LinkedList;
+
 import static pt.isel.ls.views.builders.html.HtmlBuilder.*;
 
 public class GetAllRoutesHtml implements View {
     @Override
-    public String getRepresentation(RequestResult requestResult) throws InvalidJsonException {
+    public String getRepresentation(RequestResult<?> requestResult) throws InvalidJsonException {
         LinkedList<Route> routes = ((GetAllRoutesResult) requestResult).getData();
         LinkedList<Element> elements = new LinkedList<>();
 
+        if (routes == null)
+            routes = new LinkedList<>();
+
         elements.add(tr(
-            th("SID"),
-            th("StartLocation"),
-            th("EndLocation"),
-            th("Distance")
+                th("SID"),
+                th("StartLocation"),
+                th("EndLocation"),
+                th("Distance")
 
         ));
 
         for (Route route : routes) {
             elements.add(tr(
-                td(Integer.toString(route.rid)),
-                td(route.startLocation),
-                td(route.endLocation),
-                td(Integer.toString(route.distance))
+                    td(Integer.toString(route.rid)),
+                    td(route.startLocation),
+                    td(route.endLocation),
+                    td(Integer.toString(route.distance))
             ));
         }
 
 
         Element html = html(
-            head(
-                title("Routes: ")
+                head(
+                        title("Routes: ")
 
-            ),
-            body(
-                table(
-                    elements.toArray(new Element[0])
+                ),
+                body(
+                        table(
+                                elements.toArray(new Element[0])
+                        )
                 )
-            )
         );
 
         return html.toString();

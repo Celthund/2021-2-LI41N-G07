@@ -57,7 +57,6 @@ public class UtilTests {
         connection.close();
     }
 
-
     private void createTableForTests(Connection connection) throws SQLException {
         String create = "drop table if exists students;"
             + "drop table if exists courses;"
@@ -67,7 +66,6 @@ public class UtilTests {
         Statement statement = connection.createStatement();
 
         statement.execute(create);
-
     }
 
     private void addDataToTable(Connection connection) throws SQLException {
@@ -179,7 +177,6 @@ public class UtilTests {
         assert res.isPresent();
     }
 
-
     @Test(expected = RouteNotFoundException.class)
     public void test_non_existing_routing() throws AppException {
         HandlerRouter handlerRouter = new HandlerRouter();
@@ -194,7 +191,6 @@ public class UtilTests {
         handlerRouter.addRoute("GET", "/abc/{id}/123", request -> result);
         handlerRouter.addRoute("GET", "/abc/{id}/123", request -> result);
     }
-
 
     class Result extends RequestResult<Object> {
 
