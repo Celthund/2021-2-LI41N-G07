@@ -19,7 +19,7 @@ public class PlainTextGetter {
             .append(", name: ")
             .append(user.name)
             .append(", email: ")
-            .append(user.email).append("}" );
+            .append(user.email).append("}");
 
         return stringBuilder.toString();
     }
@@ -35,7 +35,7 @@ public class PlainTextGetter {
             .append(sport.name)
             .append(", description: ")
             .append(sport.description)
-            .append("} ");
+            .append("}");
 
         return stringBuilder.toString();
     }
@@ -52,7 +52,7 @@ public class PlainTextGetter {
             .append(route.startLocation)
             .append(", endLocation: ")
             .append(route.endLocation)
-            .append("} ");
+            .append("}");
         return stringBuilder.toString();
     }
 
@@ -75,7 +75,7 @@ public class PlainTextGetter {
             stringbuilder.append(", ")
                 .append(getRoutePlainText(activity.route));
         }
-        stringbuilder.append("} ");
+        stringbuilder.append("}");
 
         return stringbuilder.toString();
     }
