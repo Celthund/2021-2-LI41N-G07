@@ -173,7 +173,7 @@ public class UtilTests {
         handlerRouter.addRoute("GET", "/abc/{id}/123", request -> Optional.of(new Result(200, null, "Success")));
         Request request = new Request(Method.getMethod("GET"), "/abc/2/123");
         RequestHandler handler = handlerRouter.findRoute(request);
-        Optional<RequestResult> res = handler.execute(request);
+        Optional<RequestResult<?>> res = handler.execute(request);
         assert res.isPresent();
     }
 
@@ -187,7 +187,7 @@ public class UtilTests {
     @Test(expected = RouteAlreadyExistsException.class)
     public void test_already_existing_routing() throws AppException {
         HandlerRouter handlerRouter = new HandlerRouter();
-        Optional<RequestResult> result = Optional.of(new Result(200, null, "Success"));
+        Optional<RequestResult<?>> result = Optional.of(new Result(200, null, "Success"));
         handlerRouter.addRoute("GET", "/abc/{id}/123", request -> result);
         handlerRouter.addRoute("GET", "/abc/{id}/123", request -> result);
     }
