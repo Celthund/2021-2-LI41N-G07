@@ -5,10 +5,8 @@ import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.exceptions.BadRequestException;
 import pt.isel.ls.exceptions.ServerErrorException;
 import pt.isel.ls.models.domainclasses.Activity;
-
 import java.sql.*;
 import java.util.LinkedList;
-
 import static pt.isel.ls.utils.Utils.getDataSource;
 
 
@@ -245,7 +243,20 @@ public class ActivitiesModel {
         PGSimpleDataSource db = getDataSource();
         try {
             Connection connection = db.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM activities WHERE sid = ?");
+            PreparedStatement preparedStatement;
+
+            StringBuilder sqlCmd = new StringBuilder("SELECT * FROM activities WHERE sid = ?");
+
+            //Paging implementation
+            if (skip != null && top != null) {
+                sqlCmd.append(" LIMIT ? OFFSET ?");
+                preparedStatement = connection.prepareStatement(sqlCmd.toString());
+                preparedStatement.setInt(2, Integer.parseInt(top));
+                preparedStatement.setInt(2, Integer.parseInt(skip));
+            } else {
+                preparedStatement = connection.prepareStatement(sqlCmd.toString());
+            }
+
             preparedStatement.setInt(1, Integer.parseInt(sid));
 
             ResultSet activityResult = preparedStatement.executeQuery();

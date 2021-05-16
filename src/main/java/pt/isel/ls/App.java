@@ -126,9 +126,9 @@ public class App {
         handlerRouter.addRoute("GET", "/sports/{sid}", new GetSportByIdHandler());
         handlerRouter.addRoute("POST", "/sports", new CreateSportHandler());
 
-        handlerRouter.addRoute("GET", "/sports/{sid}/activities", new GetActivityBySidHandler());
+        handlerRouter.addRoute("GET", "/sports/{sid}/activities", new GetActivitiesBySidHandler());
         handlerRouter.addRoute("GET", "/sports/{sid}/activities/{aid}", new GetActivityByAidSidHandler());
-        handlerRouter.addRoute("GET", "/users/{uid}/activities", new GetActivityByUidHandler());
+        handlerRouter.addRoute("GET", "/users/{uid}/activities", new GetActivitiesByUidHandler());
         handlerRouter.addRoute("GET", "/tops/activities", new GetActivitiesByTopsHandler());
         handlerRouter.addRoute("POST", "/sports/{sid}/activities", new CreateActivityHandler());
     }
