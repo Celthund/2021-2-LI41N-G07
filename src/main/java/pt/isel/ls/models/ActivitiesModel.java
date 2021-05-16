@@ -19,7 +19,7 @@ public class ActivitiesModel {
 
     public LinkedList<Activity> getActivitiesByTops(String sid, String orderBy, String date,
                                                     String rid, String distance, String skip, String top)
-            throws AppException {
+        throws AppException {
 
         // Stores all the activities get from the query
         LinkedList<Activity> activities;
@@ -86,7 +86,7 @@ public class ActivitiesModel {
             preparedStatement.close();
             connection.close();
         } catch (SQLException throwable) {
-            throw new ServerErrorException("Server Error! Fail getting Activities.");
+            throw new ServerErrorException("Failed getting activities by tops.");
         }
         return activities;
     }
@@ -121,14 +121,14 @@ public class ActivitiesModel {
             preparedStatement.close();
             connection.close();
         } catch (SQLException throwable) {
-            throw new ServerErrorException("Server Error! Fail getting Activity.");
+            throw new ServerErrorException("Failed getting activities by uid.");
         }
         return activities;
     }
 
     // Server that creates Activity
     public Activity createActivity(String sid, String uid, String duration, String date, String rid)
-            throws AppException {
+        throws AppException {
         // Transforms the String date to Date date
         Date sqlDate = Activity.dateToDate(date);
 
@@ -198,7 +198,7 @@ public class ActivitiesModel {
             connection.close();
 
         } catch (SQLException e) {
-            throw new ServerErrorException("Server Error! Fail creating Activity.");
+            throw new ServerErrorException("Failed creating activity.");
         }
         return activity;
     }
@@ -233,7 +233,7 @@ public class ActivitiesModel {
             preparedStatement.close();
             connection.close();
         } catch (SQLException throwable) {
-            throw new ServerErrorException("Server Error! Fail getting Activity.");
+            throw new ServerErrorException("Failed getting activity by aid and sid.");
         }
         return activity;
     }
@@ -269,7 +269,7 @@ public class ActivitiesModel {
             preparedStatement.close();
             connection.close();
         } catch (SQLException throwable) {
-            throw new ServerErrorException("Server Error! Fail getting Activity.");
+            throw new ServerErrorException("Failed getting activity by sid.");
         }
         return activities;
     }
@@ -334,7 +334,7 @@ public class ActivitiesModel {
             }
             connection.close();
         } catch (SQLException throwable) {
-            throw new ServerErrorException("Server Error! Fail getting Activity.");
+            throw new ServerErrorException("Failed deleting activity.");
         }
         // Returns all the activity removed
         return activities;
@@ -342,7 +342,7 @@ public class ActivitiesModel {
 
     // Creates a list with all the activities got from a query
     private LinkedList<Activity> createActivityList(ResultSet activityResult)
-            throws SQLException, ServerErrorException {
+        throws SQLException, ServerErrorException {
         LinkedList<Activity> activities = new LinkedList<>();
         Activity activity = null;
 
