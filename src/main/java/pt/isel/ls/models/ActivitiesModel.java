@@ -40,17 +40,19 @@ public class ActivitiesModel {
         if (rid != null) {
             sqlCmd.append(" and rid = ?");
         }
-        if (skip != null && top != null) {
-            sqlCmd.append(" LIMIT ? OFFSET ?");
-        }
 
         // Checks what order the user pretends to see the query
         if ((orderBy.equals("ascending"))) {
-            sqlCmd.append(" order by duration asc;");
+            sqlCmd.append(" order by duration asc");
         } else if (orderBy.equals("descending")) {
-            sqlCmd.append(" order by duration desc;");
+            sqlCmd.append(" order by duration desc");
         } else {
             throw new BadRequestException("Invalid Order By");
+        }
+
+
+        if (skip != null && top != null) {
+            sqlCmd.append(" LIMIT ? OFFSET ?");
         }
 
         // Get the configurations to set up the DB connection
@@ -247,14 +249,14 @@ public class ActivitiesModel {
             Connection connection = db.getConnection();
             PreparedStatement preparedStatement;
 
-            StringBuilder sqlCmd = new StringBuilder("SELECT * FROM activities WHERE ts_deleted is NULL sid = ?");
+            StringBuilder sqlCmd = new StringBuilder("SELECT * FROM activities WHERE ts_deleted is NULL AND sid = ? ");
 
             //Paging implementation
             if (skip != null && top != null) {
                 sqlCmd.append(" LIMIT ? OFFSET ?");
                 preparedStatement = connection.prepareStatement(sqlCmd.toString());
                 preparedStatement.setInt(2, Integer.parseInt(top));
-                preparedStatement.setInt(2, Integer.parseInt(skip));
+                preparedStatement.setInt(3, Integer.parseInt(skip));
             } else {
                 preparedStatement = connection.prepareStatement(sqlCmd.toString());
             }
