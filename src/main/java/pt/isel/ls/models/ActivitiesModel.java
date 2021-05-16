@@ -29,9 +29,10 @@ public class ActivitiesModel {
         StringBuilder sqlCmd = new StringBuilder("SELECT * FROM activities");
 
         if (distance == null) {
-            sqlCmd.append(" WHERE sid = ?");
+            sqlCmd.append(" WHERE ts_deleted IS NULL AND sid = ?");
         } else {
-            sqlCmd.append(" INNER JOIN ROUTES on activities.rid = routes.rid WHERE sid = ? and distance > ?");
+            sqlCmd.append(" INNER JOIN ROUTES on activities.rid = routes.rid WHERE " +
+                "ts_deleted IS NULL AND sid = ? and distance > ?");
         }
         // If they are null it means the user didn't search for them so we don't concatenate
         if (date != null) {
@@ -100,7 +101,7 @@ public class ActivitiesModel {
             Connection connection = db.getConnection();
             PreparedStatement preparedStatement;
 
-            StringBuilder sqlCmd = new StringBuilder("SELECT * FROM activities WHERE uid = ?");
+            StringBuilder sqlCmd = new StringBuilder("SELECT * FROM activities WHERE ts_deleted IS NULL AND uid = ?");
 
             if (skip != null && top != null) {
                 sqlCmd.append(" LIMIT ? OFFSET ?");
@@ -172,7 +173,7 @@ public class ActivitiesModel {
 
             // Creates a new activity with the value it got from the query
             if (preparedStatement.executeUpdate() == 1) {
-                sqlCmd = "SELECT * FROM activities ORDER BY aid DESC LIMIT 1;";
+                sqlCmd = "SELECT * FROM activities WHERE IS NULL ORDER BY aid DESC LIMIT 1;";
                 ResultSet activityResult = connection.createStatement().executeQuery(sqlCmd);
                 if (activityResult.next()) {
                     int checkRid;
@@ -211,7 +212,7 @@ public class ActivitiesModel {
         try {
             Connection connection = db.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT * FROM activities WHERE aid = ? AND sid = ?");
+                    "SELECT * FROM activities WHERE ts_deleted IS NULL AND aid = ? AND sid = ?");
             preparedStatement.setInt(1, Integer.parseInt(aid));
             preparedStatement.setInt(2, Integer.parseInt(sid));
 
@@ -245,7 +246,7 @@ public class ActivitiesModel {
         PGSimpleDataSource db = getDataSource();
         try {
             Connection connection = db.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM activities WHERE sid = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM activities WHERE ts_deleted IS NULL AND sid = ?");
             preparedStatement.setInt(1, Integer.parseInt(sid));
 
             ResultSet activityResult = preparedStatement.executeQuery();
@@ -256,6 +257,62 @@ public class ActivitiesModel {
             preparedStatement.close();
             connection.close();
         } catch (SQLException throwable) {
+            throw new ServerErrorException("Server Error! Fail getting Activity.");
+        }
+        return activities;
+    }
+
+    public LinkedList<Activity> deleteActivity(String uid, LinkedList<String> aid) throws AppException {
+
+        LinkedList<Activity> activities;
+        if (aid.size() == 0)
+            return new LinkedList<>();
+
+        StringBuilder numberOfAid = new StringBuilder().append("( ?");
+        numberOfAid.append(", ?".repeat(aid.size() - 1));
+        numberOfAid.append(")");
+
+        // Get the configurations to set up the DB connection
+        PGSimpleDataSource db = getDataSource();
+        try {
+
+            Connection connection = db.getConnection();
+            connection.setAutoCommit(false);
+
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                "SELECT * FROM activities WHERE ts_deleted IS NULL AND uid = ? AND aid IN " + numberOfAid.toString());
+
+
+            preparedStatement.setInt(1, Integer.parseInt(uid));
+            int i = 2;
+            for (String id: aid){
+                preparedStatement.setInt(i++, Integer.parseInt(id));
+            }
+
+            ResultSet activityResult = preparedStatement.executeQuery();
+            // Creates the activity with value it got from the query
+
+            activities = createActivityList(activityResult);
+            preparedStatement.close();
+
+
+            preparedStatement = connection.prepareStatement("UPDATE activities SET ts_deleted = ? " +
+                "WHERE ts_deleted IS NULL AND uid = ? AND aid IN " + numberOfAid.toString());
+            preparedStatement.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+            preparedStatement.setInt(2, Integer.parseInt(uid));
+            i = 3;
+            for (String id: aid){
+                preparedStatement.setInt(i++, Integer.parseInt(id));
+            }
+            if (preparedStatement.executeUpdate() > 0){
+                connection.setAutoCommit(true);
+            } else {
+                connection.rollback();
+                activities = new LinkedList<>();
+            }
+            connection.close();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
             throw new ServerErrorException("Server Error! Fail getting Activity.");
         }
         return activities;

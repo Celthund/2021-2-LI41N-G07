@@ -104,6 +104,7 @@ public class App {
                 System.out.println("Error getting result");
             }
         } catch (AppException | FileNotFoundException e) {
+            e.printStackTrace();
             System.out.println(e.getMessage());
         }
     }
@@ -131,6 +132,7 @@ public class App {
         handlerRouter.addRoute("GET", "/users/{uid}/activities", new GetActivityByUidHandler());
         handlerRouter.addRoute("GET", "/tops/activities", new GetActivitiesByTopsHandler());
         handlerRouter.addRoute("POST", "/sports/{sid}/activities", new CreateActivityHandler());
+        handlerRouter.addRoute("DELETE", "/users/{uid}/activities", new DeleteActivitiesByUidAidHandler());
     }
 
     //Creates all the views
@@ -155,6 +157,8 @@ public class App {
         viewRouter.addView(GetActivityByAidSidResult.class, "text/plain", new GetActivityByAidSidResultPlainText());
         viewRouter.addView(GetActivitiesBySidResult.class, "text/plain", new GetActivitiesBySidResultPlainText());
         viewRouter.addView(GetActivitiesByUidResult.class, "text/plain", new GetActivitiesByUidResultPlainText());
+        viewRouter
+            .addView(DeleteActivitiesByUidAidResult.class, "text/plain", new DeleteActivitiesByUidAidPlainText());
 
         //-----------------------------Creates the views for Json--------------------------------------//
         viewRouter.addView(CreateUserResult.class, "application/json", new CreateUserJson());
@@ -174,6 +178,8 @@ public class App {
         viewRouter.addView(GetActivitiesBySidResult.class, "application/json", new GetActivitiesBySidJson());
         viewRouter.addView(GetActivitiesByUidResult.class, "application/json", new GetActivitiesByUidJson());
         viewRouter.addView(GetActivitiesByTopsResult.class, "application/json", new GetActivitiesByTopsJson());
+        viewRouter
+            .addView(DeleteActivitiesByUidAidResult.class, "application/json", new DeleteActivitiesByUidAidJson());
 
 
         //-----------------------------Creates the views for html--------------------------------------//
@@ -194,6 +200,7 @@ public class App {
         viewRouter.addView(GetActivitiesByTopsResult.class, "text/html", new GetActivitiesByTopsHtml());
         viewRouter.addView(GetActivitiesByUidResult.class, "text/html", new GetActivitiesByUidHtml());
         viewRouter.addView(GetActivityByAidSidResult.class, "text/html", new GetActivityByAidSidHtml());
+        viewRouter.addView(DeleteActivitiesByUidAidResult.class, "text/html", new DeleteActivitiesByUidAidHtml());
 
         //-----------------------------Creates the view for OPTION------------------------------------//
         viewRouter.addView(OptionResult.class, "text/html", new OptionPlainText());
