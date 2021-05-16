@@ -18,14 +18,14 @@ public class CreateUserHtml implements View {
         }
         return html(
             head(
-                title("User " + user.id)
+                title("User" + user.id)
             ),
             body(
-                h1("User ID: " + user.id),
+                h1("User Id: " + user.id),
                 dl(
-                    dt("id: " + user.id),
-                    dt("name: " + user.name),
-                    dt("email: " + user.email)
+                    dt("Id: " + user.id),
+                    dt("Name: " + user.name),
+                    dt("Email: " + user.email)
                 )
             )
         ).toString();

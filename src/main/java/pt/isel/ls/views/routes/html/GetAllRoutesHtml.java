@@ -20,9 +20,9 @@ public class GetAllRoutesHtml implements View {
         }
 
         elements.add(tr(
-            th("SID"),
-            th("StartLocation"),
-            th("EndLocation"),
+            th("Route Id"),
+            th("Start Location"),
+            th("End Location"),
             th("Distance")
 
         ));
@@ -39,7 +39,7 @@ public class GetAllRoutesHtml implements View {
 
         Element html = html(
             head(
-                title("Routes: ")
+                title("Routes:")
 
             ),
             body(

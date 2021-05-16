@@ -20,7 +20,7 @@ public class GetAllSportsHtml implements View {
         }
 
         elements.add(tr(
-            th("SID"),
+            th("SId"),
             th("Name"),
             th("Description")
 
