@@ -78,7 +78,6 @@ public class App {
             registerRoutes();
             registerViews();
         } catch (AppException e) {
-            e.printStackTrace();
             System.out.print(e.getMessage());
         }
 
@@ -116,7 +115,7 @@ public class App {
                 } else {
                     accept = "text/html";
                 }
-                RequestResult requestResult = result.get();
+                RequestResult<?> requestResult = result.get();
                 View view = viewRouter.findView(requestResult.getClass(), accept);
 
                 String res = view.getRepresentation(requestResult);
@@ -134,7 +133,6 @@ public class App {
                 System.out.println("Error getting result");
             }
         } catch (AppException | FileNotFoundException e) {
-            e.printStackTrace();
             System.out.println(e.getMessage());
         }
     }
