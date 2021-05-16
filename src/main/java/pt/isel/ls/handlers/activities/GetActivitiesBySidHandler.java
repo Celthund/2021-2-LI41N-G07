@@ -28,11 +28,12 @@ public class GetActivitiesBySidHandler implements RequestHandler {
     @Override
     public Optional<RequestResult<?>> execute(Request request) throws AppException {
         HashMap<String, String> parameters = request.getParameters();
+        HashMap<String, LinkedList<String>> queryString = request.getQueryStrings();
 
         if (parameters.containsKey("sid")) {
-            return Optional.of(getActivitiesBySid(parameters.get("sid"),
-                    parameters.get("skip"),
-                    parameters.get("top")));
+            return Optional.of(getActivitiesBySid(queryString.get("sid").getFirst(),
+                    queryString.get("skip").getFirst(),
+                    queryString.get("top").getFirst()));
         }
 
         throw new InvalidRequestException();

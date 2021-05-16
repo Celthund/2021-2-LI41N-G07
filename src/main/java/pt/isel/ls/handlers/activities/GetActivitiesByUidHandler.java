@@ -31,9 +31,12 @@ public class GetActivitiesByUidHandler implements RequestHandler {
     @Override
     public Optional<RequestResult<?>> execute(Request request) throws AppException {
         HashMap<String, String> parameters = request.getParameters();
+        HashMap<String, LinkedList<String>> queryString = request.getQueryStrings();
+
         if (parameters.containsKey("uid")) {
             return Optional
-                .of(getActivitiesByUid(parameters.get("uid"), parameters.get("skip"), parameters.get("top")));
+                .of(getActivitiesByUid(parameters.get("uid"), queryString.get("skip").getFirst(),
+                        queryString.get("top").getFirst()));
         }
         throw new InvalidRequestException();
     }

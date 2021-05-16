@@ -52,7 +52,6 @@ public class CreateActivityHandler implements RequestHandler {
             return Optional.of(createActivity(sid, uid, duration, date, rid));
         }
 
-
         throw new InvalidRequestException();
     }
 }
