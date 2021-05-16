@@ -16,8 +16,8 @@ public class GetActivityByUidHandler implements RequestHandler {
 
     ActivitiesModel model = new ActivitiesModel();
 
-    private GetActivitiesByUidResult getActivityByUid(String uid) throws AppException {
-        LinkedList<Activity> activities = model.getActivitiesByUid(uid);
+    private GetActivitiesByUidResult getActivityByUid(String uid, String skip, String top) throws AppException {
+        LinkedList<Activity> activities = model.getActivitiesByUid(uid, skip, top);
 
         if (activities != null) {
             return new GetActivitiesByUidResult(200, activities, "Found " + activities.size()
@@ -32,7 +32,7 @@ public class GetActivityByUidHandler implements RequestHandler {
     public Optional<RequestResult<?>> execute(Request request) throws AppException {
         HashMap<String, String> parameters = request.getParameters();
         if (parameters.containsKey("uid")) {
-            return Optional.of(getActivityByUid(parameters.get("uid")));
+            return Optional.of(getActivityByUid(parameters.get("uid"), parameters.get("skip"), parameters.get("top")));
         }
         throw new InvalidRequestException();
     }

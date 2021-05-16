@@ -16,8 +16,8 @@ public class GetActivityBySidHandler implements RequestHandler {
 
     ActivitiesModel model = new ActivitiesModel();
 
-    private GetActivitiesBySidResult getActivityBySid(String sid) throws AppException {
-        LinkedList<Activity> activities = model.getActivitiesBySid(sid);
+    private GetActivitiesBySidResult getActivityBySid(String sid, String skip, String top) throws AppException {
+        LinkedList<Activity> activities = model.getActivitiesBySid(sid, skip, top);
         if (activities != null) {
             return new GetActivitiesBySidResult(200, activities, "Found " + activities.size()
                 + " activities with sid = " + sid);
@@ -30,7 +30,9 @@ public class GetActivityBySidHandler implements RequestHandler {
         HashMap<String, String> parameters = request.getParameters();
 
         if (parameters.containsKey("sid")) {
-            return Optional.of(getActivityBySid(parameters.get("sid")));
+            return Optional.of(getActivityBySid(parameters.get("sid"),
+                    parameters.get("skip"),
+                    parameters.get("top")));
         }
 
         throw new InvalidRequestException();

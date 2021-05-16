@@ -16,8 +16,8 @@ public class GetActivitiesByTopsHandler implements RequestHandler {
     ActivitiesModel model = new ActivitiesModel();
 
     private GetActivitiesByTopsResult getActivitiesByTops(String sid, String orderBy, String date, String rid,
-                                                          String distance) throws AppException {
-        LinkedList<Activity> activities = model.getActivitiesByTops(sid, orderBy, date, rid, distance);
+                                                          String distance, String skip, String top) throws AppException {
+        LinkedList<Activity> activities = model.getActivitiesByTops(sid, orderBy, date, rid, distance, skip, top);
 
         if (activities != null) {
             return new GetActivitiesByTopsResult(200, activities,
@@ -38,7 +38,11 @@ public class GetActivitiesByTopsHandler implements RequestHandler {
                 ? request.getQueryStrings().get("rid").getFirst() : null;
             String distance = request.getQueryStrings().containsKey("distance")
                 ? request.getQueryStrings().get("distance").getFirst() : null;
-            return Optional.of(getActivitiesByTops(sid, orderBy, date, rid, distance));
+            String skip = request.getQueryStrings().containsKey("skip")
+                    ? request.getQueryStrings().get("skip").getFirst() : null;
+            String top = request.getQueryStrings().containsKey("top")
+                    ? request.getQueryStrings().get("top").getFirst() : null;
+            return Optional.of(getActivitiesByTops(sid, orderBy, date, rid, distance, skip, top));
         }
         throw new InvalidRequestException();
     }
