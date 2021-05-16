@@ -18,7 +18,7 @@ public class GetAllRoutesPlainText implements View {
 
         StringBuilder stringBuilder = new StringBuilder();
         for (Route route : routers) {
-            stringBuilder.append(getRoutePlainText(route));
+            stringBuilder.append(getRoutePlainText(route)).append('\n');
         }
         return stringBuilder.toString();
     }
