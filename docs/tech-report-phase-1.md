@@ -1,8 +1,8 @@
-# Relatório técnico da Fase 1
+# Relatório técnico da Fase 2
 
 ## Introdução
 
-Este documento contém os aspectos relevantes do desenho e implementação da fase 1 do projecto de LS.
+Este documento contém os aspectos relevantes do desenho e implementação da fase 2 do projecto de Laboratório de Software.
 
 ## Modelação da base de dados
 
@@ -15,13 +15,13 @@ O seguinte diagrama apresenta o modelo entidade-associação para a informação
 Destacam-se os seguintes aspectos deste modelo:
 
 * Existem 4 relações neste modelo, com objetivo de registar actividades desportivas e sua duração:
-    * A relação `routes` é composta pelos atributos `startlocation`, `endlocation` e `distance` sendo os dois primeiros do tipo `varchar(80)` e o ultimo do tipo `int`. A chave primária é assegurada pelo atributo `rid` sendo este do tipo `serial` (auto-incrementável). 
+    * A relação `routes` é composta pelos atributos `startlocation`, `endlocation`, `distance` e `timestamp` sendo os dois primeiros do tipo `varchar(80)` e o ultimo do tipo `int`. A chave primária é assegurada pelo atributo `rid` sendo este do tipo `serial` (auto-incrementável). 
     
-    * A relação `sports` é composta pelos atributos `name` e `description` sendo o primeiro do tipo `varchar(80)` e o ultimo do tipo `varchar(120)`. A chave primária é assegurada pelo atributo `sid` sendo este do tipo `serial` (auto-incrementável).
+    * A relação `sports` é composta pelos atributos `name`, `description` e `timestamp` sendo o primeiro do tipo `varchar(80)` e o ultimo do tipo `varchar(120)`. A chave primária é assegurada pelo atributo `sid` sendo este do tipo `serial` (auto-incrementável).
     
-    * A relação `users` é composta pelos atributos `name` e `email` sendo ambos do tipo `varchar(80)`. A chave primária é assegurada pelo atributo `uid` sendo este do tipo `serial` (auto-incrementável) .
+    * A relação `users` é composta pelos atributos `name`, `email` e `timestamp` sendo ambos do tipo `varchar(80)`. A chave primária é assegurada pelo atributo `uid` sendo este do tipo `serial` (auto-incrementável) .
     
-    * A relação `activities` é composta pelos atributos `uid`, `sid`, `rid`, `date` e `duration` sendo os três primeiros chaves estrangeiras para outras relações e do tipo `inteiro` enquanto que o atributo `date` é do tipo `date` e o atributo `duration` pela necessidade de armazenar informação ao milisegundo foi definido como sendo do tipo `bigint`.
+    * A relação `activities` é composta pelos atributos `uid`, `sid`, `rid`, `date`, `duration` e `timestamp` sendo os três primeiros chaves estrangeiras para outras relações e do tipo `inteiro` enquanto que o atributo `date` é do tipo `date` e o atributo `duration` pela necessidade de armazenar informação ao milisegundo foi definido como sendo do tipo `bigint`.
 
 
 O modelo conceptual apresenta ainda as seguintes restrições:
@@ -33,7 +33,9 @@ O modelo conceptual apresenta ainda as seguintes restrições:
     * `uid` é referência para a chave primária da relação `users.uid`
     
     * `rid` é referência para a chave primária da relação `routes.rid` sendo este atributo facultativo (`NULL`) pois a actividade não obriga à associação de uma rota pre-existente.
-    
+
+* Na fase 2 do projeto foi incluído o atributo `timeStamp` em cada uma das relações de modo a identificar os registos eliminados pelos utilizadores permanecendo o registo para evitar questões de inconsistência de dados e também para permitir a eventual auditoria do sistema.     
+
 ### Modelação física ###
 
 O modelo físico da base de dados está presente em ([SQL Script](../src/scripts/sql/createSchema.sql)).
@@ -55,12 +57,11 @@ Por sua vez, o Request é passado ao Router para encontrar a route e executar o 
 A verificação da instrução é realizada pelo método `findRoute` da classe `Router` que recebe o request 
 referido na secção anterior e o processa percorrendo uma árvore n-ária definida com todos os caminhos possíveis registados na aplicação. 
 Esta árvore começa com o primeiro nível a corresponder ao `method` e os seguintes níveis a todas a subdivisões do `path`,
-como as subdivisões podem conter valores variáveis, foi criado uma flag boleana que ao ser verdadeira ignora a pesquisa do valor na àrvore pois este
-será um parâmetro a fornecer a quando da execução do metodo.
+como as subdivisões podem conter valores variáveis, foi criado uma flag boleana que ao ser verdadeira ignora a pesquisa do valor na 
+árvore pois este será um parâmetro a fornecer a quando da execução do metodo.
 Concluida a validação, é executado o metodo `execute` do ultimo nó encontrado passando o request como argumento. 
 Finalmente o nó que recebe o request, verifica o método e também a existência de parâmetros 
-executanto o metodo correspondente à chamada assim que validado.
-
+executanto a classe correspondente à chamada assim que validado.
 
 ### Gestão de ligações
 
@@ -88,7 +89,8 @@ Todos estas exceções têm uma mensagem que é apresentada ao utilizador.
 
 ## Avaliação crítica
 
-Fazer com que os modelos recebam os tipos de argumentos corretos e serem as views a validar e modificar para o tipo correto
+Implementar uma maior variedade de testes.
+
+*OLD:* Fazer com que os modelos recebam os tipos de argumentos corretos e serem as views a validar e modificar para o tipo correto
 os dados que venham do utilizador.
 Criar uma maior abstração na criação de views com objetivo de diminuir a complexidade do `execute`.
-Implementar uma maior variedade de testes.
