@@ -93,7 +93,8 @@ public class App {
                 HashMap<String, LinkedList<String>> headers = request.getHeaders();
                 if (headers.containsKey("file-name")) {
                     PrintWriter printWriter = new PrintWriter(headers.get("file-name").getFirst());
-                    printWriter.print(res);
+                    printWriter.write(res);
+                    printWriter.close();
                 } else {
                     System.out.println(res);
                 }
