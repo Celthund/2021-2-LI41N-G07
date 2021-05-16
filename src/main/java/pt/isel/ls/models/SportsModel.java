@@ -31,7 +31,7 @@ public class SportsModel {
             preparedStatement.close();
             connection.close();
         } catch (SQLException throwable) {
-            throw new ServerErrorException("Server Error! Failed get Sport.");
+            throw new ServerErrorException("Failed getting sport with id = " + sid + ".");
         }
         return sport;
     }
@@ -66,7 +66,7 @@ public class SportsModel {
             }
             connection.close();
         } catch (SQLException throwable) {
-            throw new ServerErrorException("Server Error! Failed getting all the Sports.");
+            throw new ServerErrorException("Failed getting all sports.");
         }
         return sports;
     }
@@ -98,7 +98,7 @@ public class SportsModel {
             connection.setAutoCommit(true);
 
         } catch (SQLException throwable) {
-            throw new ServerErrorException("Server Error! Failed to create Sport.");
+            throw new ServerErrorException("Failed creating sport.");
         }
         return sport;
     }

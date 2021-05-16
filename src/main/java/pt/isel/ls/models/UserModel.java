@@ -33,7 +33,7 @@ public class UserModel {
             preparedStatement.close();
             connection.close();
         } catch (SQLException throwable) {
-            throw new ServerErrorException("Server Error! Fail getting User.");
+            throw new ServerErrorException("Failed getting user with id = " + id + ".");
         }
         return user;
     }
@@ -65,7 +65,7 @@ public class UserModel {
             }
             connection.close();
         } catch (SQLException throwables) {
-            throw new ServerErrorException("Server Error! Fail getting Users.");
+            throw new ServerErrorException("Failed getting all users.");
         }
         return users;
     }
@@ -97,7 +97,7 @@ public class UserModel {
             connection.setAutoCommit(true);
 
         } catch (SQLException throwable) {
-            throw new ServerErrorException("Server Error! Fail getting User.");
+            throw new ServerErrorException("Failed creating user.");
         }
         return user;
     }

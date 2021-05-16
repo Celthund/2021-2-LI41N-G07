@@ -7,7 +7,6 @@ import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.exceptions.BadRequestException;
 import pt.isel.ls.exceptions.ServerErrorException;
 import pt.isel.ls.models.domainclasses.Activity;
-
 import static pt.isel.ls.utils.Utils.getDataSource;
 
 
@@ -87,7 +86,7 @@ public class ActivitiesModel {
             preparedStatement.close();
             connection.close();
         } catch (SQLException throwable) {
-            throw new ServerErrorException("Server Error! Fail getting Activities.");
+            throw new ServerErrorException("Failed getting activities by tops.");
         }
         return activities;
     }
@@ -122,7 +121,7 @@ public class ActivitiesModel {
             preparedStatement.close();
             connection.close();
         } catch (SQLException throwable) {
-            throw new ServerErrorException("Server Error! Fail getting Activity.");
+            throw new ServerErrorException("Failed getting activities by uid.");
         }
         return activities;
     }
@@ -199,7 +198,7 @@ public class ActivitiesModel {
             connection.close();
 
         } catch (SQLException e) {
-            throw new ServerErrorException("Server Error! Fail creating Activity.");
+            throw new ServerErrorException("Failed creating activity.");
         }
         return activity;
     }
@@ -234,7 +233,7 @@ public class ActivitiesModel {
             preparedStatement.close();
             connection.close();
         } catch (SQLException throwable) {
-            throw new ServerErrorException("Server Error! Fail getting Activity.");
+            throw new ServerErrorException("Failed getting activity by aid and sid.");
         }
         return activity;
     }
@@ -270,7 +269,7 @@ public class ActivitiesModel {
             preparedStatement.close();
             connection.close();
         } catch (SQLException throwable) {
-            throw new ServerErrorException("Server Error! Fail getting Activity.");
+            throw new ServerErrorException("Failed getting activity by sid.");
         }
         return activities;
     }
@@ -335,8 +334,7 @@ public class ActivitiesModel {
             }
             connection.close();
         } catch (SQLException throwable) {
-            throwable.printStackTrace();
-            throw new ServerErrorException("Server Error! Fail getting Activity.");
+            throw new ServerErrorException("Failed deleting activity.");
         }
         // Returns all the activity removed
         return activities;
