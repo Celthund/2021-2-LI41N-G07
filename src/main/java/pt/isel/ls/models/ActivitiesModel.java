@@ -7,7 +7,6 @@ import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.exceptions.BadRequestException;
 import pt.isel.ls.exceptions.ServerErrorException;
 import pt.isel.ls.models.domainclasses.Activity;
-
 import static pt.isel.ls.utils.Utils.getDataSource;
 
 
