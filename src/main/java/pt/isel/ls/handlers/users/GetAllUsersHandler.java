@@ -14,8 +14,8 @@ public class GetAllUsersHandler implements RequestHandler {
 
     UserModel model = new UserModel();
 
-    public GetAllUsersResult getAllUsers() throws AppException {
-        LinkedList<User> users = model.getAllUsers();
+    public GetAllUsersResult getAllUsers(String skip, String top) throws AppException {
+        LinkedList<User> users = model.getAllUsers(skip, top);
         if (users.size() > 0) {
             return new GetAllUsersResult(200, users, users.size() + " users found.");
         }
@@ -24,6 +24,10 @@ public class GetAllUsersHandler implements RequestHandler {
 
     @Override
     public Optional<RequestResult> execute(Request request) throws AppException {
-        return Optional.of(getAllUsers());
+
+        if(request.getQueryStrings().containsKey("skip") && request.getQueryStrings().containsKey("top") )
+            return  Optional.of(getAllUsers(request.getQueryStrings().get("skip").getFirst(), request.getQueryStrings().get("top").getFirst()));
+
+        return  Optional.of(getAllUsers(null, null));
     }
 }
