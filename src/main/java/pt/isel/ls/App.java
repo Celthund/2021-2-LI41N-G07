@@ -110,20 +110,13 @@ public class App {
             Optional<RequestResult<?>> result = handler.execute(request);
             // If there is a RequestResult will show the result
             if (result.isPresent()) {
-                // String that will be the format of output text
                 String accept;
-                // Goes to the header dictionary in the request and checks if the user wrote a
-                //specific format, if that's true it will return that value
                 if (request.getHeaders().containsKey("accept")) {
                     accept = request.getHeaders().get("accept").getFirst();
                 } else {
-                    // The default text format
                     accept = "text/html";
                 }
-                // Gets the result from the execute handler above. It will have the data(Table row values)
-                //the message and the Request Result status(200 OK, 500 Failed to Create Route, etc...)
                 RequestResult requestResult = result.get();
-                // Gets view that corresponds to the accept format and the requestResult
                 View view = viewRouter.findView(requestResult.getClass(), accept);
 
                 // Get's the Representation (html, plaintext, or Json with the request result data)
@@ -132,7 +125,6 @@ public class App {
                 // Gets the Headers dictionary form the request so it can check if the user
                 //specified a file to be written, if not it will be written to the console
                 HashMap<String, LinkedList<String>> headers = request.getHeaders();
-
                 if (headers.containsKey("file-name")) {
                     PrintWriter printWriter = new PrintWriter(headers.get("file-name").getFirst());
                     // Writes the result to the file
@@ -143,6 +135,8 @@ public class App {
                     // Writes the connection to the terminal as the default
                     System.out.println(res);
                 }
+
+
             } else {
                 // It means that the it didnt any result from the sending request
                 System.out.println("Error getting result");
