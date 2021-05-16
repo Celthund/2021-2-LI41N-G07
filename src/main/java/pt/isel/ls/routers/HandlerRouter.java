@@ -1,7 +1,6 @@
 package pt.isel.ls.routers;
 
 import java.util.LinkedList;
-import pt.isel.ls.Node;
 import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.exceptions.RouteAlreadyExistsException;
 import pt.isel.ls.exceptions.RouteNotFoundException;

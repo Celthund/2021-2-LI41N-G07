@@ -1,4 +1,4 @@
-package pt.isel.ls;
+package pt.isel.ls.routers;
 
 import java.util.LinkedList;
 import pt.isel.ls.request.RequestHandler;
