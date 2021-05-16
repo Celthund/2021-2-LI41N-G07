@@ -40,7 +40,10 @@ public abstract class JsonElement {
             stringBuilder.append('\t').append(element.toStringObject("")).append(",\n");
         }
 
-        stringBuilder.deleteCharAt(stringBuilder.length() - 2).append(endTag());
+        if(stringBuilder.length() > 2)
+            stringBuilder.deleteCharAt(stringBuilder.length() - 2);
+
+        stringBuilder.append(endTag());
         return stringBuilder.toString();
     }
 

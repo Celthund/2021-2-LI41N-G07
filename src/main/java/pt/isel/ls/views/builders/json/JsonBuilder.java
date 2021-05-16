@@ -45,8 +45,10 @@ public class JsonBuilder {
             builder.append(getValueString(value));
             builder.append(", ");
         }
+
         // Removes the final comma
-        builder.deleteCharAt(builder.length() - 2);
+        if(builder.length() > 2)
+            builder.deleteCharAt(builder.length() - 2);
 
         // Returns the string with all the variables of the array
         return new JsonArray(builder.toString());
