@@ -23,7 +23,7 @@ public class GetAllSportsHandler implements RequestHandler {
     }
 
     @Override
-    public Optional<RequestResult> execute(Request request) throws AppException {
+    public Optional<RequestResult<?>> execute(Request request) throws AppException {
 
         //Implementation of paging options
         if (request.getQueryStrings().containsKey("skip") && request.getQueryStrings().containsKey("top"))

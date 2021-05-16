@@ -15,8 +15,8 @@ public class GetAllRoutesHandler implements RequestHandler {
     RoutesModel model = new RoutesModel();
 
 
-    public GetAllRoutesResult getAllRoutes() throws AppException {
-        LinkedList<Route> routes = model.getAllRoutes();
+    public GetAllRoutesResult getAllRoutes(String skip, String top) throws AppException {
+        LinkedList<Route> routes = model.getAllRoutes(skip, top);
         if (routes.size() > 0) {
             return new GetAllRoutesResult(200, routes, routes.size() + " routes found.");
         }
@@ -24,7 +24,10 @@ public class GetAllRoutesHandler implements RequestHandler {
     }
 
     @Override
-    public Optional<RequestResult> execute(Request request) throws AppException {
-        return Optional.of(getAllRoutes());
+    public Optional<RequestResult<?>> execute(Request request) throws AppException {
+        if(request.getQueryStrings().containsKey("skip") && request.getQueryStrings().containsKey("top") )
+            return  Optional.of(getAllRoutes(request.getQueryStrings().get("skip").getFirst(), request.getQueryStrings().get("top").getFirst()));
+
+        return  Optional.of(getAllRoutes(null, null));
     }
 }

@@ -27,7 +27,7 @@ public class GetSportByIdHandler implements RequestHandler {
 
 
     @Override
-    public Optional<RequestResult> execute(Request request) throws InvalidRequestException, ServerErrorException {
+    public Optional<RequestResult<?>> execute(Request request) throws InvalidRequestException, ServerErrorException {
         if (request.getParameters().containsKey("sid")) {
             return Optional.of(getSportById(request.getParameters().get("sid")));
         }

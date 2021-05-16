@@ -26,7 +26,7 @@ public class GetUserByIdHandler implements RequestHandler {
     }
 
     @Override
-    public Optional<RequestResult> execute(Request request) throws AppException {
+    public Optional<RequestResult<?>> execute(Request request) throws AppException {
         if (request.getParameters().containsKey("uid")) {
             return Optional.of(getUserById(request.getParameters().get("uid")));
         }

@@ -27,7 +27,7 @@ public class GetRouteByIdHandler implements RequestHandler {
 
 
     @Override
-    public Optional<RequestResult> execute(Request request) throws AppException {
+    public Optional<RequestResult<?>> execute(Request request) throws AppException {
         if (request.getParameters().containsKey("rid")) {
             return Optional.of(getRouteById(request.getParameters().get("rid")));
         }

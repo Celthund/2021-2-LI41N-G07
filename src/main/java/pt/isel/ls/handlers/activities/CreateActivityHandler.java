@@ -27,7 +27,7 @@ public class CreateActivityHandler implements RequestHandler {
     }
 
     @Override
-    public Optional<RequestResult> execute(Request request) throws AppException {
+    public Optional<RequestResult<?>> execute(Request request) throws AppException {
         HashMap<String, LinkedList<String>> queryString = request.getQueryStrings();
         HashMap<String, String> parameters = request.getParameters();
         if (parameters.containsKey("sid")

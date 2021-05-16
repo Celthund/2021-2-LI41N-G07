@@ -24,7 +24,7 @@ public class GetActivityByAidSidHandler implements RequestHandler {
     }
 
     @Override
-    public Optional<RequestResult> execute(Request request) throws AppException {
+    public Optional<RequestResult<?>> execute(Request request) throws AppException {
         HashMap<String, String> parameters = request.getParameters();
 
         if (parameters.containsKey("aid") && parameters.containsKey("sid")) {

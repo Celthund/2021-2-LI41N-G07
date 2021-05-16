@@ -23,7 +23,7 @@ public class CreateSportHandler implements RequestHandler {
     }
 
     @Override
-    public Optional<RequestResult> execute(Request request) throws AppException {
+    public Optional<RequestResult<?>> execute(Request request) throws AppException {
         if (request.getQueryStrings().containsKey("name")
                 && request.getQueryStrings().containsKey("description")
         ) {

@@ -29,7 +29,7 @@ public class GetActivityByUidHandler implements RequestHandler {
 
 
     @Override
-    public Optional<RequestResult> execute(Request request) throws AppException {
+    public Optional<RequestResult<?>> execute(Request request) throws AppException {
         HashMap<String, String> parameters = request.getParameters();
         if (parameters.containsKey("uid")) {
             return Optional.of(getActivityByUid(parameters.get("uid")));

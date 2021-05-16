@@ -34,13 +34,25 @@ public class RoutesModel {
         return route;
     }
 
-    public LinkedList<Route> getAllRoutes() throws ServerErrorException {
+    public LinkedList<Route> getAllRoutes(String skip, String top) throws ServerErrorException {
         LinkedList<Route> routes = new LinkedList<>();
         PGSimpleDataSource db = getDataSource();
         try {
             Connection connection = db.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet routeResult = statement.executeQuery("SELECT * FROM routes");
+            PreparedStatement preparedStatement;
+
+            StringBuilder sqlCmd = new StringBuilder("SELECT * FROM routes");
+
+            if(top != null && skip != null) {
+                sqlCmd.append(" LIMIT ? OFFSET ?");
+                preparedStatement = connection.prepareStatement(sqlCmd.toString());
+                preparedStatement.setInt(1, Integer.parseInt(top));
+                preparedStatement.setInt(2, Integer.parseInt(skip));
+            }else {
+                preparedStatement = connection.prepareStatement(sqlCmd.toString());
+            }
+
+            ResultSet routeResult = preparedStatement.executeQuery();
             while (routeResult.next()) {
                 routes.add(new Route(
                     routeResult.getInt("rid"),

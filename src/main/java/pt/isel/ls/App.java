@@ -77,7 +77,7 @@ public class App {
             Request request = new Request(input);
             // Finds the route through the request created and returns a RequestResult
             RequestHandler handler = handlerRouter.findRoute(request);
-            Optional<RequestResult> result = handler.execute(request);
+            Optional<RequestResult<?>> result = handler.execute(request);
             // If there is a RequestResult will show the result
             if (result.isPresent()) {
                 String accept;

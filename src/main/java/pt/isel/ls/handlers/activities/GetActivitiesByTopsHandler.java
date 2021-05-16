@@ -28,7 +28,7 @@ public class GetActivitiesByTopsHandler implements RequestHandler {
 
 
     @Override
-    public Optional<RequestResult> execute(Request request) throws AppException {
+    public Optional<RequestResult<?>> execute(Request request) throws AppException {
         if (request.getQueryStrings().containsKey("sid") && request.getQueryStrings().containsKey("orderBy")) {
             String sid = request.getQueryStrings().get("sid").getFirst();
             String orderBy = request.getQueryStrings().get("orderBy").getFirst();

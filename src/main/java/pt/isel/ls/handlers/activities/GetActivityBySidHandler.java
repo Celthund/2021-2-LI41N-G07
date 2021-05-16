@@ -26,7 +26,7 @@ public class GetActivityBySidHandler implements RequestHandler {
     }
 
     @Override
-    public Optional<RequestResult> execute(Request request) throws AppException {
+    public Optional<RequestResult<?>> execute(Request request) throws AppException {
         HashMap<String, String> parameters = request.getParameters();
 
         if (parameters.containsKey("sid")) {

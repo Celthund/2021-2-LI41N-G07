@@ -23,7 +23,7 @@ public class CreateUserHandler implements RequestHandler {
     }
 
     @Override
-    public Optional<RequestResult> execute(Request request) throws AppException {
+    public Optional<RequestResult<?>> execute(Request request) throws AppException {
         if (request.getQueryStrings().containsKey("name")
                 && request.getQueryStrings().containsKey("email")) {
             return Optional.of(createUser(

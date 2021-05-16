@@ -24,7 +24,7 @@ public class CreateRouteHandler implements RequestHandler {
     }
 
     @Override
-    public Optional<RequestResult> execute(Request request) throws AppException {
+    public Optional<RequestResult<?>> execute(Request request) throws AppException {
 
         if (request.getQueryStrings().containsKey("startlocation")
             && request.getQueryStrings().containsKey("endlocation")

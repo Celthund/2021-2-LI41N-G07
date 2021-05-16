@@ -6,5 +6,5 @@ import pt.isel.ls.results.RequestResult;
 
 
 public interface RequestHandler {
-    Optional<RequestResult> execute(Request request) throws AppException;
+    Optional<RequestResult<?>> execute(Request request) throws AppException;
 }

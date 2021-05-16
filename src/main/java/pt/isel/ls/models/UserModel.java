@@ -67,29 +67,6 @@ public class UserModel {
         return users;
     }
 
-    /*
-    public LinkedList<User> getAllUsers() throws ServerErrorException {
-        LinkedList<User> users = new LinkedList<>();
-        PGSimpleDataSource db = getDataSource();
-        try {
-            Connection connection = db.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet userResult = statement.executeQuery("SELECT * FROM users");
-            while (userResult.next()) {
-                users.add(new User(
-                    userResult.getString("name"),
-                    userResult.getString("email"),
-                    userResult.getInt("uid")));
-            }
-            connection.close();
-        } catch (SQLException throwables) {
-            throw new ServerErrorException("Server Error! Fail getting Users.");
-        }
-        return users;
-    }
-
-
-     */
     public User createUser(String name, String email) throws ServerErrorException {
         User user = null;
         PGSimpleDataSource db = getDataSource();

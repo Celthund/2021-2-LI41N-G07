@@ -23,7 +23,7 @@ public class GetAllUsersHandler implements RequestHandler {
     }
 
     @Override
-    public Optional<RequestResult> execute(Request request) throws AppException {
+    public Optional<RequestResult<?>> execute(Request request) throws AppException {
 
         if(request.getQueryStrings().containsKey("skip") && request.getQueryStrings().containsKey("top") )
             return  Optional.of(getAllUsers(request.getQueryStrings().get("skip").getFirst(), request.getQueryStrings().get("top").getFirst()));
