@@ -1,10 +1,13 @@
 package pt.isel.ls.models;
 
-import java.sql.*;
-import java.util.LinkedList;
 import org.postgresql.ds.PGSimpleDataSource;
 import pt.isel.ls.exceptions.ServerErrorException;
 import pt.isel.ls.models.domainclasses.Sport;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.LinkedList;
 import static pt.isel.ls.utils.Utils.getDataSource;
 
 public class SportsModel {
@@ -21,9 +24,9 @@ public class SportsModel {
             ResultSet sportResult = preparedStatement.executeQuery();
             if (sportResult.next()) {
                 sport = new Sport(
-                    sportResult.getInt("sid"),
-                    sportResult.getString("name"),
-                    sportResult.getString("description"));
+                        sportResult.getInt("sid"),
+                        sportResult.getString("name"),
+                        sportResult.getString("description"));
             }
             preparedStatement.close();
             connection.close();
@@ -33,18 +36,33 @@ public class SportsModel {
         return sport;
     }
 
-    public LinkedList<Sport> getAllSports() throws ServerErrorException {
+    public LinkedList<Sport> getAllSports(String skip, String top) throws ServerErrorException {
         LinkedList<Sport> sports = new LinkedList<>();
         PGSimpleDataSource db = getDataSource();
         try {
             Connection connection = db.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet sportResult = statement.executeQuery("SELECT * FROM sports");
+            PreparedStatement preparedStatement;
+            StringBuilder sqlCmd = new StringBuilder("SELECT * FROM sports");
+
+            //Paging implementation
+            if (skip != null && top != null) {
+                sqlCmd.append(" LIMIT ? OFFSET ?;");
+                preparedStatement = connection.prepareStatement(sqlCmd.toString());
+                preparedStatement.setInt(1, Integer.parseInt(top));
+                preparedStatement.setInt(2, Integer.parseInt(skip));
+
+            } else {
+                sqlCmd.append(";");
+                preparedStatement = connection.prepareStatement(sqlCmd.toString());
+            }
+
+            ResultSet sportResult = preparedStatement.executeQuery();
+
             while (sportResult.next()) {
                 sports.add(new Sport(
-                    sportResult.getInt("sid"),
-                    sportResult.getString("name"),
-                    sportResult.getString("description")));
+                        sportResult.getInt("sid"),
+                        sportResult.getString("name"),
+                        sportResult.getString("description")));
             }
             connection.close();
         } catch (SQLException throwable) {
@@ -69,9 +87,9 @@ public class SportsModel {
                 ResultSet sportResult = connection.createStatement().executeQuery(sqlCmd);
                 if (sportResult.next()) {
                     sport = new Sport(
-                        sportResult.getInt("sid"),
-                        sportResult.getString("name"),
-                        sportResult.getString("description"));
+                            sportResult.getInt("sid"),
+                            sportResult.getString("name"),
+                            sportResult.getString("description"));
                 }
                 connection.commit();
             }
