@@ -17,7 +17,7 @@ public class GetActivityBySidHandler implements RequestHandler {
     ActivitiesModel model = new ActivitiesModel();
 
     private GetActivitiesBySidResult getActivityBySid(String sid) throws AppException {
-        LinkedList<Activity> activities = model.getActivityBySid(sid);
+        LinkedList<Activity> activities = model.getActivitiesBySid(sid);
         if (activities != null) {
             return new GetActivitiesBySidResult(200, activities, "Found " + activities.size()
                 + " activities with sid = " + sid);
