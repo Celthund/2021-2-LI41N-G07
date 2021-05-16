@@ -1,12 +1,12 @@
 package pt.isel.ls.handlers.users;
 
-import pt.isel.ls.request.RequestHandler;
-import pt.isel.ls.models.domainclasses.User;
+import java.util.Optional;
 import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.exceptions.InvalidRequestException;
 import pt.isel.ls.models.UserModel;
+import pt.isel.ls.models.domainclasses.User;
 import pt.isel.ls.request.Request;
-import java.util.Optional;
+import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.users.CreateUserResult;
 
@@ -25,10 +25,10 @@ public class CreateUserHandler implements RequestHandler {
     @Override
     public Optional<RequestResult<?>> execute(Request request) throws AppException {
         if (request.getQueryStrings().containsKey("name")
-                && request.getQueryStrings().containsKey("email")) {
+            && request.getQueryStrings().containsKey("email")) {
             return Optional.of(createUser(
-                    request.getQueryStrings().get("name").getFirst(),
-                    request.getQueryStrings().get("email").getFirst()));
+                request.getQueryStrings().get("name").getFirst(),
+                request.getQueryStrings().get("email").getFirst()));
         }
         throw new InvalidRequestException();
     }

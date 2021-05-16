@@ -1,14 +1,15 @@
 package pt.isel.ls.views.activities.json;
 
+import java.util.LinkedList;
 import pt.isel.ls.exceptions.InvalidJsonException;
 import pt.isel.ls.models.domainclasses.Activity;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.activities.GetActivitiesBySidResult;
 import pt.isel.ls.views.View;
-import pt.isel.ls.views.builders.json.parts.JsonObject;
-import java.util.LinkedList;
 import static pt.isel.ls.views.builders.json.JsonBuilder.*;
-import static pt.isel.ls.views.builders.json.JsonGetter.*;
+import static pt.isel.ls.views.builders.json.JsonGetter.emptyDataSetJson;
+import static pt.isel.ls.views.builders.json.JsonGetter.getActivityJson;
+import pt.isel.ls.views.builders.json.parts.JsonObject;
 
 public class GetActivitiesBySidJson implements View {
     @Override
@@ -16,9 +17,10 @@ public class GetActivitiesBySidJson implements View {
         LinkedList<Activity> activities = ((GetActivitiesBySidResult) requestResult).getData();
         LinkedList<JsonObject> objects = new LinkedList<>();
 
-        if (activities == null)
+        if (activities == null) {
             return emptyDataSetJson(requestResult.getMessage(),
-                    requestResult.getStatus()).toString();
+                requestResult.getStatus()).toString();
+        }
 
         for (Activity activity : activities) {
             objects.add(getActivityJson(activity));

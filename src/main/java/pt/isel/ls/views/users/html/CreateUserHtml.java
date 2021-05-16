@@ -17,17 +17,17 @@ public class CreateUserHtml implements View {
             return emptyDataSetHtml(requestResult.getMessage()).toString();
         }
         return html(
-                head(
-                        title("User " + user.id)
-                ),
-                body(
-                        h1("User ID: " + user.id),
-                        dl(
-                                dt("id: " + user.id),
-                                dt("name: " + user.name),
-                                dt("email: " + user.email)
-                        )
+            head(
+                title("User " + user.id)
+            ),
+            body(
+                h1("User ID: " + user.id),
+                dl(
+                    dt("id: " + user.id),
+                    dt("name: " + user.name),
+                    dt("email: " + user.email)
                 )
+            )
         ).toString();
     }
 }

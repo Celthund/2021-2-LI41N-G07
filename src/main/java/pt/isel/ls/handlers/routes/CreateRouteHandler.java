@@ -1,12 +1,12 @@
 package pt.isel.ls.handlers.routes;
 
-import pt.isel.ls.request.RequestHandler;
+import java.util.Optional;
 import pt.isel.ls.exceptions.AppException;
-import pt.isel.ls.models.domainclasses.Route;
 import pt.isel.ls.exceptions.InvalidRequestException;
 import pt.isel.ls.models.RoutesModel;
+import pt.isel.ls.models.domainclasses.Route;
 import pt.isel.ls.request.Request;
-import java.util.Optional;
+import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.routes.CreateRouteResult;
 

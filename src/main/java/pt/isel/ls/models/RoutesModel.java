@@ -1,6 +1,9 @@
 package pt.isel.ls.models;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import org.postgresql.ds.PGSimpleDataSource;
 import pt.isel.ls.exceptions.ServerErrorException;
@@ -21,10 +24,10 @@ public class RoutesModel {
             ResultSet routeResult = preparedStatement.executeQuery();
             if (routeResult.next()) {
                 route = new Route(
-                        routeResult.getInt("rid"),
-                        routeResult.getInt("distance"),
-                        routeResult.getString("startLocation"),
-                        routeResult.getString("endLocation"));
+                    routeResult.getInt("rid"),
+                    routeResult.getInt("distance"),
+                    routeResult.getString("startLocation"),
+                    routeResult.getString("endLocation"));
             }
             preparedStatement.close();
             connection.close();
@@ -43,12 +46,12 @@ public class RoutesModel {
 
             StringBuilder sqlCmd = new StringBuilder("SELECT * FROM routes");
 
-            if(top != null && skip != null) {
+            if (top != null && skip != null) {
                 sqlCmd.append(" LIMIT ? OFFSET ?");
                 preparedStatement = connection.prepareStatement(sqlCmd.toString());
                 preparedStatement.setInt(1, Integer.parseInt(top));
                 preparedStatement.setInt(2, Integer.parseInt(skip));
-            }else {
+            } else {
                 preparedStatement = connection.prepareStatement(sqlCmd.toString());
             }
 
@@ -84,10 +87,10 @@ public class RoutesModel {
                 ResultSet routeResult = connection.createStatement().executeQuery(sqlCmd);
                 if (routeResult.next()) {
                     route = new Route(
-                            routeResult.getInt("rid"),
-                            routeResult.getInt("distance"),
-                            routeResult.getString("startlocation"),
-                            routeResult.getString("endlocation"));
+                        routeResult.getInt("rid"),
+                        routeResult.getInt("distance"),
+                        routeResult.getString("startlocation"),
+                        routeResult.getString("endlocation"));
                 }
                 connection.commit();
             }

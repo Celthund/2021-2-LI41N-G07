@@ -27,6 +27,7 @@ public class GetActivitiesByUidHandler implements RequestHandler {
         return new GetActivitiesByUidResult(404, null, "Activity not found");
     }
 
+
     @Override
     public Optional<RequestResult<?>> execute(Request request) throws AppException {
         HashMap<String, String> parameters = request.getParameters();

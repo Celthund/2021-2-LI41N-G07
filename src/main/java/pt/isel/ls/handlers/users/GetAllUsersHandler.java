@@ -1,12 +1,12 @@
 package pt.isel.ls.handlers.users;
 
-import pt.isel.ls.request.RequestHandler;
-import pt.isel.ls.models.domainclasses.User;
-import pt.isel.ls.exceptions.AppException;
-import pt.isel.ls.models.UserModel;
-import pt.isel.ls.request.Request;
 import java.util.LinkedList;
 import java.util.Optional;
+import pt.isel.ls.exceptions.AppException;
+import pt.isel.ls.models.UserModel;
+import pt.isel.ls.models.domainclasses.User;
+import pt.isel.ls.request.Request;
+import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.users.GetAllUsersResult;
 
@@ -25,9 +25,11 @@ public class GetAllUsersHandler implements RequestHandler {
     @Override
     public Optional<RequestResult<?>> execute(Request request) throws AppException {
 
-        if(request.getQueryStrings().containsKey("skip") && request.getQueryStrings().containsKey("top") )
-            return  Optional.of(getAllUsers(request.getQueryStrings().get("skip").getFirst(), request.getQueryStrings().get("top").getFirst()));
+        if (request.getQueryStrings().containsKey("skip") && request.getQueryStrings().containsKey("top")) {
+            return Optional.of(getAllUsers(request.getQueryStrings().get("skip").getFirst(),
+                request.getQueryStrings().get("top").getFirst()));
+        }
 
-        return  Optional.of(getAllUsers(null, null));
+        return Optional.of(getAllUsers(null, null));
     }
 }

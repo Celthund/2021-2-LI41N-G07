@@ -1,5 +1,8 @@
 package pt.isel.ls.handlers.activities;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Optional;
 import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.exceptions.InvalidRequestException;
 import pt.isel.ls.models.ActivitiesModel;
@@ -8,9 +11,6 @@ import pt.isel.ls.request.Request;
 import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.activities.GetActivitiesBySidResult;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Optional;
 
 public class GetActivitiesBySidHandler implements RequestHandler {
 

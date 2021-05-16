@@ -1,20 +1,18 @@
 package pt.isel.ls.request;
 
-import pt.isel.ls.exceptions.InvalidRequestException;
 import java.util.HashMap;
 import java.util.LinkedList;
+import pt.isel.ls.exceptions.InvalidRequestException;
 
 public class Request {
-    private String[] path;
-    private Method method;
     // Hashmap where we store all parameters
     private final HashMap<String, LinkedList<String>> queryStrings = new HashMap<>();
-
     // Hashmap where the requested headers are stored
     private final HashMap<String, LinkedList<String>> headers = new HashMap<>();
-
     // Hashmap to store the variable path value
     private final HashMap<String, String> parameters = new HashMap<>();
+    private String[] path;
+    private Method method;
 
     // Constructor if there are parameters to receive
     public Request(Method method, String path, String queryString) throws InvalidRequestException {
@@ -55,13 +53,17 @@ public class Request {
         return result.toString();
     }
 
+    public Method getMethod() {
+        return method;
+    }
+
     // Setters and getters
     public void setMethod(Method method) {
         this.method = method;
     }
 
-    public Method getMethod() {
-        return method;
+    public String[] getPath() {
+        return path;
     }
 
     public void setPath(String path) {
@@ -74,10 +76,9 @@ public class Request {
 
     }
 
-    public String[] getPath() {
-        return path;
+    public HashMap<String, LinkedList<String>> getQueryStrings() {
+        return queryStrings;
     }
-
 
     // Adds to the queryString Hashmap all the parameters
     public void setQueryStrings(String queryStrings) throws InvalidRequestException {
@@ -102,10 +103,6 @@ public class Request {
                 this.queryStrings.put(keyValue[0], l);
             }
         }
-    }
-
-    public HashMap<String, LinkedList<String>> getQueryStrings() {
-        return queryStrings;
     }
 
     public void addParameter(String key, String value) {

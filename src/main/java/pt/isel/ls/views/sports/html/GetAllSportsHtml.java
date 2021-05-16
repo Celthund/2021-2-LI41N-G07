@@ -1,12 +1,12 @@
 package pt.isel.ls.views.sports.html;
 
+import java.util.LinkedList;
 import pt.isel.ls.exceptions.InvalidJsonException;
 import pt.isel.ls.models.domainclasses.Sport;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.sports.GetAllSportsResult;
 import pt.isel.ls.views.View;
 import pt.isel.ls.views.builders.html.Element;
-import java.util.LinkedList;
 import static pt.isel.ls.views.builders.html.HtmlBuilder.*;
 
 public class GetAllSportsHtml implements View {
@@ -15,8 +15,9 @@ public class GetAllSportsHtml implements View {
         LinkedList<Sport> sports = ((GetAllSportsResult) requestResult).getData();
         LinkedList<Element> elements = new LinkedList<>();
 
-        if (sports == null)
+        if (sports == null) {
             sports = new LinkedList<>();
+        }
 
         elements.add(tr(
             th("SID"),

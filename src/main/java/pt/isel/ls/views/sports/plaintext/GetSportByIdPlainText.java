@@ -12,8 +12,9 @@ public class GetSportByIdPlainText implements View {
     public String getRepresentation(RequestResult<?> requestResult) {
         Sport sport = ((GetSportByIdResult) requestResult).getData();
 
-        if (sport == null)
+        if (sport == null) {
             return requestResult.getMessage();
+        }
 
         return getSportPlainText(sport);
     }

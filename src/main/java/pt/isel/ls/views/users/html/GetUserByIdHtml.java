@@ -12,21 +12,22 @@ public class GetUserByIdHtml implements View {
     public String getRepresentation(RequestResult<?> requestResult) {
         User user = ((GetUserByIdResult) requestResult).getData();
 
-        if (user == null)
+        if (user == null) {
             return emptyDataSetHtml(requestResult.getMessage()).toString();
+        }
 
         return html(
-                head(
-                        title("User " + user.id)
-                ),
-                body(
-                        h1("User ID: " + user.id),
-                        ul(
-                                li("id: " + user.id),
-                                li("name: " + user.name),
-                                li("email: " + user.email)
-                        )
+            head(
+                title("User " + user.id)
+            ),
+            body(
+                h1("User ID: " + user.id),
+                ul(
+                    li("id: " + user.id),
+                    li("name: " + user.name),
+                    li("email: " + user.email)
                 )
+            )
         ).toString();
     }
 }

@@ -1,7 +1,7 @@
 package pt.isel.ls.views.builders.json.parts;
 
-import pt.isel.ls.views.builders.json.JsonElement;
 import java.util.LinkedList;
+import pt.isel.ls.views.builders.json.JsonElement;
 
 public class JsonPut extends JsonElement {
 

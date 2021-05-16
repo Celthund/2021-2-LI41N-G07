@@ -1,11 +1,14 @@
 package pt.isel.ls.views.builders.json;
 
 import pt.isel.ls.exceptions.InvalidJsonException;
-import pt.isel.ls.models.domainclasses.*;
-import pt.isel.ls.views.builders.json.parts.JsonObject;
+import pt.isel.ls.models.domainclasses.Activity;
 import static pt.isel.ls.models.domainclasses.Activity.durationToString;
+import pt.isel.ls.models.domainclasses.Route;
+import pt.isel.ls.models.domainclasses.Sport;
+import pt.isel.ls.models.domainclasses.User;
 import static pt.isel.ls.views.builders.json.JsonBuilder.jsonObject;
 import static pt.isel.ls.views.builders.json.JsonBuilder.jsonPut;
+import pt.isel.ls.views.builders.json.parts.JsonObject;
 
 public class JsonGetter {
     public static JsonObject getUserJson(User user) throws InvalidJsonException {
@@ -56,8 +59,8 @@ public class JsonGetter {
 
     public static JsonObject emptyDataSetJson(String message, int status) throws InvalidJsonException {
         return jsonObject(
-                jsonPut("Message", message),
-                jsonPut("Status", status)
+            jsonPut("Message", message),
+            jsonPut("Status", status)
         );
     }
 }

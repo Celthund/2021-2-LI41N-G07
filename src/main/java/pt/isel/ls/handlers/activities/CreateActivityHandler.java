@@ -1,14 +1,14 @@
 package pt.isel.ls.handlers.activities;
 
-import pt.isel.ls.request.RequestHandler;
-import pt.isel.ls.exceptions.AppException;
-import pt.isel.ls.models.domainclasses.Activity;
-import pt.isel.ls.exceptions.InvalidRequestException;
-import pt.isel.ls.models.ActivitiesModel;
-import pt.isel.ls.request.Request;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Optional;
+import pt.isel.ls.exceptions.AppException;
+import pt.isel.ls.exceptions.InvalidRequestException;
+import pt.isel.ls.models.ActivitiesModel;
+import pt.isel.ls.models.domainclasses.Activity;
+import pt.isel.ls.request.Request;
+import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.activities.CreateActivityResult;
 
@@ -31,9 +31,9 @@ public class CreateActivityHandler implements RequestHandler {
         HashMap<String, LinkedList<String>> queryString = request.getQueryStrings();
         HashMap<String, String> parameters = request.getParameters();
         if (parameters.containsKey("sid")
-                && queryString.containsKey("uid")
-                && queryString.containsKey("duration")
-                && queryString.containsKey("date")) {
+            && queryString.containsKey("uid")
+            && queryString.containsKey("duration")
+            && queryString.containsKey("date")) {
             String sid = parameters.get("sid");
             String uid = queryString.get("uid").getFirst();
             String duration = queryString.get("duration").getFirst();

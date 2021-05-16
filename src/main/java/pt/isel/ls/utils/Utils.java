@@ -1,7 +1,7 @@
 package pt.isel.ls.utils;
 
-import org.postgresql.ds.PGSimpleDataSource;
 import static java.lang.System.getenv;
+import org.postgresql.ds.PGSimpleDataSource;
 
 
 public class Utils {
