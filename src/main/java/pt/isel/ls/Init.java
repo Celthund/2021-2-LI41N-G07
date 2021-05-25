@@ -1,11 +1,5 @@
 package pt.isel.ls;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Optional;
-import java.util.Scanner;
 import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.handlers.activities.*;
 import pt.isel.ls.handlers.routes.CreateRouteHandler;
@@ -66,48 +60,30 @@ import pt.isel.ls.views.users.plaintext.CreateUserPlainText;
 import pt.isel.ls.views.users.plaintext.GetAllUsersPlainText;
 import pt.isel.ls.views.users.plaintext.GetUserByIdPlainText;
 
-public class App {
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Optional;
 
-    private static final HandlerRouter handlerRouter = new HandlerRouter();
-    private static final ViewRouter viewRouter = new ViewRouter();
+public class Init {
+    private final HandlerRouter handlerRouter = new HandlerRouter();
+    private final ViewRouter viewRouter = new ViewRouter();
 
-
-    public static void main(String[] args) {
-        Init init = new Init();
-        // Method that register the routes
-        try {
-            init.registerRoutes();
-            init.registerViews();
-        } catch (AppException e) {
-            e.printStackTrace();
-            System.out.print(e.getMessage());
-        }
-
-        // Checks the args length to see if it will enter user mode or execute the command right away
-        if (args.length == 0) {
-            System.out.print("> ");
-            Scanner scanner = new Scanner(System.in);
-            String input;
-            while (!(input = scanner.nextLine()).equalsIgnoreCase("EXIT /")) {
-                run(input);
-                System.out.print("> ");
-            }
-        } else {
-            StringBuilder input = new StringBuilder();
-            for (String string : args) {
-                input.append(string).append(" ");
-            }
-            run(input.toString());
-        }
-
+    public RequestHandler findRoute(Request request) throws AppException{
+        return  handlerRouter.findRoute(request);
     }
 
-    private static void run(String input) {
+    public View findView(RequestResult<?> requestResult, String accept) throws AppException {
+        return viewRouter.findView(requestResult.getClass(), accept);
+    }
+
+    public void run(String input) {
         try {
             // Sets the request with the arguments sent by the user
             Request request = new Request(input);
             // Finds the route through the request created and returns a RequestResult
-            RequestHandler handler = handlerRouter.findRoute(request);
+            RequestHandler handler = findRoute(request);
             Optional<RequestResult<?>> result = handler.execute(request);
             // If there is a RequestResult will show the result
             if (result.isPresent()) {
@@ -117,8 +93,8 @@ public class App {
                 } else {
                     accept = "text/html";
                 }
-                RequestResult requestResult = result.get();
-                View view = viewRouter.findView(requestResult.getClass(), accept);
+                RequestResult<?> requestResult = result.get();
+                View view = findView(requestResult, accept);
 
                 // Get's the Representation (html, plaintext, or Json with the request result data)
                 //properly formatted
@@ -149,9 +125,9 @@ public class App {
     }
 
     // Used to register the Routes
-    private static void registerRoutes() throws AppException {
+    public void registerRoutes() throws AppException {
         handlerRouter.addRoute("OPTION", "/", request -> Optional.of(
-            new OptionResult(200, null, handlerRouter.print()))
+                new OptionResult(200, null, handlerRouter.print()))
         );
 
         // Adds a Method and Path to a handler class
@@ -176,7 +152,7 @@ public class App {
     }
 
     //Creates all the views
-    private static void registerViews() throws AppException {
+    public void registerViews() throws AppException {
 
         // Links the result to the corresponding, so when a result is get, it can show the proper view
 
@@ -200,7 +176,7 @@ public class App {
         viewRouter.addView(GetActivitiesBySidResult.class, "text/plain", new GetActivitiesBySidResultPlainText());
         viewRouter.addView(GetActivitiesByUidResult.class, "text/plain", new GetActivitiesByUidResultPlainText());
         viewRouter
-            .addView(DeleteActivitiesByUidAidResult.class, "text/plain", new DeleteActivitiesByUidAidPlainText());
+                .addView(DeleteActivitiesByUidAidResult.class, "text/plain", new DeleteActivitiesByUidAidPlainText());
 
         //-----------------------------Creates the views for Json--------------------------------------//
         viewRouter.addView(CreateUserResult.class, "application/json", new CreateUserJson());
@@ -221,7 +197,7 @@ public class App {
         viewRouter.addView(GetActivitiesByUidResult.class, "application/json", new GetActivitiesByUidJson());
         viewRouter.addView(GetActivitiesByTopsResult.class, "application/json", new GetActivitiesByTopsJson());
         viewRouter
-            .addView(DeleteActivitiesByUidAidResult.class, "application/json", new DeleteActivitiesByUidAidJson());
+                .addView(DeleteActivitiesByUidAidResult.class, "application/json", new DeleteActivitiesByUidAidJson());
 
 
         //-----------------------------Creates the views for html--------------------------------------//

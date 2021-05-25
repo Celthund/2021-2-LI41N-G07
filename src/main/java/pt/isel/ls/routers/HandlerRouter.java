@@ -148,6 +148,9 @@ public class HandlerRouter {
             }
         }
 
+        if(nodeFound.getHandler() == null){
+            throw new RouteNotFoundException("Route not found.");
+        }
         // Stores the execute to then send it
         return nodeFound.getHandler();
     }
