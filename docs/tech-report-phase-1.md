@@ -1,8 +1,8 @@
-# Relatório técnico da Fase 1
+# Relatório técnico da Fase 2
 
 ## Introdução
 
-Este documento contém os aspectos relevantes do desenho e implementação da fase 1 do projecto de LS.
+Este documento contém os aspectos relevantes do desenho e implementação da fase 2 do projecto de Laboratório de Software.
 
 ## Modelação da base de dados
 
@@ -10,7 +10,7 @@ Este documento contém os aspectos relevantes do desenho e implementação da fa
 
 O seguinte diagrama apresenta o modelo entidade-associação para a informação gerida pelo sistema. 
 
-![Diagrama Entidade-associação](ERDiagram.png)
+![Diagrama Entidade-associação](ERDiagramF2.png)
 
 Destacam-se os seguintes aspectos deste modelo:
 
@@ -21,7 +21,12 @@ Destacam-se os seguintes aspectos deste modelo:
     
     * A relação `users` é composta pelos atributos `name` e `email` sendo ambos do tipo `varchar(80)`. A chave primária é assegurada pelo atributo `uid` sendo este do tipo `serial` (auto-incrementável) .
     
-    * A relação `activities` é composta pelos atributos `uid`, `sid`, `rid`, `date` e `duration` sendo os três primeiros chaves estrangeiras para outras relações e do tipo `inteiro` enquanto que o atributo `date` é do tipo `date` e o atributo `duration` pela necessidade de armazenar informação ao milisegundo foi definido como sendo do tipo `bigint`.
+    * A relação `activities` é composta pelos atributos `uid`, `sid`, `rid`, `date`, `duration` e `ts_deleted` sendo os 
+    três primeiros chaves estrangeiras para outras relações e do tipo `inteiro` enquanto que o atributo `date` 
+    é do tipo `date` e o atributo `duration` pela necessidade de armazenar informação ao milisegundo foi definido 
+    como sendo do tipo `bigint`. Na segunda fase do projeto foi adicionado o atributo `ts_deleted` para designar que e
+    quando um registo é eliminado. A eliminação não é fisica mas o registo fica com essa identificação pelo que não surgirá
+    listado nas consultas à relação.
 
 
 O modelo conceptual apresenta ainda as seguintes restrições:
@@ -49,6 +54,15 @@ Destacam-se os seguintes aspectos deste modelo:
 Para o processamento de comandos foi criada a classe `Request` que realiza o `parse` da `String` recebida. Este `parse` 
 separa a `String` nas suas propriedades como por exemplo `method`, `path`, etc...
 Por sua vez, o Request é passado ao Router para encontrar a route e executar o handler correspondente.
+Na segunda fase de implementação do projeto, optou-se pela aproximação a um modelo MVC em que cada classe handler 
+passou a ser uma implementação da Interface RequestHandler. 
+ A interface RequestHandler impõe a implementação do método `execute` que por sua vez retorna um Optional do tipo 
+ RequestResult após a chamada do método correspondente do modelo, que é responsável pela execução de comandos na base de
+ dados.
+ 
+ A segunda fase do projeto requeria a implementação de metodos de visualização dos dados nos formatos HTML, JSON e Plain Text
+ a qual foi realizada através do desenvolvimento das classes correspondentes para cada uma das entidades e para cada um dos
+ formatos sendo que todos implementam a Interface `View` que impõe o metodo `getRepresentation`. 
 
 ### Encaminhamento dos comandos
 
@@ -61,7 +75,6 @@ Concluida a validação, é executado o metodo `execute` do ultimo nó encontrad
 Finalmente o nó que recebe o request, verifica o método e também a existência de parâmetros 
 executanto o metodo correspondente à chamada assim que validado.
 
-
 ### Gestão de ligações
 
 Cada modelo é responsável por pedir a criação de um novo datasource ao package Utils, realizar as queries necessárias 
@@ -69,9 +82,11 @@ ao seu propósito e finalmente garantindo o encerramento de todas as ligações 
 
 ### Acesso a dados
 
-Foram desenvolvidas classes para representar cada area do problema, nomeadamente `user`, `sports`, `activities` e `routes` de modo
-a abstrair as transações de dados da base de dados. Estas classes devolvem sempre representações unitárias de uma identidade
-como por exemplo, a classe `UserModel` irá sempre retornar instâncias de `User`.  
+Foram desenvolvidas classes para representar cada área do problema, nomeadamente `user`, `sports`, `activities` e `routes`, 
+alocadas ao package `model`, de modo a abstrair as transações de dados da base de dados. Estas classes devolvem 
+sempre representações unitárias de uma identidade como por exemplo, a classe `UserModel` irá sempre 
+retornar instâncias de `User`. 
+Foi adicionado ao modelo de dados os 
 
 Na maioria dos casos, as queries são de sintaxe trivial. Nas inserções, de forma a retornar uma representação unitária, 
 é feita uma query extra para procura da entrada acabada de inserir.
@@ -88,7 +103,4 @@ Todos estas exceções têm uma mensagem que é apresentada ao utilizador.
 
 ## Avaliação crítica
 
-Fazer com que os modelos recebam os tipos de argumentos corretos e serem as views a validar e modificar para o tipo correto
-os dados que venham do utilizador.
-Criar uma maior abstração na criação de views com objetivo de diminuir a complexidade do `execute`.
-Implementar uma maior variedade de testes.
+Implementar uma maior quantidade e variedade de testes.

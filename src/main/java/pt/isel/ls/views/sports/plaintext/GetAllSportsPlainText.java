@@ -19,7 +19,7 @@ public class GetAllSportsPlainText implements View {
 
         StringBuilder stringBuilder = new StringBuilder();
         for (Sport sport : sports) {
-            stringBuilder.append(getSportPlainText(sport));
+            stringBuilder.append(getSportPlainText(sport)).append('\n');
         }
         return stringBuilder.toString();
     }

@@ -7,7 +7,6 @@ import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.exceptions.BadRequestException;
 import pt.isel.ls.exceptions.ServerErrorException;
 import pt.isel.ls.models.domainclasses.Activity;
-
 import static pt.isel.ls.utils.Utils.getDataSource;
 
 
@@ -41,17 +40,19 @@ public class ActivitiesModel {
         if (rid != null) {
             sqlCmd.append(" and rid = ?");
         }
-        if (skip != null && top != null) {
-            sqlCmd.append(" LIMIT ? OFFSET ?");
-        }
 
         // Checks what order the user pretends to see the query
         if ((orderBy.equals("ascending"))) {
-            sqlCmd.append(" order by duration asc;");
+            sqlCmd.append(" order by duration asc");
         } else if (orderBy.equals("descending")) {
-            sqlCmd.append(" order by duration desc;");
+            sqlCmd.append(" order by duration desc");
         } else {
             throw new BadRequestException("Invalid Order By");
+        }
+
+
+        if (skip != null && top != null) {
+            sqlCmd.append(" LIMIT ? OFFSET ?");
         }
 
         // Get the configurations to set up the DB connection
@@ -87,7 +88,7 @@ public class ActivitiesModel {
             preparedStatement.close();
             connection.close();
         } catch (SQLException throwable) {
-            throw new ServerErrorException("Server Error! Fail getting Activities.");
+            throw new ServerErrorException("Failed getting activities by tops.");
         }
         return activities;
     }
@@ -122,7 +123,7 @@ public class ActivitiesModel {
             preparedStatement.close();
             connection.close();
         } catch (SQLException throwable) {
-            throw new ServerErrorException("Server Error! Fail getting Activity.");
+            throw new ServerErrorException("Failed getting activities by uid.");
         }
         return activities;
     }
@@ -173,7 +174,7 @@ public class ActivitiesModel {
 
             // Creates a new activity with the value it got from the query
             if (preparedStatement.executeUpdate() == 1) {
-                sqlCmd = "SELECT * FROM activities WHERE IS NULL ORDER BY aid DESC LIMIT 1;";
+                sqlCmd = "SELECT * FROM activities WHERE ts_deleted IS NULL ORDER BY aid DESC LIMIT 1;";
                 ResultSet activityResult = connection.createStatement().executeQuery(sqlCmd);
                 if (activityResult.next()) {
                     int checkRid;
@@ -199,7 +200,7 @@ public class ActivitiesModel {
             connection.close();
 
         } catch (SQLException e) {
-            throw new ServerErrorException("Server Error! Fail creating Activity.");
+            throw new ServerErrorException("Failed creating activity.");
         }
         return activity;
     }
@@ -234,7 +235,7 @@ public class ActivitiesModel {
             preparedStatement.close();
             connection.close();
         } catch (SQLException throwable) {
-            throw new ServerErrorException("Server Error! Fail getting Activity.");
+            throw new ServerErrorException("Failed getting activity by aid and sid.");
         }
         return activity;
     }
@@ -248,14 +249,14 @@ public class ActivitiesModel {
             Connection connection = db.getConnection();
             PreparedStatement preparedStatement;
 
-            StringBuilder sqlCmd = new StringBuilder("SELECT * FROM activities WHERE sid = ?");
+            StringBuilder sqlCmd = new StringBuilder("SELECT * FROM activities WHERE ts_deleted is NULL AND sid = ? ");
 
             //Paging implementation
             if (skip != null && top != null) {
                 sqlCmd.append(" LIMIT ? OFFSET ?");
                 preparedStatement = connection.prepareStatement(sqlCmd.toString());
                 preparedStatement.setInt(2, Integer.parseInt(top));
-                preparedStatement.setInt(2, Integer.parseInt(skip));
+                preparedStatement.setInt(3, Integer.parseInt(skip));
             } else {
                 preparedStatement = connection.prepareStatement(sqlCmd.toString());
             }
@@ -270,7 +271,7 @@ public class ActivitiesModel {
             preparedStatement.close();
             connection.close();
         } catch (SQLException throwable) {
-            throw new ServerErrorException("Server Error! Fail getting Activity.");
+            throw new ServerErrorException("Failed getting activity by sid.");
         }
         return activities;
     }
@@ -335,8 +336,7 @@ public class ActivitiesModel {
             }
             connection.close();
         } catch (SQLException throwable) {
-            throwable.printStackTrace();
-            throw new ServerErrorException("Server Error! Fail getting Activity.");
+            throw new ServerErrorException("Failed deleting activity.");
         }
         // Returns all the activity removed
         return activities;

@@ -1,5 +1,6 @@
 package pt.isel.ls.handlers.activities;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Optional;
 import pt.isel.ls.exceptions.AppException;
@@ -30,19 +31,15 @@ public class GetActivitiesByTopsHandler implements RequestHandler {
 
     @Override
     public Optional<RequestResult<?>> execute(Request request) throws AppException {
-        if (request.getQueryStrings().containsKey("sid") && request.getQueryStrings().containsKey("orderBy")) {
-            String sid = request.getQueryStrings().get("sid").getFirst();
-            String orderBy = request.getQueryStrings().get("orderBy").getFirst();
-            String date = request.getQueryStrings().containsKey("date")
-                ? request.getQueryStrings().get("date").getFirst() : null;
-            String rid = request.getQueryStrings().containsKey("rid")
-                ? request.getQueryStrings().get("rid").getFirst() : null;
-            String distance = request.getQueryStrings().containsKey("distance")
-                ? request.getQueryStrings().get("distance").getFirst() : null;
-            String skip = request.getQueryStrings().containsKey("skip")
-                ? request.getQueryStrings().get("skip").getFirst() : null;
-            String top = request.getQueryStrings().containsKey("top")
-                ? request.getQueryStrings().get("top").getFirst() : null;
+        HashMap<String, LinkedList<String>> queryString = request.getQueryStrings();
+        if (queryString.containsKey("sid") && queryString.containsKey("orderBy")) {
+            String sid = queryString.get("sid").getFirst();
+            String orderBy = queryString.get("orderBy").getFirst();
+            String date = queryString.containsKey("date") ? queryString.get("date").getFirst() : null;
+            String rid = queryString.containsKey("rid") ? queryString.get("rid").getFirst() : null;
+            String distance = queryString.containsKey("distance") ? queryString.get("distance").getFirst() : null;
+            String skip = queryString.containsKey("skip") ? queryString.get("skip").getFirst() : null;
+            String top = queryString.containsKey("top") ? queryString.get("top").getFirst() : null;
             return Optional.of(getActivitiesByTops(sid, orderBy, date, rid, distance, skip, top));
         }
         throw new InvalidRequestException();

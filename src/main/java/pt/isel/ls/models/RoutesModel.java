@@ -32,7 +32,7 @@ public class RoutesModel {
             preparedStatement.close();
             connection.close();
         } catch (SQLException throwable) {
-            throw new ServerErrorException("Server Error! Fail getting Routes.");
+            throw new ServerErrorException("Failed getting route with id = " + rid + ".");
         }
         return route;
     }
@@ -65,7 +65,7 @@ public class RoutesModel {
             }
             connection.close();
         } catch (SQLException throwable) {
-            throw new ServerErrorException("Server Error! Fail getting Routes.");
+            throw new ServerErrorException("Failed getting all routes.");
         }
         return routes;
     }
@@ -100,7 +100,7 @@ public class RoutesModel {
             connection.close();
 
         } catch (SQLException throwables) {
-            throw new ServerErrorException("Server Error! Fail getting Route.");
+            throw new ServerErrorException("Failed creating route.");
         }
         return route;
     }

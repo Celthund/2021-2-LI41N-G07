@@ -14,7 +14,7 @@ public class Table extends Element {
 
     @Override
     protected String beginTag() {
-        return "<table>";
+        return "<table border=\"1\">";
     }
 
     @Override

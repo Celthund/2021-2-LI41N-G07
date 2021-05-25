@@ -18,14 +18,14 @@ public class GetUserByIdHtml implements View {
 
         return html(
             head(
-                title("User " + user.id)
+                title("User" + user.id)
             ),
             body(
                 h1("User ID: " + user.id),
                 ul(
-                    li("id: " + user.id),
-                    li("name: " + user.name),
-                    li("email: " + user.email)
+                    li("Id: " + user.id),
+                    li("Name: " + user.name),
+                    li("Email: " + user.email)
                 )
             )
         ).toString();
