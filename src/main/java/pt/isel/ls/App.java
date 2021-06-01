@@ -1,6 +1,7 @@
 package pt.isel.ls;
 
 
+import java.util.Locale;
 import java.util.Scanner;
 
 import pt.isel.ls.exceptions.AppException;
@@ -36,7 +37,7 @@ public class App {
             Scanner scanner = new Scanner(System.in);
             String input;
             while (!(input = scanner.nextLine()).equalsIgnoreCase("EXIT /")) {
-                if (input.equals("LISTEN /")) {
+                if (input.equalsIgnoreCase("LISTEN /")) {
                     try {
                         startServer(init);
                     } catch (Exception e) {

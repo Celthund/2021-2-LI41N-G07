@@ -108,4 +108,12 @@ public class HtmlBuilder {
         return new DT(content);
     }
 
+    public static A a(String href, Element... elements) {
+        return new A(href, elements);
+    }
+
+    public static A a(String href, String content) {
+        return new A(href, content);
+    }
+
 }

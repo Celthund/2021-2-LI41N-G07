@@ -59,7 +59,7 @@ public class TimeServlet extends HttpServlet {
                 resp.setStatus(requestResult.getStatus());
                 Charset utf8= StandardCharsets.UTF_8;
 
-                resp.setContentType(String.format("text/html; charset=%s", utf8.name()));
+                resp.setContentType(String.format(accept + "; charset=%s", utf8.name()));
 
                 byte[] respBodyBytes = respBody.getBytes(utf8);
                 resp.setContentLength(respBodyBytes.length);

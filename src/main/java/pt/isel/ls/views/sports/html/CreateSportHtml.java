@@ -14,8 +14,7 @@ public class CreateSportHtml implements View {
         Sport sport = ((CreateSportResult) requestResult).getData();
 
         if (sport == null) {
-            return emptyDataSetJson(requestResult.getMessage(),
-                requestResult.getStatus()).toString();
+            return html().toString();
         }
 
         return html(

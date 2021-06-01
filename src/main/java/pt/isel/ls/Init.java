@@ -15,6 +15,7 @@ import pt.isel.ls.request.Request;
 import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.results.OptionResult;
 import pt.isel.ls.results.RequestResult;
+import pt.isel.ls.results.RootResult;
 import pt.isel.ls.results.activities.*;
 import pt.isel.ls.results.routes.CreateRouteResult;
 import pt.isel.ls.results.routes.GetAllRoutesResult;
@@ -28,6 +29,7 @@ import pt.isel.ls.results.users.GetUserByIdResult;
 import pt.isel.ls.routers.HandlerRouter;
 import pt.isel.ls.routers.ViewRouter;
 import pt.isel.ls.views.OptionPlainText;
+import pt.isel.ls.views.RootHtml;
 import pt.isel.ls.views.View;
 import pt.isel.ls.views.activities.html.*;
 import pt.isel.ls.views.activities.json.*;
@@ -130,6 +132,12 @@ public class Init {
                 new OptionResult(200, null, handlerRouter.print()))
         );
 
+        handlerRouter.addRoute("GET", "/", request -> Optional.of(
+                new RootResult(200, null, "HomePage"))
+        );
+
+
+
         // Adds a Method and Path to a handler class
         handlerRouter.addRoute("GET", "/users", new GetAllUsersHandler());
         handlerRouter.addRoute("GET", "/users/{uid}", new GetUserByIdHandler());
@@ -222,5 +230,6 @@ public class Init {
 
         //-----------------------------Creates the view for OPTION------------------------------------//
         viewRouter.addView(OptionResult.class, "text/html", new OptionPlainText());
+        viewRouter.addView(RootResult.class, "text/html", new RootHtml());
     }
 }
