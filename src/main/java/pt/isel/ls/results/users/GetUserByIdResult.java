@@ -1,11 +1,13 @@
 package pt.isel.ls.results.users;
 
-import pt.isel.ls.models.domainclasses.User;
+import pt.isel.ls.models.domainclasses.Activity;
 import pt.isel.ls.results.RequestResult;
 
-public class GetUserByIdResult extends RequestResult<User> {
+import java.util.LinkedList;
 
-    public GetUserByIdResult(int status, User data, String message) {
+public class GetUserByIdResult extends RequestResult<LinkedList<Activity>> {
+
+    public GetUserByIdResult(int status, LinkedList<Activity> data, String message) {
         super(status, data, message);
     }
 }
