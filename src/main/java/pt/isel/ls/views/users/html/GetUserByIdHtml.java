@@ -69,7 +69,7 @@ public class GetUserByIdHtml implements View {
                 table(
                     elements2.toArray(new Element[0])
                 ),
-                a("/users?skip=0&top=1", "Back to Users")
+                    a("/users?skip=0&top=1", "Back to Users")
             )
         ).toString();
     }
