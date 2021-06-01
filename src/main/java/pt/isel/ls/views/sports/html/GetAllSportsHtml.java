@@ -41,6 +41,7 @@ public class GetAllSportsHtml implements View {
 
             ),
             body(
+                    a("/", "HomePage"),
                 table(
                     elements.toArray(new Element[0])
                 )

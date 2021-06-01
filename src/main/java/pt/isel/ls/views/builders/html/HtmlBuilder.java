@@ -76,6 +76,10 @@ public class HtmlBuilder {
         return new TD(content);
     }
 
+    public static TD td(Element... elements) {
+        return new TD(elements);
+    }
+
     public static TH th(String content) {
         return new TH(content);
     }

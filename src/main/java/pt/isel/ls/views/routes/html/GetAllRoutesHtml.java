@@ -43,6 +43,7 @@ public class GetAllRoutesHtml implements View {
 
             ),
             body(
+                    a("/", "HomePage"),
                 table(
                     elements.toArray(new Element[0])
                 )
