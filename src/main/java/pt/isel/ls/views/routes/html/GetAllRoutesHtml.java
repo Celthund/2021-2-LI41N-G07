@@ -29,21 +29,20 @@ public class GetAllRoutesHtml implements View {
 
         for (Route route : routes) {
             elements.add(tr(
-                td(Integer.toString(route.rid)),
+                td(a("/router/" + route.rid + "?skip=0&top=1", Integer.toString(route.rid))),
                 td(route.startLocation),
                 td(route.endLocation),
                 td(Integer.toString(route.distance))
             ));
         }
 
-
         Element html = html(
             head(
                 title("Routes:")
-
             ),
             body(
                     a("/", "HomePage"),
+                br(),
                 table(
                     elements.toArray(new Element[0])
                 )

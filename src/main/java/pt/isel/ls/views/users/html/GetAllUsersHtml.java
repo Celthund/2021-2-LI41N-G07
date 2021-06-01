@@ -33,7 +33,6 @@ public class GetAllUsersHtml implements View {
             ));
         }
 
-
         Element html = html(
             head(
                 title("Users")
@@ -41,6 +40,7 @@ public class GetAllUsersHtml implements View {
             ),
             body(
                     a("/", "HomePage"),
+                br(),
                 table(
                     elements.toArray(new Element[0])
                 )

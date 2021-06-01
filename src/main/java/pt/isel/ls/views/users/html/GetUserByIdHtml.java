@@ -26,7 +26,8 @@ public class GetUserByIdHtml implements View {
                     li("Id: " + user.id),
                     li("Name: " + user.name),
                     li("Email: " + user.email)
-                )
+                ),
+                    a("/users?skip=0&top=1", "Back to Users")
             )
         ).toString();
     }

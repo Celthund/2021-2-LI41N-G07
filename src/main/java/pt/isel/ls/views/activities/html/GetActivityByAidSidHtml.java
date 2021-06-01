@@ -25,7 +25,10 @@ public class GetActivityByAidSidHtml implements View {
                 ),
                 body(
                         h1("Activity: " + activity.aid),
-                        dl(getActivityHtmlList(activity).toArray(new Element[0]))
+                        dl(getActivityHtmlList(activity).toArray(new Element[0])),
+                        br(),
+                        a("/sports/"+ activity.sport.sid + "/activities?skip=0&top=1", "Back to Sport Activities"),
+                        a("/sports/"+ activity.sport.sid +"?skip=0&top=1", "Back to Sports")
                 )
         ).toString();
     }

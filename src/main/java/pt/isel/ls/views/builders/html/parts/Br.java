@@ -16,6 +16,6 @@ public class Br extends Element {
 
     @Override
     protected String endTag() {
-        return "</br>";
+        return "<br>";
     }
 }

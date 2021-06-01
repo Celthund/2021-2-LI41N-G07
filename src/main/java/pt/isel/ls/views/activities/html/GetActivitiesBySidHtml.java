@@ -32,7 +32,9 @@ public class GetActivitiesBySidHtml implements View {
             ),
             body(
                 h1("Activities"),
-                table(elements.toArray(new Element[0]))
+                table(elements.toArray(new Element[0])),
+                    br(),
+                    a("/sports/"+ activities.getFirst().sport.sid +"?skip=0&top=1", "Back to Sports")
             )
         ).toString();
     }

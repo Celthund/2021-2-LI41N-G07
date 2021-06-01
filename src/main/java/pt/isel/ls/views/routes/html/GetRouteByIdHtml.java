@@ -28,7 +28,8 @@ public class GetRouteByIdHtml implements View {
                     li("Start Location: " + route.startLocation),
                     li("End Location: " + route.endLocation),
                     li("Distance: " + route.distance)
-                )
+                ),
+                    a("/routes?skip=0&top=1", "Back to Routes")
             )
         ).toString();
     }
