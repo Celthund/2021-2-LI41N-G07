@@ -20,7 +20,7 @@ public class GetAllSportsHtml implements View {
         }
 
         elements.add(tr(
-            th("SId"),
+            th("Sid"),
             th("Name"),
             th("Description")
 
@@ -28,7 +28,7 @@ public class GetAllSportsHtml implements View {
 
         for (Sport sport : sports) {
             elements.add(tr(
-                td(Integer.toString(sport.sid)),
+                td(a("/sports/" + sport.sid + "?skip=0&top=1", Integer.toString(sport.sid))),
                 td(sport.name),
                 td(sport.description)
             ));

@@ -1,7 +1,5 @@
 package pt.isel.ls;
 
-
-import java.util.Locale;
 import java.util.Scanner;
 
 import pt.isel.ls.exceptions.AppException;

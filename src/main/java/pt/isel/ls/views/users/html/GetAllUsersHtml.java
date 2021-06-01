@@ -27,7 +27,7 @@ public class GetAllUsersHtml implements View {
 
         for (User user : users) {
             elements.add(tr(
-                td(a("/users/" + user.id, Integer.toString(user.id))),
+                td(a("/users/" + user.id + "?skip=0&top=1", Integer.toString(user.id))),
                 td(user.name),
                 td(user.email)
             ));

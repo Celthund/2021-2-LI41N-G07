@@ -94,7 +94,7 @@ public class HtmlGetter {
         // User id, Name, Email, Sport id, Name, Description, Route id
         // , Start Location, End Location, Distance
         // , Date Duration
-        elements.add(td(Integer.toString(activity.aid)));
+        elements.add(td(a("/sports/" + activity.sport.sid + "/activities/" + activity.aid + "?skip=0&top=1", Integer.toString(activity.aid))));
         elements.add(td(activity.date.toString()));
         elements.add(td(durationToString(activity.duration)));
 

@@ -9,9 +9,9 @@ public class RootHtml implements View{
     public String getRepresentation(RequestResult<?> requestResult) throws AppException {
         return html(
                 body(
-                        a("/users", "Users"),
-                        a("/sports", "Sports"),
-                        a("/routes", "Routes")
+                        a("/users?skip=0&top=1", "Users"),
+                        a("/sports?skip=0&top=1", "Sports"),
+                        a("/routes?skip=0&top=1", "Routes")
                 )
         ).toString();
     }

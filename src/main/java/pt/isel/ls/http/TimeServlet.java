@@ -40,7 +40,7 @@ public class TimeServlet extends HttpServlet {
 
 
         try {
-            Request request = new Request(req.getMethod() + " " + req.getRequestURI());
+            Request request = new Request(req.getMethod() + " " + req.getRequestURI() + " " + req.getQueryString());
             RequestHandler requestHandler = init.findRoute(request);
             Optional<RequestResult<?>> result = requestHandler.execute(request);
             if(result.isPresent()) {
