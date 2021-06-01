@@ -116,4 +116,8 @@ public class HtmlBuilder {
         return new A(href, content);
     }
 
+    public static Br br() {
+        return new Br("");
+    }
+
 }

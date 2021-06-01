@@ -33,7 +33,7 @@ public class HandlerRouter {
         }
 
 
-        // If not fount just creat a new node and add to the head list
+        // If not found just create a new node and add it to the head list
         if (nodeFound == null) {
             nodeFound = new Node();
             nodeFound.setId(method.toUpperCase());
