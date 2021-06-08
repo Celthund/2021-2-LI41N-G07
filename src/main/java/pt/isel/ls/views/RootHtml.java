@@ -7,11 +7,14 @@ import static pt.isel.ls.views.builders.html.HtmlBuilder.*;
 public class RootHtml implements View{
     @Override
     public String getRepresentation(RequestResult<?> requestResult) throws AppException {
+        int skip = 0;
+        int top = 5;
+
         return html(
                 body(
-                        a("/users?skip=0&top=1", "Users"),
-                        a("/sports?skip=0&top=1", "Sports"),
-                        a("/routes?skip=0&top=1", "Routes")
+                        a("/users?skip="  + skip + "&top=" + top, "Users"),
+                        a("/sports?skip=" + skip + "&top=" + top, "Sports"),
+                        a("/routes?skip=" + skip + "&top=" + top, "Routes")
                 )
         ).toString();
     }

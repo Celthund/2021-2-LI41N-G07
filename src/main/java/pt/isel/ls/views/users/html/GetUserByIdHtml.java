@@ -5,6 +5,8 @@ import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.users.GetUserByIdResult;
 import pt.isel.ls.views.View;
 import pt.isel.ls.views.builders.html.Element;
+
+import java.util.HashMap;
 import java.util.LinkedList;
 import static pt.isel.ls.models.domainclasses.Activity.durationToString;
 import static pt.isel.ls.views.builders.html.HtmlBuilder.*;
@@ -19,6 +21,7 @@ public class GetUserByIdHtml implements View {
             return emptyDataSetHtml(requestResult.getMessage()).toString();
         }
 
+
         LinkedList<Element> elements1 = new LinkedList<>();
         elements1.add(tr(
                 th("Sid"),
@@ -30,18 +33,17 @@ public class GetUserByIdHtml implements View {
         for (Activity activity : user) {
             elements1.add(tr(
                     td(a("/sports/" + activity.sport.sid
-                            + "?skip=0&top=1", Integer.toString(activity.sport.sid))),
+                            + "?skip=0&top=5", Integer.toString(activity.sport.sid))),
                     td(activity.sport.name),
                     td(activity.sport.description)
             ));
         }
 
-
         LinkedList<Element> elements2 = new LinkedList<>();
         for (Activity activity : user) {
             elements2.add(td(a("/sports/" + activity.sport.sid
                     + "/activities/" + activity.aid
-                    + "?skip=0&top=1", Integer.toString(activity.aid))));
+                    + "?skip=0&top=5", Integer.toString(activity.aid))));
             elements2.add(td(activity.date.toString()));
             elements2.add(td(durationToString(activity.duration)));
 
@@ -69,7 +71,10 @@ public class GetUserByIdHtml implements View {
                 table(
                     elements2.toArray(new Element[0])
                 ),
-                    a("/users?skip=0&top=1", "Back to Users")
+                    br(),
+                    a("/sports/"+ user.getFirst().sport.sid + "?skip=0&top=5", "Back to Sports Sid"),
+                    br(),
+                    a("/users/?skip=0&top=5", "Back to Users")
             )
         ).toString();
     }

@@ -1,7 +1,9 @@
 package pt.isel.ls.views.routes.html;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import pt.isel.ls.exceptions.InvalidJsonException;
+import pt.isel.ls.models.domainclasses.Activity;
 import pt.isel.ls.models.domainclasses.Route;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.routes.GetAllRoutesResult;
@@ -41,6 +43,7 @@ public class GetAllRoutesHtml implements View {
                 title("Routes:")
             ),
             body(
+                    br(),
                     a("/", "HomePage"),
                 br(),
                 table(
@@ -50,5 +53,30 @@ public class GetAllRoutesHtml implements View {
         );
 
         return html.toString();
+    }
+
+    private LinkedList<Element> getFooter(HashMap<String, LinkedList<String>> queryString, LinkedList<Activity> activities){
+        int skip = 0;
+        int top = 5;
+        if(queryString.containsKey("skip")){
+            skip = Integer.parseInt(queryString.get("skip").getFirst());
+        }
+        if(queryString.containsKey("top")){
+            top = Integer.parseInt(queryString.get("top").getFirst());
+        }
+
+        LinkedList<Element> footer = new LinkedList<>();
+
+        footer.add(br());
+
+        footer.add(a("/sports/"+ activities.getFirst().sport.sid + "?skip=0&top=5", "Back to Sports Sid"));
+        footer.add(a("/sports/"+ activities.getFirst().sport.sid +"/activities/?skip=0&top=5", "Back to Sports Activities"));
+
+        footer.add(a("/sports/"+ activities.getFirst().sport.sid + "/activities/" + activities.getFirst().aid +"?skip="+ (skip + top) + "&top=" + top, "Next"));
+        if(skip > 0) {
+            footer.add(a("/sports/"+ activities.getFirst().sport.sid +"?skip="+ (skip - top) + "&top=" + top, "Previous"));
+        }
+
+        return footer;
     }
 }

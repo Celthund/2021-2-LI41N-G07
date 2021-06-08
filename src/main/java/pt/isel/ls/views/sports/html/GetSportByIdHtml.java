@@ -30,9 +30,10 @@ public class GetSportByIdHtml implements View {
                     li("Name: " + sport.name),
                     li("Description: " + sport.description)
                 ),
-                    a("/sports/" + sport.sid + "/activities?skip=0&top=1", "Activities"),
                     br(),
-                    a("/sports?skip=0&top=1", "Back to Sports")
+                    a("/sports/"+ sport.sid +"/activities?skip=0&top=5", "Sports Activities"),
+                    br(),
+                    a("/sports/?skip=0&top=5", "Back to Sports")
             )
         ).toString();
     }

@@ -45,7 +45,6 @@ public class App {
                     init.run(input);
                     System.out.print("> ");
                 }
-
             }
         } else {
             StringBuilder input = new StringBuilder();

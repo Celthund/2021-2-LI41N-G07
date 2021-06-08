@@ -1,5 +1,7 @@
 package pt.isel.ls.results;
 
+import pt.isel.ls.request.Request;
+
 public abstract class RequestResult<T> {
     // Stores the result status
     private final int status;
@@ -7,6 +9,7 @@ public abstract class RequestResult<T> {
     private final T data;
     // Stores the message to be sent to the user (if needed)
     private final String message;
+    private Request request;
 
     protected RequestResult(int status, T data, String message) {
         this.status = status;
@@ -24,5 +27,13 @@ public abstract class RequestResult<T> {
 
     public int getStatus() {
         return status;
+    }
+
+    public void setRequest(Request request) {
+        this.request = request;
+    }
+
+    public Request getRequest() {
+        return request;
     }
 }

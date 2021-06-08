@@ -96,6 +96,7 @@ public class Init {
                     accept = "text/html";
                 }
                 RequestResult<?> requestResult = result.get();
+                requestResult.setRequest(request);
                 View view = findView(requestResult, accept);
 
                 // Get's the Representation (html, plaintext, or Json with the request result data)
