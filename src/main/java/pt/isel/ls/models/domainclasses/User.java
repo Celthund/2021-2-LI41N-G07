@@ -1,9 +1,12 @@
 package pt.isel.ls.models.domainclasses;
 
+import java.util.LinkedList;
+
 public class User {
     public final String name;
     public final String email;
     public final int id;
+    public LinkedList<Activity> activities = null;
 
     public User(String name, String email, int id) {
         this.name = name;
@@ -18,5 +21,9 @@ public class User {
             + ", email='" + email + '\''
             + ", id=" + id
             + '}';
+    }
+
+    public void setActivities(LinkedList<Activity> activities) {
+        this.activities = activities;
     }
 }

@@ -4,13 +4,13 @@ import pt.isel.ls.exceptions.InvalidJsonException;
 import pt.isel.ls.models.domainclasses.Route;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.routes.GetAllRoutesResult;
-import pt.isel.ls.views.PageNavigation;
 import pt.isel.ls.views.View;
 import pt.isel.ls.views.builders.html.Element;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import static pt.isel.ls.views.PageNavigation.*;
 import static pt.isel.ls.views.builders.html.HtmlBuilder.*;
 
 public class GetAllRoutesHtml implements View {
@@ -44,6 +44,7 @@ public class GetAllRoutesHtml implements View {
         allElements.addFirst(table(
                 elements.toArray(new Element[0])
         ));
+        allElements.addFirst(h1("Routes"));
         allElements.addFirst(br());
         allElements.addFirst(a("/", "HomePage"));
 
@@ -62,17 +63,17 @@ public class GetAllRoutesHtml implements View {
     private LinkedList<Element> getFooter(HashMap<String, LinkedList<String>> queryString, LinkedList<Route> routes) {
         LinkedList<Element> footer = new LinkedList<>();
 
-        int skip = PageNavigation.getSkip(queryString);
-        int top = PageNavigation.getTop(queryString);
+        int skip = getSkip(queryString);
+        int top = getTop(queryString);
 
 
         footer.add(br());
-        if (skip + top < routes.size()) {
+        if (top == routes.size()) {
             footer.add(a("/routes?skip=" + (skip + top) + "&top=" + top, "Next Page"));
             footer.add(br());
         }
         if (skip > 0) {
-            footer.add(a("/routes?skip=" + (skip - top) + "&top=" + top, "Previous Page"));
+            footer.add(a("/routes?skip=" + Math.max(0, (skip - top)) + "&top=" + Math.max(0, top), "Previous Page"));
         }
 
         return footer;

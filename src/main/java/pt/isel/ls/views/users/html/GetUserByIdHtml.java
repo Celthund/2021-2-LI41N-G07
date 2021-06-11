@@ -1,6 +1,7 @@
 package pt.isel.ls.views.users.html;
 
 import pt.isel.ls.models.domainclasses.Activity;
+import pt.isel.ls.models.domainclasses.User;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.users.GetUserByIdResult;
 import pt.isel.ls.views.View;
@@ -8,14 +9,16 @@ import pt.isel.ls.views.builders.html.Element;
 
 import java.util.HashSet;
 import java.util.LinkedList;
+
 import static pt.isel.ls.models.domainclasses.Activity.durationToString;
 import static pt.isel.ls.views.builders.html.HtmlBuilder.*;
-import static pt.isel.ls.views.builders.html.HtmlGetter.*;
+import static pt.isel.ls.views.builders.html.HtmlGetter.emptyDataSetHtml;
+import static pt.isel.ls.views.builders.html.HtmlGetter.getRouteHtmlTableRow;
 
 public class GetUserByIdHtml implements View {
     @Override
     public String getRepresentation(RequestResult<?> requestResult) {
-        LinkedList<Activity> user = ((GetUserByIdResult) requestResult).getData();
+        User user = ((GetUserByIdResult) requestResult).getData();
 
         if (user == null) {
             return emptyDataSetHtml(requestResult.getMessage()).toString();
@@ -32,14 +35,16 @@ public class GetUserByIdHtml implements View {
         // Add HashSet to show only each Sport once
         HashSet<Integer> sportsList = new HashSet<>();
 
-        for (Activity activity : user) {
-            if (!sportsList.contains(activity.sport.sid)) {
-                sportsList.add(activity.sport.sid);
-                sportsElements.add(tr(
-                        td(a("/sports/" + activity.sport.sid , Integer.toString(activity.sport.sid))),
-                        td(activity.sport.name),
-                        td(activity.sport.description)
-                ));
+        if (user.activities != null) {
+            for (Activity activity : user.activities) {
+                if (!sportsList.contains(activity.sport.sid)) {
+                    sportsList.add(activity.sport.sid);
+                    sportsElements.add(tr(
+                            td(a("/sports/" + activity.sport.sid, Integer.toString(activity.sport.sid))),
+                            td(activity.sport.name),
+                            td(activity.sport.description)
+                    ));
+                }
             }
         }
 
@@ -56,7 +61,7 @@ public class GetUserByIdHtml implements View {
                 th("Distance")
         ));
 
-        for (Activity activity : user) {
+        for (Activity activity : user.activities) {
             routesElements = new LinkedList<>();
             routesElements.add(td(a("/sports/" + activity.sport.sid
                     + "/activities/" + activity.aid, Integer.toString(activity.aid))));
@@ -72,28 +77,28 @@ public class GetUserByIdHtml implements View {
         }
 
         return html(
-            head(
-                title("User" + user.getFirst().user.id)
-            ),
-            body(a("/", "HomePage"),
-                br(),
-                h1("User ID: " + user.getFirst().user.id),
-                ul(
-                    li("Id: " + user.getFirst().user.id),
-                    li("Name: " + user.getFirst().user.name),
-                    li("Email: " + user.getFirst().user.email)
+                head(
+                        title("User" + user.id)
                 ),
-                br(),
-                table(
-                    sportsElements.toArray(new Element[0])
-                ),
-                br(),
-                table(
-                    activitiesElements.toArray(new Element[0])
-                ),
-                    br(),
-                    a("/users/?skip=0&top=5", "Back to Users")
-            )
+                body(a("/", "HomePage"),
+                        br(),
+                        h1("User ID: " + user.id),
+                        ul(
+                                li("Id: " + user.id),
+                                li("Name: " + user.name),
+                                li("Email: " + user.email)
+                        ),
+                        br(),
+                        table(
+                                sportsElements.toArray(new Element[0])
+                        ),
+                        br(),
+                        table(
+                                activitiesElements.toArray(new Element[0])
+                        ),
+                        br(),
+                        a("/users/?skip=0&top=5", "Back to Users")
+                )
         ).toString();
     }
 }

@@ -16,13 +16,13 @@ public class GetUserByIdJson implements View {
 
     @Override
     public String getRepresentation(RequestResult<?> requestResult) throws InvalidJsonException {
-        LinkedList<Activity> user = ((GetUserByIdResult) requestResult).getData();
+        User user = ((GetUserByIdResult) requestResult).getData();
 
         if (user == null) {
             return emptyDataSetJson(requestResult.getMessage(),
                 requestResult.getStatus()).toString();
         }
 
-        return getUserJson(user.getFirst().user).toString();
+        return getUserJson(user).toString();
     }
 }

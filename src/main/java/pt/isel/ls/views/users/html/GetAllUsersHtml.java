@@ -42,6 +42,7 @@ public class GetAllUsersHtml implements View {
         allElements.addFirst(table(
                 elements.toArray(new Element[0])
         ));
+        allElements.addFirst(h1("&#128169;Users"));
         allElements.addFirst(br());
         allElements.addFirst(a("/", "HomePage"));
 
@@ -65,12 +66,12 @@ public class GetAllUsersHtml implements View {
 
 
         footer.add(br());
-        if (skip + top < users.size()){
+        if (top == users.size()){
             footer.add(a("/users?skip=" + (skip + top) + "&top=" + top, "Next Page"));
             footer.add(br());
         }
         if(skip > 0) {
-            footer.add(a("/users?skip="+ (skip - top) + "&top=" + top, "Previous Page"));
+            footer.add(a("/users?skip="+ Math.max(0, (skip - top)) + "&top=" + Math.max(0, top), "Previous Page"));
         }
 
         return footer;

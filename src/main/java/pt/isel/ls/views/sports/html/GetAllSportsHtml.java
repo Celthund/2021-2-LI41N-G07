@@ -4,12 +4,12 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import pt.isel.ls.exceptions.InvalidJsonException;
 import pt.isel.ls.models.domainclasses.Sport;
-import pt.isel.ls.models.domainclasses.User;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.sports.GetAllSportsResult;
-import pt.isel.ls.views.PageNavigation;
 import pt.isel.ls.views.View;
 import pt.isel.ls.views.builders.html.Element;
+
+import static pt.isel.ls.views.PageNavigation.*;
 import static pt.isel.ls.views.builders.html.HtmlBuilder.*;
 
 public class GetAllSportsHtml implements View {
@@ -58,16 +58,16 @@ public class GetAllSportsHtml implements View {
     private LinkedList<Element> getFooter(HashMap<String, LinkedList<String>> queryString, LinkedList<Sport> sports){
         LinkedList<Element> footer = new LinkedList<>();
 
-        int skip = PageNavigation.getSkip(queryString);
-        int top = PageNavigation.getTop(queryString);
+        int skip = getSkip(queryString);
+        int top = getTop(queryString);
 
         footer.add(br());
-        if (skip + top < sports.size()){
+        if (top == sports.size()){
             footer.add(a("/sports?skip=" + (skip + top) + "&top=" + top, "Next Page"));
             footer.add(br());
         }
         if(skip > 0) {
-            footer.add(a("/sports?skip="+ (skip - top) + "&top=" + top, "Previous Page"));
+            footer.add(a("/sports?skip="+ Math.max(0, (skip - top)) + "&top=" + Math.max(0, top), "Previous Page"));
         }
 
         return footer;

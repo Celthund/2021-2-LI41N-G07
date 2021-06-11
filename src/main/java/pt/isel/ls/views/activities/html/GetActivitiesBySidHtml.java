@@ -4,6 +4,7 @@ import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.models.domainclasses.Activity;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.activities.GetActivitiesBySidResult;
+import pt.isel.ls.views.PageNavigation;
 import pt.isel.ls.views.View;
 import pt.isel.ls.views.builders.html.Element;
 
@@ -49,8 +50,8 @@ public class GetActivitiesBySidHtml implements View {
     }
 
     private LinkedList<Element> getFooter(HashMap<String, LinkedList<String>> queryString, LinkedList<Activity> activities) {
-        int skip = getSkip(queryString);
-        int top = getTop(queryString);
+        int skip = Math.max(0, PageNavigation.getSkip(queryString));
+        int top = Math.max(0, PageNavigation.getTop(queryString));
 
         LinkedList<Element> footer = new LinkedList<>();
         footer.add(br());
