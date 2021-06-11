@@ -1,13 +1,16 @@
 package pt.isel.ls.views.activities.html;
 
-import java.util.HashMap;
-import java.util.LinkedList;
 import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.models.domainclasses.Activity;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.activities.GetActivitiesBySidResult;
 import pt.isel.ls.views.View;
 import pt.isel.ls.views.builders.html.Element;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+
+import static pt.isel.ls.views.PageNavigation.*;
 import static pt.isel.ls.views.builders.html.HtmlBuilder.*;
 import static pt.isel.ls.views.builders.html.HtmlGetter.getActivityHtmlTableHeader;
 import static pt.isel.ls.views.builders.html.HtmlGetter.getActivityHtmlTableRow;
@@ -32,39 +35,33 @@ public class GetActivitiesBySidHtml implements View {
         LinkedList<Element> allElements = getFooter(queryString, activities);
         allElements.addFirst(table(elements.toArray(new Element[0])));
         allElements.addFirst(h1("Activities"));
+        allElements.addFirst(br());
+        allElements.addFirst(a("/", "HomePage"));
 
         return html(
-            head(
-                title("Activities")
-            ),
-            body(
-                allElements.toArray(new Element[0])
-            )
+                head(
+                        title("Activities")
+                ),
+                body(
+                        allElements.toArray(new Element[0])
+                )
         ).toString();
     }
 
-    private LinkedList<Element> getFooter(HashMap<String, LinkedList<String>> queryString, LinkedList<Activity> activities){
-        int skip = 0;
-        int top = 5;
-        if(queryString.containsKey("skip")){
-            skip = Integer.parseInt(queryString.get("skip").getFirst());
-        }
-        if(queryString.containsKey("top")){
-            top = Integer.parseInt(queryString.get("top").getFirst());
-        }
+    private LinkedList<Element> getFooter(HashMap<String, LinkedList<String>> queryString, LinkedList<Activity> activities) {
+        int skip = getSkip(queryString);
+        int top = getTop(queryString);
 
         LinkedList<Element> footer = new LinkedList<>();
+        footer.add(br());
+        footer.add(a("/sports/" + activities.getFirst().sport.sid, "Back to Sports"));
 
-        footer.add(br());
-
-        footer.add(a("/sports/?skip=0&top=5", "Back to Sports"));
-        footer.add(br());
-        footer.add(a("/sports/"+ activities.getFirst().sport.sid + "/activities/" + activities.getFirst().aid +"?skip=0&top=5", "Back to Activites Sid Aid"));
-        footer.add(br());
-        footer.add(a("/sports/"+ activities.getFirst().sport.sid + "/activities?skip=" + (skip + top) + "&top=" + top, "Next"));
-        if(skip > 0) {
+        if (skip + top < activities.size()){
+            footer.add(a("/sports/" + activities.getFirst().sport.sid + "?skip=" + (skip + top) + "&top=" + top, "Next Page"));
             footer.add(br());
-            footer.add(a("/sports/"+ activities.getFirst().sport.sid +"?skip="+ (skip - top) + "&top=" + top, "Previous"));
+        }
+        if(skip > 0) {
+            footer.add(a("/sports/"+ activities.getFirst().sport.sid + "?skip="+ (skip - top) + "&top=" + top, "Previous Page"));
         }
 
         return footer;

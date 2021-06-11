@@ -5,6 +5,7 @@ import pt.isel.ls.models.domainclasses.Route;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.routes.GetRouteByIdResult;
 import pt.isel.ls.views.View;
+
 import static pt.isel.ls.views.builders.html.HtmlBuilder.*;
 import static pt.isel.ls.views.builders.html.HtmlGetter.emptyDataSetHtml;
 
@@ -18,20 +19,21 @@ public class GetRouteByIdHtml implements View {
         }
 
         return html(
-            head(
-                title("Route" + route.rid)
-            ),
-            body(
-                h1("Route Id: " + route.rid),
-                ul(
-                    li("Id: " + route.rid),
-                    li("Start Location: " + route.startLocation),
-                    li("End Location: " + route.endLocation),
-                    li("Distance: " + route.distance)
+                head(
+                        title("Route" + route.rid)
                 ),
-                    a("/routes?skip=0&top=5", "Back to Routes"),
-                    a("/sports/"+ route.rid +"skip=0&top=5", "Sports")
-            )
+                body(a("/", "HomePage"),
+                        br(),
+                        h1("Route Id: " + route.rid),
+                        ul(
+                                li("Id: " + route.rid),
+                                li("Start Location: " + route.startLocation),
+                                li("End Location: " + route.endLocation),
+                                li("Distance: " + route.distance)
+                        ),
+                        a("/routes?skip=0&top=5", "Back to Routes"),
+                        a("/sports/" + route.rid + "?skip=0&top=5", "Sports")
+                )
         ).toString();
     }
 }

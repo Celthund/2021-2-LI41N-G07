@@ -23,16 +23,22 @@ public class GetActivityByAidSidHtml implements View {
             return emptyDataSetHtml(requestResult.getMessage()).toString();
         }
 
+        LinkedList<Element> allElements = new LinkedList<>();
+        allElements.add(h1("Activity: " + activity.aid));
+        allElements.add(dl(getActivityHtmlList(activity).toArray(new Element[0])));
+        allElements.add(br());
+        allElements.add(a("/users/"+ activity.user.id, "Back to User"));
+        allElements.add( a("/sports/"+ activity.sport.sid, "Back to Sport"));
+        if (activity.route != null)
+            allElements.add( a("/routes/"+ activity.route.rid, "Back to Route"));
+       allElements.add(a("/sports/"+ activity.sport.sid +"/activities/?skip=0&top=5", "Back to Sports Activities"));
+
         return html(
                 head(
                         title("Activity: " + activity.aid)
                 ),
                 body(
-                        h1("Activity: " + activity.aid),
-                        dl(getActivityHtmlList(activity).toArray(new Element[0])),
-                        br(),
-                        a("/sports/"+ activity.sport.sid + "?skip=0&top=5", "Back to Sports Sid"),
-                        a("/sports/"+ activity.sport.sid +"/activities/?skip=0&top=5", "Back to Sports Activities")
+                        allElements.toArray(new Element[0])
                 )
         ).toString();
     }

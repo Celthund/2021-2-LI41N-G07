@@ -36,8 +36,7 @@ public class GetUserByIdHtml implements View {
             if (!sportsList.contains(activity.sport.sid)) {
                 sportsList.add(activity.sport.sid);
                 sportsElements.add(tr(
-                        td(a("/sports/" + activity.sport.sid
-                                + "?skip=0&top=5", Integer.toString(activity.sport.sid))),
+                        td(a("/sports/" + activity.sport.sid , Integer.toString(activity.sport.sid))),
                         td(activity.sport.name),
                         td(activity.sport.description)
                 ));
@@ -60,8 +59,7 @@ public class GetUserByIdHtml implements View {
         for (Activity activity : user) {
             routesElements = new LinkedList<>();
             routesElements.add(td(a("/sports/" + activity.sport.sid
-                    + "/activities/" + activity.aid
-                    + "?skip=0&top=5", Integer.toString(activity.aid))));
+                    + "/activities/" + activity.aid, Integer.toString(activity.aid))));
             routesElements.add(td(activity.date.toString()));
             routesElements.add(td(durationToString(activity.duration)));
 
@@ -77,7 +75,8 @@ public class GetUserByIdHtml implements View {
             head(
                 title("User" + user.getFirst().user.id)
             ),
-            body(
+            body(a("/", "HomePage"),
+                br(),
                 h1("User ID: " + user.getFirst().user.id),
                 ul(
                     li("Id: " + user.getFirst().user.id),
@@ -92,8 +91,6 @@ public class GetUserByIdHtml implements View {
                 table(
                     activitiesElements.toArray(new Element[0])
                 ),
-                    br(),
-                    a("/sports/"+ user.getFirst().sport.sid + "?skip=0&top=5", "Back to Sports Sid"),
                     br(),
                     a("/users/?skip=0&top=5", "Back to Users")
             )

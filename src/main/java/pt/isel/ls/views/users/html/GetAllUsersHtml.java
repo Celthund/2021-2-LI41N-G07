@@ -2,16 +2,14 @@ package pt.isel.ls.views.users.html;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.logging.Handler;
 
-import pt.isel.ls.handlers.activities.GetActivitiesByUidHandler;
-import pt.isel.ls.models.domainclasses.Activity;
 import pt.isel.ls.models.domainclasses.User;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.users.GetAllUsersResult;
-import pt.isel.ls.views.PageNavigation;
 import pt.isel.ls.views.View;
 import pt.isel.ls.views.builders.html.Element;
+
+import static pt.isel.ls.views.PageNavigation.*;
 import static pt.isel.ls.views.builders.html.HtmlBuilder.*;
 
 public class GetAllUsersHtml implements View {
@@ -62,19 +60,16 @@ public class GetAllUsersHtml implements View {
     private LinkedList<Element> getFooter(HashMap<String, LinkedList<String>> queryString, LinkedList<User> users){
         LinkedList<Element> footer = new LinkedList<>();
 
-        int skip = PageNavigation.getSkip(queryString);
-        int top = PageNavigation.getTop(queryString);
+        int skip = getSkip(queryString);
+        int top = getTop(queryString);
+
 
         footer.add(br());
-
-        footer.add(a("/", "Back to root"));
-        footer.add(br());
-        if (skip + top <= users.size()){
+        if (skip + top < users.size()){
             footer.add(a("/users?skip=" + (skip + top) + "&top=" + top, "Next Page"));
             footer.add(br());
         }
         if(skip > 0) {
-
             footer.add(a("/users?skip="+ (skip - top) + "&top=" + top, "Previous Page"));
         }
 
