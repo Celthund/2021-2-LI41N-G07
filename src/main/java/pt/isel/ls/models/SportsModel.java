@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import org.postgresql.ds.PGSimpleDataSource;
+import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.exceptions.ServerErrorException;
+import pt.isel.ls.models.domainclasses.Activity;
 import pt.isel.ls.models.domainclasses.Sport;
 import static pt.isel.ls.utils.Utils.getDataSource;
 
@@ -101,5 +103,57 @@ public class SportsModel {
             throw new ServerErrorException("Failed creating sport.");
         }
         return sport;
+    }
+
+    public LinkedList<Sport> getSportsByRid(String rid) throws AppException {
+        LinkedList<Sport> sports = null;
+
+        // Get the configurations to set up the DB connection
+        PGSimpleDataSource db = getDataSource();
+        try {
+            Connection connection = db.getConnection();
+            PreparedStatement preparedStatement;
+
+            StringBuilder sqlCmd = new StringBuilder("SELECT DISTINCT * FROM sports " +
+                    "INNER JOIN activities " +
+                    "ON sports.sid = activities.sid " +
+                    "INNER JOIN routes " +
+                    "ON activities.rid = routes.rid " +
+                    "WHERE activities.ts_deleted is NULL AND activities.rid = ? ");
+
+            preparedStatement = connection.prepareStatement(sqlCmd.toString());
+
+            preparedStatement.setInt(1, Integer.parseInt(rid));
+
+            ResultSet sportResult = preparedStatement.executeQuery();
+            // Creates the activity with value it got from the query
+
+            sports = createSportList(sportResult);
+
+            preparedStatement.close();
+            connection.close();
+        } catch (SQLException throwable) {
+            throw new ServerErrorException("Failed getting sports by route id.");
+        }
+        return sports;
+    }
+
+    // Creates a list with all the activities got from a query
+    private LinkedList<Sport> createSportList(ResultSet sportResult)
+            throws SQLException, ServerErrorException {
+        LinkedList<Sport> sports = new LinkedList<>();
+        Sport sport = null;
+
+        // For each row it will get the columns values, add it to an Activity "holder" and then
+        //add it to the list to be returns by this method
+        while (sportResult.next()) {
+            // The constructor for the Activity value holder
+            sport = new Sport(
+                    sportResult.getInt("sid"),
+                    sportResult.getString("name"),
+                    sportResult.getString("description"));
+            sports.add(sport);
+        }
+        return sports;
     }
 }
