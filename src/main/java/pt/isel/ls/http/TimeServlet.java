@@ -53,7 +53,7 @@ public class TimeServlet extends HttpServlet {
 
                 RequestResult<?> requestResult = result.get();
                 View view = init.findView(requestResult, accept);
-
+                requestResult.setRequest(request);
                 String respBody = view.getRepresentation(requestResult);
 
                 resp.setStatus(requestResult.getStatus());

@@ -128,6 +128,41 @@ public class ActivitiesModel {
         return activities;
     }
 
+    public LinkedList<Activity> getActivitiesByRid(String rid, String skip, String top) throws AppException {
+        LinkedList<Activity> activities;
+
+        // Get the configurations to set up the DB connection
+        PGSimpleDataSource db = getDataSource();
+        try {
+            Connection connection = db.getConnection();
+            PreparedStatement preparedStatement;
+
+            StringBuilder sqlCmd = new StringBuilder("SELECT * FROM activities WHERE ts_deleted IS NULL AND rid = ?");
+
+            if (skip != null && top != null) {
+                sqlCmd.append(" LIMIT ? OFFSET ?");
+                preparedStatement = connection.prepareStatement(sqlCmd.toString());
+                preparedStatement.setInt(2, Integer.parseInt(top));
+                preparedStatement.setInt(3, Integer.parseInt(skip));
+            } else {
+                preparedStatement = connection.prepareStatement(sqlCmd.toString());
+            }
+
+            preparedStatement.setInt(1, Integer.parseInt(rid));
+
+            ResultSet activityResult = preparedStatement.executeQuery();
+            // Value to get the route value (in case its not null)
+
+            activities = createActivityList(activityResult);
+
+            preparedStatement.close();
+            connection.close();
+        } catch (SQLException throwable) {
+            throw new ServerErrorException("Failed getting activities by rid.");
+        }
+        return activities;
+    }
+
     // Server that creates Activity
     public Activity createActivity(String sid, String uid, String duration, String date, String rid)
             throws AppException {

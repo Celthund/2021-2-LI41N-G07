@@ -88,6 +88,18 @@ public class HtmlGetter {
         return elements;
     }
 
+    public static LinkedList<Element> getSportHtmlTableHeader() {
+        LinkedList<Element> elements = new LinkedList<>();
+
+        elements.add(tr(
+                th("Sport Id"),
+                th("Name"),
+                th("Description")
+        ));
+
+        return elements;
+    }
+
     public static LinkedList<Element> getActivityHtmlTableRow(Activity activity) {
         LinkedList<Element> elements = new LinkedList<>();
 
