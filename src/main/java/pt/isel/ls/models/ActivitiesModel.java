@@ -207,7 +207,7 @@ public class ActivitiesModel {
 
             preparedStatement.setInt(1, Integer.parseInt(uid));
 
-            // Creates a new activity with the value it got from the query
+            // Creates alink new activity with the value it got from the query
             if (preparedStatement.executeUpdate() == 1) {
                 sqlCmd = "SELECT * FROM activities WHERE ts_deleted IS NULL ORDER BY aid DESC LIMIT 1;";
                 ResultSet activityResult = connection.createStatement().executeQuery(sqlCmd);
@@ -215,9 +215,9 @@ public class ActivitiesModel {
                     int checkRid;
                     activity = new Activity(
                         activityResult.getInt("aid"),
-                        // Creates a user with the user got from the query with the value it got from the query
+                        // Creates alink user with the user got from the query with the value it got from the query
                         users.getUserById(uid),
-                        // Creates a user with the value got from the query with the sid sent by the user
+                        // Creates alink user with the value got from the query with the sid sent by the user
                         sports.getSportById(sid),
                         // Checks if the user pretend to get Route, if its null, just put the Route in
                         // activity to null if not it will query for the rid sent by the user and store in activity
@@ -258,7 +258,7 @@ public class ActivitiesModel {
                 int rid;
                 activity = new Activity(
                     Integer.parseInt(aid),
-                    // Creates a user with the user got from the query with the value it got from the query
+                    // Creates alink user with the user got from the query with the value it got from the query
                     users.getUserById(Integer.toString(activityResult.getInt("uid"))),
                     sports.getSportById(sid),
                     // Checks if the user pretend to get Route, if its null, just put the Route in
@@ -377,7 +377,7 @@ public class ActivitiesModel {
         return activities;
     }
 
-    // Creates a list with all the activities got from a query
+    // Creates alink list with all the activities got from alink query
     private LinkedList<Activity> createActivityList(ResultSet activityResult)
             throws SQLException, ServerErrorException {
         LinkedList<Activity> activities = new LinkedList<>();

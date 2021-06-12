@@ -44,11 +44,11 @@ public class HtmlBuilder {
         return new H2(content);
     }
 
-    public static P p(Element... elements) {
+    public static P paragraph(Element... elements) {
         return new P(elements);
     }
 
-    public static P p(String content) {
+    public static P paragraph(String content) {
         return new P(content);
     }
 
@@ -128,11 +128,11 @@ public class HtmlBuilder {
         return new DT(content);
     }
 
-    public static A a(String href, Element... elements) {
+    public static A alink(String href, Element... elements) {
         return new A(href, elements);
     }
 
-    public static A a(String href, String content) {
+    public static A alink(String href, String content) {
         return new A(href, content);
     }
 

@@ -5,7 +5,7 @@ import pt.isel.ls.request.Request;
 public abstract class RequestResult<T> {
     // Stores the result status
     private final int status;
-    // Data is generic because it will be a Table holder value (User, Sports, etc...)
+    // Data is generic because it will be alink Table holder value (User, Sports, etc...)
     private final T data;
     // Stores the message to be sent to the user (if needed)
     private final String message;
@@ -29,11 +29,11 @@ public abstract class RequestResult<T> {
         return status;
     }
 
-    public void setRequest(Request request) {
-        this.request = request;
-    }
-
     public Request getRequest() {
         return request;
+    }
+
+    public void setRequest(Request request) {
+        this.request = request;
     }
 }

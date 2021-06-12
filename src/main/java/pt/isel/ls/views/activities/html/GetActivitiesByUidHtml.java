@@ -34,31 +34,33 @@ public class GetActivitiesByUidHtml implements View {
         allElements.addFirst(h1("Activities"));
 
         return html(
-                head(
-                        title("Activities")
-                ),
-                body(
-                        allElements.toArray(new Element[0])
-                )
+            head(
+                title("Activities")
+            ),
+            body(
+                allElements.toArray(new Element[0])
+            )
         ).toString();
     }
 
-    private LinkedList<Element> getFooter(HashMap<String, LinkedList<String>> queryString, LinkedList<Activity> activities){
+    private LinkedList<Element> getFooter(HashMap<String, LinkedList<String>> queryString,
+                                          LinkedList<Activity> activities) {
         int skip = 0;
         int top = 5;
-        if(queryString.containsKey("skip")){
+        if (queryString.containsKey("skip")) {
             skip = Integer.parseInt(queryString.get("skip").getFirst());
         }
-        if(queryString.containsKey("top")){
+        if (queryString.containsKey("top")) {
             top = Integer.parseInt(queryString.get("top").getFirst());
         }
 
         LinkedList<Element> footer = new LinkedList<>();
 
         footer.add(br());
-        footer.add(a("/users/"+ activities.getFirst().user.id +"?skip="+ (skip + top) + "&top=" + top, "Next"));
-        if(skip > 0) {
-            footer.add(a("/users/"+ activities.getFirst().user.id +"?skip="+ (skip - top) + "&top=" + top, "Previous"));
+        footer.add(alink("/users/" + activities.getFirst().user.id + "?skip=" + (skip + top) + "&top=" + top, "Next"));
+        if (skip > 0) {
+            footer.add(
+                alink("/users/" + activities.getFirst().user.id + "?skip=" + (skip - top) + "&top=" + top, "Previous"));
         }
 
         return footer;

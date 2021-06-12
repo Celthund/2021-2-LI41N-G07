@@ -92,9 +92,9 @@ public class HtmlGetter {
         LinkedList<Element> elements = new LinkedList<>();
 
         elements.add(tr(
-                th("Sport Id"),
-                th("Name"),
-                th("Description")
+            th("Sport Id"),
+            th("Name"),
+            th("Description")
         ));
 
         return elements;
@@ -106,7 +106,8 @@ public class HtmlGetter {
         // User id, Name, Email, Sport id, Name, Description, Route id
         // , Start Location, End Location, Distance
         // , Date Duration
-        elements.add(td(a("/sports/" + activity.sport.sid + "/activities/" + activity.aid, Integer.toString(activity.aid))));
+        elements.add(
+            td(alink("/sports/" + activity.sport.sid + "/activities/" + activity.aid, Integer.toString(activity.aid))));
         elements.add(td(activity.date.toString()));
         elements.add(td(durationToString(activity.duration)));
 

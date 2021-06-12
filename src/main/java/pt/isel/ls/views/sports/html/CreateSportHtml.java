@@ -6,7 +6,6 @@ import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.sports.CreateSportResult;
 import pt.isel.ls.views.View;
 import static pt.isel.ls.views.builders.html.HtmlBuilder.*;
-import static pt.isel.ls.views.builders.json.JsonGetter.emptyDataSetJson;
 
 public class CreateSportHtml implements View {
     @Override

@@ -22,7 +22,7 @@ public class CreateActivityHandler implements RequestHandler {
         // "Holder" class that holds the columns value from the row
         Activity activity = model.createActivity(sid, uid, duration, date, rid);
 
-        // If it null it means that there was a problem creating the activity, it not it means
+        // If it null it means that there was alink problem creating the activity, it not it means
         //it created the activity so it send the activity holder that contains all the values
         if (activity != null) {
             return new CreateActivityResult(200, activity, "Activity created with success with id = " + activity.aid);
@@ -44,7 +44,7 @@ public class CreateActivityHandler implements RequestHandler {
             String uid = queryString.get("uid").getFirst();
             String duration = queryString.get("duration").getFirst();
             String date = queryString.get("date").getFirst();
-            // Rid is optional if the dictionary doesnt contains it just sends a null
+            // Rid is optional if the dictionary doesnt contains it just sends alink null
             String rid = queryString.containsKey("rid") ? queryString.get("rid").getFirst() : null;
 
             // Returns the Optional with the request result containing all the information obtained from

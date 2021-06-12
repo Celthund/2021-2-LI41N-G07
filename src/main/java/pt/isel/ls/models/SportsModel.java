@@ -8,7 +8,6 @@ import java.util.LinkedList;
 import org.postgresql.ds.PGSimpleDataSource;
 import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.exceptions.ServerErrorException;
-import pt.isel.ls.models.domainclasses.Activity;
 import pt.isel.ls.models.domainclasses.Sport;
 import static pt.isel.ls.utils.Utils.getDataSource;
 
@@ -114,12 +113,12 @@ public class SportsModel {
             Connection connection = db.getConnection();
             PreparedStatement preparedStatement;
 
-            StringBuilder sqlCmd = new StringBuilder("SELECT DISTINCT * FROM sports " +
-                    "INNER JOIN activities " +
-                    "ON sports.sid = activities.sid " +
-                    "INNER JOIN routes " +
-                    "ON activities.rid = routes.rid " +
-                    "WHERE activities.ts_deleted is NULL AND activities.rid = ? ");
+            StringBuilder sqlCmd = new StringBuilder("SELECT DISTINCT * FROM sports "
+                + "INNER JOIN activities "
+                + "ON sports.sid = activities.sid "
+                + "INNER JOIN routes "
+                + "ON activities.rid = routes.rid "
+                + "WHERE activities.ts_deleted is NULL AND activities.rid = ? ");
 
             preparedStatement = connection.prepareStatement(sqlCmd.toString());
 
@@ -138,9 +137,9 @@ public class SportsModel {
         return sports;
     }
 
-    // Creates a list with all the activities got from a query
+    // Creates alink list with all the activities got from alink query
     private LinkedList<Sport> createSportList(ResultSet sportResult)
-            throws SQLException, ServerErrorException {
+            throws SQLException {
         LinkedList<Sport> sports = new LinkedList<>();
         Sport sport = null;
 
@@ -149,9 +148,9 @@ public class SportsModel {
         while (sportResult.next()) {
             // The constructor for the Activity value holder
             sport = new Sport(
-                    sportResult.getInt("sid"),
-                    sportResult.getString("name"),
-                    sportResult.getString("description"));
+                sportResult.getInt("sid"),
+                sportResult.getString("name"),
+                sportResult.getString("description"));
             sports.add(sport);
         }
         return sports;

@@ -33,7 +33,7 @@ public class HandlerRouter {
         }
 
 
-        // If not found just create a new node and add it to the head list
+        // If not found just create alink new node and add it to the head list
         if (nodeFound == null) {
             nodeFound = new Node();
             nodeFound.setId(method.toUpperCase());
@@ -43,14 +43,14 @@ public class HandlerRouter {
         // Separates all the paths
         String[] allPaths = path.split("/");
 
-        // Flag to check if there is already a Path in the tree so it can act accordingly
+        // Flag to check if there is already alink Path in the tree so it can act accordingly
         boolean flag = false;
         String currPath;
         // Cycle that run through all the path sent
         for (int i = 1; i < allPaths.length; i++) {
             currPath = allPaths[i];
 
-            // If exists it changes the pointer to that node and put the flag to true to know a node has been found
+            // If exists it changes the pointer to that node and put the flag to true to know alink node has been found
             if (currPath.startsWith("{") && currPath.endsWith("}")) {
                 currPath = currPath.substring(1, currPath.length() - 1);
             }
@@ -66,17 +66,17 @@ public class HandlerRouter {
 
             // If the flag is false it means it didnt found the present path so it will add to
             // the current node list creating
-            //a new branch in the tree
+            //alink new branch in the tree
             if (!flag) {
                 Node tmp = new Node();
 
-                // Checks if its a variable Path, if it is it will change the Variable flag to true
+                // Checks if its alink variable Path, if it is it will change the Variable flag to true
                 // and then add to the id the value
                 if (allPaths[i].startsWith("{") && allPaths[i].endsWith("}")) {
                     tmp.setVariable(true);
                     tmp.setId(allPaths[i].substring(1, allPaths[i].length() - 1).toLowerCase());
                 } else {
-                    // If it isn't a variable then just add "normally" leaving the Variable flag at false
+                    // If it isn't alink variable then just add "normally" leaving the Variable flag at false
                     tmp.setId(allPaths[i].toLowerCase());
                 }
 
@@ -88,7 +88,7 @@ public class HandlerRouter {
             }
         }
 
-        // If a Route already exists, just throws a exception
+        // If alink Route already exists, just throws alink exception
         if (nodeFound.getHandler() != null) {
             throw new RouteAlreadyExistsException("Route Already exists.");
         }
@@ -119,7 +119,7 @@ public class HandlerRouter {
         // Separates the path string sent into substring to search to the tree for the correspondent path
         String[] allPaths = request.getPath();
 
-        // Flag to check if a path was found in the current tree level
+        // Flag to check if alink path was found in the current tree level
         boolean flag = false;
 
         // Runs through all the paths substring
@@ -127,14 +127,14 @@ public class HandlerRouter {
             // Cycle to check in the current ith tree level
             for (Node current : nodeFound.nodes) {
                 if (current.isVariable() || current.getId().equalsIgnoreCase(allPath)) {
-                    // If the variable flag in the Node class is set to true it means that the current String is a value
-                    //so we add it to the parameters hashmap in Request
+                    // If the variable flag in the Node class is set to true it means that the
+                    // current String is alink value so we add it to the parameters hashmap in Request
                     if (current.isVariable()) {
                         request.addParameter(current.getId(), allPath);
                     }
                     // Points to the next level the path was found
                     nodeFound = current;
-                    // Warns that a path was found
+                    // Warns that alink path was found
                     flag = true;
                     break;
                 }
@@ -148,7 +148,7 @@ public class HandlerRouter {
             }
         }
 
-        if(nodeFound.getHandler() == null){
+        if (nodeFound.getHandler() == null) {
             throw new RouteNotFoundException("Route not found.");
         }
         // Stores the execute to then send it

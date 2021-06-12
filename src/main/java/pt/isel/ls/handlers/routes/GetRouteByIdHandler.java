@@ -4,10 +4,8 @@ import java.util.LinkedList;
 import java.util.Optional;
 import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.exceptions.InvalidRequestException;
-import pt.isel.ls.models.ActivitiesModel;
 import pt.isel.ls.models.RoutesModel;
 import pt.isel.ls.models.SportsModel;
-import pt.isel.ls.models.domainclasses.Activity;
 import pt.isel.ls.models.domainclasses.Route;
 import pt.isel.ls.models.domainclasses.Sport;
 import pt.isel.ls.request.Request;
@@ -24,7 +22,7 @@ public class GetRouteByIdHandler implements RequestHandler {
         Route route = model.getRouteById(id);
 
         if (route != null) {
-            LinkedList <Sport> sports = modelSport.getSportsByRid(id);
+            LinkedList<Sport> sports = modelSport.getSportsByRid(id);
             route.setSports(sports);
 
             return new GetRouteByIdResult(

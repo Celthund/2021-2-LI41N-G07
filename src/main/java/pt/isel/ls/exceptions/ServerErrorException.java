@@ -1,6 +1,7 @@
 package pt.isel.ls.exceptions;
 
-// Server Error Exception to replace the SqlServer exception, for a more user friendly exception with a custom message
+// Server Error Exception to replace the SqlServer exception,
+// for alink more user friendly exception with alink custom message
 public class ServerErrorException extends AppException {
     public ServerErrorException() {
         super("Server error.");

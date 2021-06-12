@@ -6,10 +6,10 @@ import pt.isel.ls.exceptions.InvalidJsonException;
 import pt.isel.ls.models.domainclasses.Sport;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.sports.GetAllSportsResult;
+import static pt.isel.ls.views.PageNavigation.getSkip;
+import static pt.isel.ls.views.PageNavigation.getTop;
 import pt.isel.ls.views.View;
 import pt.isel.ls.views.builders.html.Element;
-
-import static pt.isel.ls.views.PageNavigation.*;
 import static pt.isel.ls.views.builders.html.HtmlBuilder.*;
 
 public class GetAllSportsHtml implements View {
@@ -31,7 +31,7 @@ public class GetAllSportsHtml implements View {
 
         for (Sport sport : sports) {
             elements.add(tr(
-                td(a("/sports/" + sport.sid, Integer.toString(sport.sid))),
+                td(alink("/sports/" + sport.sid, Integer.toString(sport.sid))),
                 td(sport.name),
                 td(sport.description)
             ));
@@ -39,23 +39,24 @@ public class GetAllSportsHtml implements View {
         HashMap<String, LinkedList<String>> queryString = requestResult.getRequest().getQueryStrings();
         LinkedList<Element> allElements = getFooter(queryString, sports);
         allElements.addFirst(table(
-                elements.toArray(new Element[0])
+            elements.toArray(new Element[0])
         ));
         allElements.addFirst(h1("Sports"));
         allElements.addFirst(br());
-        allElements.addFirst(a("/", "HomePage"));
+        allElements.addFirst(alink("/", "HomePage"));
 
         Element html = html(
             head(
                 title("Sports: ")
             ),
             body(
-                    allElements.toArray(new Element[0])
-                )
-            );
+                allElements.toArray(new Element[0])
+            )
+        );
         return html.toString();
     }
-    private LinkedList<Element> getFooter(HashMap<String, LinkedList<String>> queryString, LinkedList<Sport> sports){
+
+    private LinkedList<Element> getFooter(HashMap<String, LinkedList<String>> queryString, LinkedList<Sport> sports) {
         LinkedList<Element> footer = new LinkedList<>();
 
         int skip = getSkip(queryString);
@@ -63,12 +64,13 @@ public class GetAllSportsHtml implements View {
 
         footer.add(br());
 
-        if(skip > 0) {
-            footer.add(a("/sports?skip="+ Math.max(0, (skip - top)) + "&top=" + Math.max(0, top), "Previous Page"));
+        if (skip > 0) {
+            footer
+                .add(alink("/sports?skip=" + Math.max(0, (skip - top)) + "&top=" + Math.max(0, top), "Previous Page"));
         }
 
-        if (top == sports.size()){
-            footer.add(a("/sports?skip=" + (skip + top) + "&top=" + top, "Next Page"));
+        if (top == sports.size()) {
+            footer.add(alink("/sports?skip=" + (skip + top) + "&top=" + top, "Next Page"));
         }
         return footer;
     }

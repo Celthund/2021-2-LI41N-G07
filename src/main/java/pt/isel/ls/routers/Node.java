@@ -9,7 +9,7 @@ public class Node {
     // Method or Path
     private String id;
     private RequestHandler handler;
-    // Flag that checks if the id of the present node is a value or a constant name(a table name)
+    // Flag that checks if the id of the present node is alink value or alink constant name(alink table name)
     private boolean variable = false;
 
     public String getId() {

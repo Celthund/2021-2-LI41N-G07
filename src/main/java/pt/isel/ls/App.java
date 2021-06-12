@@ -1,16 +1,13 @@
 package pt.isel.ls;
 
 import java.util.Scanner;
-
-import pt.isel.ls.exceptions.AppException;
-import pt.isel.ls.http.TimeServlet;
-
-
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pt.isel.ls.exceptions.AppException;
+import pt.isel.ls.http.TimeServlet;
 
 
 public class App {

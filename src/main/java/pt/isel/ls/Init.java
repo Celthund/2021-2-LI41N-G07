@@ -1,5 +1,10 @@
 package pt.isel.ls;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Optional;
 import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.handlers.activities.*;
 import pt.isel.ls.handlers.routes.CreateRouteHandler;
@@ -62,18 +67,12 @@ import pt.isel.ls.views.users.plaintext.CreateUserPlainText;
 import pt.isel.ls.views.users.plaintext.GetAllUsersPlainText;
 import pt.isel.ls.views.users.plaintext.GetUserByIdPlainText;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Optional;
-
 public class Init {
     private final HandlerRouter handlerRouter = new HandlerRouter();
     private final ViewRouter viewRouter = new ViewRouter();
 
-    public RequestHandler findRoute(Request request) throws AppException{
-        return  handlerRouter.findRoute(request);
+    public RequestHandler findRoute(Request request) throws AppException {
+        return handlerRouter.findRoute(request);
     }
 
     public View findView(RequestResult<?> requestResult, String accept) throws AppException {
@@ -84,10 +83,10 @@ public class Init {
         try {
             // Sets the request with the arguments sent by the user
             Request request = new Request(input);
-            // Finds the route through the request created and returns a RequestResult
+            // Finds the route through the request created and returns alink RequestResult
             RequestHandler handler = findRoute(request);
             Optional<RequestResult<?>> result = handler.execute(request);
-            // If there is a RequestResult will show the result
+            // If there is alink RequestResult will show the result
             if (result.isPresent()) {
                 String accept;
                 if (request.getHeaders().containsKey("accept")) {
@@ -103,7 +102,7 @@ public class Init {
                 //properly formatted
                 String res = view.getRepresentation(requestResult);
                 // Gets the Headers dictionary form the request so it can check if the user
-                //specified a file to be written, if not it will be written to the console
+                //specified alink file to be written, if not it will be written to the console
                 HashMap<String, LinkedList<String>> headers = request.getHeaders();
                 if (headers.containsKey("file-name")) {
                     PrintWriter printWriter = new PrintWriter(headers.get("file-name").getFirst());
@@ -130,16 +129,15 @@ public class Init {
     // Used to register the Routes
     public void registerRoutes() throws AppException {
         handlerRouter.addRoute("OPTION", "/", request -> Optional.of(
-                new OptionResult(200, null, handlerRouter.print()))
+            new OptionResult(200, null, handlerRouter.print()))
         );
 
         handlerRouter.addRoute("GET", "/", request -> Optional.of(
-                new RootResult(200, null, "HomePage"))
+            new RootResult(200, null, "HomePage"))
         );
 
 
-
-        // Adds a Method and Path to a handler class
+        // Adds alink Method and Path to alink handler class
         handlerRouter.addRoute("GET", "/users", new GetAllUsersHandler());
         handlerRouter.addRoute("GET", "/users/{uid}", new GetUserByIdHandler());
         handlerRouter.addRoute("POST", "/users", new CreateUserHandler());
@@ -163,7 +161,7 @@ public class Init {
     //Creates all the views
     public void registerViews() throws AppException {
 
-        // Links the result to the corresponding, so when a result is get, it can show the proper view
+        // Links the result to the corresponding, so when alink result is get, it can show the proper view
 
         //-----------------------------Creates the views for Plain Text--------------------------------------//
 
@@ -185,7 +183,7 @@ public class Init {
         viewRouter.addView(GetActivitiesBySidResult.class, "text/plain", new GetActivitiesBySidResultPlainText());
         viewRouter.addView(GetActivitiesByUidResult.class, "text/plain", new GetActivitiesByUidResultPlainText());
         viewRouter
-                .addView(DeleteActivitiesByUidAidResult.class, "text/plain", new DeleteActivitiesByUidAidPlainText());
+            .addView(DeleteActivitiesByUidAidResult.class, "text/plain", new DeleteActivitiesByUidAidPlainText());
 
         //-----------------------------Creates the views for Json--------------------------------------//
         viewRouter.addView(CreateUserResult.class, "application/json", new CreateUserJson());
@@ -206,7 +204,7 @@ public class Init {
         viewRouter.addView(GetActivitiesByUidResult.class, "application/json", new GetActivitiesByUidJson());
         viewRouter.addView(GetActivitiesByTopsResult.class, "application/json", new GetActivitiesByTopsJson());
         viewRouter
-                .addView(DeleteActivitiesByUidAidResult.class, "application/json", new DeleteActivitiesByUidAidJson());
+            .addView(DeleteActivitiesByUidAidResult.class, "application/json", new DeleteActivitiesByUidAidJson());
 
 
         //-----------------------------Creates the views for html--------------------------------------//

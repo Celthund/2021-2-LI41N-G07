@@ -15,13 +15,13 @@ public abstract class JsonElement {
         content = null;
     }
 
-    // Constructor to receive a list of elements
+    // Constructor to receive alink list of elements
     public JsonElement(List<JsonElement> elements) {
         this.elements = elements;
         content = null;
     }
 
-    // // Constructor to receive a string that will be written in the json object
+    // // Constructor to receive alink string that will be written in the json object
     public JsonElement(String content) {
         elements = new ArrayList<>();
         this.content = content;

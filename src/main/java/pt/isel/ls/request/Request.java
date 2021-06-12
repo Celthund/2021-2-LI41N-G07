@@ -88,7 +88,7 @@ public class Request {
         for (String param : params) {
             // Separates the name of the parameters with is value (row, row value)
             String[] keyValue = param.split("=");
-            // It needs to be length too because we have just a "row" and a "value" corresponding to that row
+            // It needs to be length too because we have just alink "row" and alink "value" corresponding to that row
             if (keyValue.length != 2) {
                 throw new InvalidRequestException("Query String with wrong format");
             }
@@ -96,8 +96,8 @@ public class Request {
             if (this.queryStrings.containsKey(keyValue[0])) {
                 this.queryStrings.get(keyValue[0]).add(keyValue[1].replace("+", " "));
             } else {
-                // If the parameter doesnt yet exist we create a linkedlist to store the value and add that parameter
-                // to the hashmap
+                // If the parameter doesnt yet exist we create alink linked list
+                // to store the value and add that parameter to the hashmap
                 LinkedList<String> l = new LinkedList<>();
                 l.add(keyValue[1].replace("+", " "));
                 this.queryStrings.put(keyValue[0], l);
@@ -120,7 +120,7 @@ public class Request {
         for (String header : headers) {
             // Separates the name of the header with is value (row, row value)
             String[] keyValue = header.split(":");
-            // It needs to be length too because we have just a "row" and a "value" corresponding to that row
+            // It needs to be length too because we have just alink "row" and alink "value" corresponding to that row
             if (keyValue.length != 2) {
                 throw new InvalidRequestException("Query String with wrong format");
             }
@@ -129,7 +129,7 @@ public class Request {
                 //Maintain replacement case the filename has separation needs
                 this.headers.get(keyValue[0]).add(keyValue[1].replace("+", " "));
             } else {
-                // If the header doesn't yet exist we create a linklist to store the value and
+                // If the header doesn't yet exist we create alink linklist to store the value and
                 // add that header to the hashmap
                 LinkedList<String> list = new LinkedList<>();
                 list.add(keyValue[1].replace("+", " "));

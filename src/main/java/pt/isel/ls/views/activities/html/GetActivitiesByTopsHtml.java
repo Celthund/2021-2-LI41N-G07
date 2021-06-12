@@ -34,32 +34,37 @@ public class GetActivitiesByTopsHtml implements View {
         allElements.addFirst(h1("Activities"));
 
         return html(
-                head(
-                        title("Activities")
-                ),
-                body(
-                        allElements.toArray(new Element[0])
-                )
+            head(
+                title("Activities")
+            ),
+            body(
+                allElements.toArray(new Element[0])
+            )
         ).toString();
     }
-    private LinkedList<Element> getFooter(HashMap<String, LinkedList<String>> queryString, LinkedList<Activity> activities){
+
+    private LinkedList<Element> getFooter(HashMap<String, LinkedList<String>> queryString,
+                                          LinkedList<Activity> activities) {
         int skip = 0;
         int top = 5;
-        if(queryString.containsKey("skip")){
+        if (queryString.containsKey("skip")) {
             skip = Integer.parseInt(queryString.get("skip").getFirst());
         }
-        if(queryString.containsKey("top")){
+        if (queryString.containsKey("top")) {
             top = Integer.parseInt(queryString.get("top").getFirst());
         }
 
         LinkedList<Element> footer = new LinkedList<>();
 
         footer.add(br());
-        footer.add( a("/sports/"+ activities.getFirst().sport.sid +"?skip=0&top=5", "Back to Sports"));
-        footer.add(a("/sports/"+ activities.getFirst().sport.sid +"?skip="+ (skip + top) + "&top=" + top, "Next"));
+        footer.add(alink("/sports/" + activities.getFirst().sport.sid + "?skip=0&top=5", "Back to Sports"));
+        footer
+            .add(alink("/sports/" + activities.getFirst().sport.sid + "?skip=" + (skip + top) + "&top=" + top, "Next"));
 
-        if(skip > 0) {
-            footer.add(a("/sports/"+ activities.getFirst().sport.sid +"?skip="+ (skip - top) + "&top=" + top, "Previous"));
+        if (skip > 0) {
+            footer.add(
+                alink("/sports/" + activities.getFirst().sport.sid + "?skip=" + (skip - top) + "&top=" + top,
+                    "Previous"));
         }
 
         return footer;

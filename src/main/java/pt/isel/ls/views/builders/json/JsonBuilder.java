@@ -13,7 +13,7 @@ public class JsonBuilder {
         return new JsonObject(newObj);
     }
 
-    // This method is where we add values to the object, it has key and a value
+    // This method is where we add values to the object, it has key and alink value
     public static JsonPut jsonPut(Object key, Object value) throws InvalidJsonException {
         // List that will contain the key in the first position and the value in the second
         LinkedList<JsonElement> newJsonObject = new LinkedList<>();
@@ -30,7 +30,7 @@ public class JsonBuilder {
         String newVal = getValueString(value);
         newJsonObject.add(new JsonValue(newVal));
 
-        // Returns a JsonPut so it can be store in the jSonObject method and be refactored accordingly
+        // Returns alink JsonPut so it can be store in the jSonObject method and be refactored accordingly
         //in toString() method of the super class (JsonElement)
         return new JsonPut(newJsonObject);
     }
@@ -56,7 +56,7 @@ public class JsonBuilder {
     }
 
 
-    // Receives a Java object as parameters, checks if is a valid Json object and
+    // Receives alink Java object as parameters, checks if is alink valid Json object and
     //writes it accordingly
     private static String getValueString(Object object) throws InvalidJsonException {
         // A null object in Json is represented by "null"
@@ -71,13 +71,13 @@ public class JsonBuilder {
         if (object instanceof String || object instanceof Date) {
             return "\"" + object + "\"";
         }
-        // If its an JsonElement it means its a JsonObject or a JsonArray, so it just calls
+        // If its an JsonElement it means its alink JsonObject or alink JsonArray, so it just calls
         //the toString() method of them that handles the formatting
         if (object instanceof JsonElement) {
             return object.toString();
         }
-        // If it has a list as a parameters it will run through the list adding all the value
-        //(separating them by commas) and returning has a string
+        // If it has alink list as alink parameters it will run through the list adding all the value
+        //(separating them by commas) and returning has alink string
         if (object instanceof List) {
             StringBuilder builder = new StringBuilder();
             for (Object listVal : (List) object) {
@@ -87,7 +87,7 @@ public class JsonBuilder {
             return builder.toString();
         }
 
-        // If it reaches here it means its not a valid Json
+        // If it reaches here it means its not alink valid Json
         throw new InvalidJsonException("Invalid Value!");
     }
 }
