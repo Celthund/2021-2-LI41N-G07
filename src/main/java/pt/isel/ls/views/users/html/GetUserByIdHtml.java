@@ -27,7 +27,7 @@ public class GetUserByIdHtml implements View {
 
         LinkedList<Element> sportsElements = new LinkedList<>();
         sportsElements.add(tr(
-                th("Sid"),
+                th("Sport Id"),
                 th("Name"),
                 th("Description")
         ));
@@ -52,7 +52,7 @@ public class GetUserByIdHtml implements View {
         LinkedList<Element> routesElements;
 
         activitiesElements.add(tr(
-                th("Activities"),
+                th("Activity"),
                 th("Date"),
                 th("Duration"),
                 th("Route Id"),
@@ -78,11 +78,11 @@ public class GetUserByIdHtml implements View {
 
         return html(
                 head(
-                        title("User" + user.id)
+                        title("User: " + user.id)
                 ),
-                body(a("/", "HomePage"),
+                body(a("/", "Home Page"),
                         br(),
-                        h1("User ID: " + user.id),
+                        h1("User Id: " + user.id),
                         ul(
                                 li("Id: " + user.id),
                                 li("Name: " + user.name),

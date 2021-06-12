@@ -36,6 +36,22 @@ public class HtmlBuilder {
         return new H1(content);
     }
 
+    public static H2 h2(Element... elements) {
+        return new H2(elements);
+    }
+
+    public static H2 h2(String content) {
+        return new H2(content);
+    }
+
+    public static P p(Element... elements) {
+        return new P(elements);
+    }
+
+    public static P p(String content) {
+        return new P(content);
+    }
+
     public static Title title(Element... elements) {
         return new Title(elements);
     }

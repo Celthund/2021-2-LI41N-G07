@@ -66,14 +66,14 @@ public class GetAllRoutesHtml implements View {
         int skip = getSkip(queryString);
         int top = getTop(queryString);
 
-
         footer.add(br());
-        if (top == routes.size()) {
-            footer.add(a("/routes?skip=" + (skip + top) + "&top=" + top, "Next Page"));
-            footer.add(br());
-        }
+
         if (skip > 0) {
             footer.add(a("/routes?skip=" + Math.max(0, (skip - top)) + "&top=" + Math.max(0, top), "Previous Page"));
+        }
+
+        if (top == routes.size()) {
+            footer.add(a("/routes?skip=" + (skip + top) + "&top=" + top, "Next Page"));
         }
 
         return footer;

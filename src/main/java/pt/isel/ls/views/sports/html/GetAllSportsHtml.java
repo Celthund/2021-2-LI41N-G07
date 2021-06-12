@@ -62,14 +62,14 @@ public class GetAllSportsHtml implements View {
         int top = getTop(queryString);
 
         footer.add(br());
-        if (top == sports.size()){
-            footer.add(a("/sports?skip=" + (skip + top) + "&top=" + top, "Next Page"));
-            footer.add(br());
-        }
+
         if(skip > 0) {
             footer.add(a("/sports?skip="+ Math.max(0, (skip - top)) + "&top=" + Math.max(0, top), "Previous Page"));
         }
 
+        if (top == sports.size()){
+            footer.add(a("/sports?skip=" + (skip + top) + "&top=" + top, "Next Page"));
+        }
         return footer;
     }
 

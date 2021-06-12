@@ -1,7 +1,7 @@
+-- drop table if exists activities;
 -- drop table if exists users cascade;
 -- drop table if exists routes cascade;
 -- drop table if exists sports cascade;
--- drop table if exists activities;
 
 create table if not exists routes (
   rid serial primary key,

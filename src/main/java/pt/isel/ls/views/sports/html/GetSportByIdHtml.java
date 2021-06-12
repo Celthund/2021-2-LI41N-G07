@@ -20,20 +20,19 @@ public class GetSportByIdHtml implements View {
 
         return html(
                 head(
-                        title("Sport " + sport.sid)
+                        title("Sport: " + sport.sid)
                 ),
-                body(a("/", "HomePage"),
+                body(a("/", "Home Page"),
                         br(),
-                        h1("Sport Id" + sport.sid),
+                        h1("Sport Id: " + sport.sid),
                         ul(
-                                li("Id " + sport.sid),
+                                li("Id: " + sport.sid),
                                 li("Name: " + sport.name),
                                 li("Description: " + sport.description)
                         ),
                         br(),
-                        a("/sports/" + sport.sid + "/activities?skip=0&top=5", "Sports Activities"),
-                        br(),
-                        a("/sports/?skip=0&top=5", "Back to Sports")
+                        a("/sports/?skip=0&top=5", "Back to All Sports"),
+                        a("/sports/" + sport.sid + "/activities?skip=0&top=5", "Go To Sport Activities")
                 )
         ).toString();
     }

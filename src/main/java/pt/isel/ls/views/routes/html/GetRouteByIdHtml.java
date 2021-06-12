@@ -8,6 +8,7 @@ import pt.isel.ls.results.routes.GetRouteByIdResult;
 import pt.isel.ls.views.View;
 import pt.isel.ls.views.builders.html.Element;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 
 import static pt.isel.ls.views.builders.html.HtmlBuilder.*;
@@ -24,17 +25,23 @@ public class GetRouteByIdHtml implements View {
 
         LinkedList<Element> sportsElements = new LinkedList<>();
 
+        // Add HashSet to show only each Sport once
+        HashSet<Integer> sportsList = new HashSet<>();
+
         if (route.sports != null) {
             sportsElements.add(tr(
-                    th("Sid"),
+                    th("Sport Id"),
                     th("Name"),
                     th("Description")
             ));
             for (Sport sport : route.sports) {
-                sportsElements.add(tr(
-                        td(a("/sports/" + sport.sid , Integer.toString(sport.sid))),
-                        td(a("/sports/" + sport.sid , sport.name)),
-                        td(a("/sports/" + sport.sid , sport.description))));
+                if (!sportsList.contains(sport.sid)) {
+                    sportsList.add(sport.sid);
+                    sportsElements.add(tr(
+                            td(a("/sports/" + sport.sid, Integer.toString(sport.sid))),
+                            td(sport.name),
+                            td(sport.description)));
+                }
             }
         }
 
@@ -42,7 +49,7 @@ public class GetRouteByIdHtml implements View {
                 head(
                         title("Route" + route.rid)
                 ),
-                body(a("/", "HomePage"),
+                body(a("/", "Home Page"),
                         br(),
                         h1("Route Id: " + route.rid),
                         ul(
@@ -54,8 +61,8 @@ public class GetRouteByIdHtml implements View {
                         table(
                                 sportsElements.toArray(new Element[0])
                         ),
-                        a("/routes?skip=0&top=5", "Back to Routes"),
-                        a("/sports/" + route.rid + "?skip=0&top=5", "Sports")
+                        br(),
+                        a("/routes?skip=0&top=5", "Back to Routes")
                 )
         ).toString();
     }

@@ -4,7 +4,6 @@ import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.models.domainclasses.Activity;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.activities.GetActivitiesBySidResult;
-import pt.isel.ls.views.PageNavigation;
 import pt.isel.ls.views.View;
 import pt.isel.ls.views.builders.html.Element;
 
@@ -35,13 +34,13 @@ public class GetActivitiesBySidHtml implements View {
 
         LinkedList<Element> allElements = getFooter(queryString, activities);
         allElements.addFirst(table(elements.toArray(new Element[0])));
-        allElements.addFirst(h1("Activities"));
+        allElements.addFirst(h1("Sport Activities (" + activities.getFirst().sport.name +")"));
         allElements.addFirst(br());
-        allElements.addFirst(a("/", "HomePage"));
+        allElements.addFirst(a("/", "Home Page"));
 
         return html(
                 head(
-                        title("Activities")
+                        title("Sport Activities")
                 ),
                 body(
                         allElements.toArray(new Element[0])
@@ -50,20 +49,23 @@ public class GetActivitiesBySidHtml implements View {
     }
 
     private LinkedList<Element> getFooter(HashMap<String, LinkedList<String>> queryString, LinkedList<Activity> activities) {
-        int skip = Math.max(0, PageNavigation.getSkip(queryString));
-        int top = Math.max(0, PageNavigation.getTop(queryString));
-
         LinkedList<Element> footer = new LinkedList<>();
-        footer.add(br());
-        footer.add(a("/sports/" + activities.getFirst().sport.sid, "Back to Sports"));
 
-        if (skip + top < activities.size()){
-            footer.add(a("/sports/" + activities.getFirst().sport.sid + "?skip=" + (skip + top) + "&top=" + top, "Next Page"));
-            footer.add(br());
-        }
+        int skip = getSkip(queryString);
+        int top = getTop(queryString);
+
+        footer.add(br());
+
         if(skip > 0) {
-            footer.add(a("/sports/"+ activities.getFirst().sport.sid + "?skip="+ (skip - top) + "&top=" + top, "Previous Page"));
+            footer.add(a("/sports/"+ activities.getFirst().sport.sid + "/activities?skip="+ Math.max(0, (skip - top)) + "&top=" + Math.max(0, top), "Previous Page"));
         }
+
+        footer.add(a("/sports/" + activities.getFirst().sport.sid, "Back to Sport"));
+
+        if (top == activities.size()){
+            footer.add(a("/sports/" + activities.getFirst().sport.sid + "/activities?skip=" + (skip + top) + "&top=" + top, "Next Page"));
+        }
+
 
         return footer;
     }
