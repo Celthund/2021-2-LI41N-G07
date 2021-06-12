@@ -5,6 +5,7 @@ import java.util.LinkedList;
 
 public class PageNavigation {
 
+    // Navigates to the "Next" and "Previous" pages by getting the new skip and top values and returning
     public static int getSkip(HashMap<String, LinkedList<String>> queryString) {
         int skip = 0;
         if (queryString.containsKey("skip")) {

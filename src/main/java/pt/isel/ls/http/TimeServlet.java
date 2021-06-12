@@ -37,22 +37,30 @@ public class TimeServlet extends HttpServlet {
 
 
         try {
+            // Creates a new Request based on what was received in the HttpServletRequest
             Request request = new Request(req.getMethod() + " " + req.getRequestURI() + " " + req.getQueryString());
+            // Finds the route that match the request sent
             RequestHandler requestHandler = init.findRoute(request);
             Optional<RequestResult<?>> result = requestHandler.execute(request);
             if (result.isPresent()) {
                 String accept;
+                // Checks for any headers to see the user pretends any specific header
                 if (request.getHeaders().containsKey("Accept")) {
                     accept = request.getHeaders().get("Accept").getFirst();
                 } else {
+                    // Default header
                     accept = "text/html";
                 }
 
                 RequestResult<?> requestResult = result.get();
+                // Finds the view that corresponds to the request it got
                 View view = init.findView(requestResult, accept);
+
+                // Sets the request sent initially in case its needed later
                 requestResult.setRequest(request);
                 String respBody = view.getRepresentation(requestResult);
 
+                // Gets the status of the request
                 resp.setStatus(requestResult.getStatus());
                 Charset utf8 = StandardCharsets.UTF_8;
 
@@ -79,6 +87,7 @@ public class TimeServlet extends HttpServlet {
             OutputStream os = resp.getOutputStream();
             os.write(respBodyBytes);
             os.flush();
+            // If it gets here it means something went wrong with the request so we send a bad request status
             resp.setStatus(400);
         }
 

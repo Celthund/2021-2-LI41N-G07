@@ -22,6 +22,7 @@ public class GetUserByIdHandler implements RequestHandler {
         User user = userModel.getUserById(id);
         if (user != null) {
             LinkedList<Activity> activities = activityModel.getActivitiesByUid(id, null, null);
+            // Stores all the activities of that user
             user.setActivities(activities);
             return new GetUserByIdResult(
                 200,

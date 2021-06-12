@@ -57,10 +57,12 @@ public class App {
 
         log.info("main started");
 
+        // Gets the environment variable containing the port that will be used
         String portDef = System.getenv("PORT");
         int port = portDef != null ? Integer.parseInt(portDef) : LISTEN_PORT;
         log.info("configured listening port is {}", port);
 
+        // Creates a new server
         Server server = new Server(port);
         ServletHandler handler = new ServletHandler();
         TimeServlet servlet = new TimeServlet(init);

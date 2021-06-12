@@ -9,7 +9,7 @@ public class RootHtml implements View {
     public String getRepresentation(RequestResult<?> requestResult) throws AppException {
         int skip = 0;
         int top = 5;
-
+        // Homepage View
         return html(
             body(
                 h1("Home"),

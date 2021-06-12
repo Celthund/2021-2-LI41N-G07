@@ -22,6 +22,7 @@ public class GetRouteByIdHandler implements RequestHandler {
         Route route = model.getRouteById(id);
 
         if (route != null) {
+            // Gets and stores the sport that corresponds to the route we currently are handling
             LinkedList<Sport> sports = modelSport.getSportsByRid(id);
             route.setSports(sports);
 

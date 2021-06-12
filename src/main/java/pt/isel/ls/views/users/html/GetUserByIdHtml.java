@@ -33,6 +33,8 @@ public class GetUserByIdHtml implements View {
         // Add HashSet to show only each Sport once
         HashSet<Integer> sportsList = new HashSet<>();
 
+        // Gets all the activities of that user and through the activities of that user
+        // shows the distinct sports the user made. With a link to that specific sport in the sport sid
         if (user.activities != null) {
             for (Activity activity : user.activities) {
                 if (!sportsList.contains(activity.sport.sid)) {
@@ -46,9 +48,11 @@ public class GetUserByIdHtml implements View {
             }
         }
 
+
         LinkedList<Element> activitiesElements = new LinkedList<>();
         LinkedList<Element> routesElements;
 
+        // Adds the table headers to the elements activitiesElements
         activitiesElements.add(tr(
             th("Activity"),
             th("Date"),
@@ -59,6 +63,8 @@ public class GetUserByIdHtml implements View {
             th("Distance")
         ));
 
+
+        // Adds the sports activities and routes(if its not null) to routesElements
         for (Activity activity : user.activities) {
             routesElements = new LinkedList<>();
             routesElements.add(td(alink("/sports/" + activity.sport.sid
@@ -74,6 +80,7 @@ public class GetUserByIdHtml implements View {
             ));
         }
 
+        // Shows the all the it stores on the page
         return html(
             head(
                 title("User: " + user.id)
