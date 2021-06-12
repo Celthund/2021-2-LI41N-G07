@@ -30,8 +30,8 @@ insert into sports (name, description) values ('Natacao: 1000mt Livres', '1000mt
 insert into sports (name, description) values ('Canoagem V.', 'Canoagem Velocidade');
 insert into sports (name, description) values ('Canoagem S.', 'Canoagem Slalom');
 insert into sports (name, description) values ('Esgrima', 'Esgrima');
-insert into sports (name, description) values ('Ginástica Artistica', 'Ginástica Artistica');
-insert into sports (name, description) values ('Ginastica Ritmica', 'Ginástica Ritmica');
+insert into sports (name, description) values ('Ginastica Artistica', 'Ginastica Artistica');
+insert into sports (name, description) values ('Ginastica Ritmica', 'Ginastica Ritmica');
 insert into sports (name, description) values ('Badminton', 'Badminton');
 insert into sports (name, description) values ('Tenis de mesa', 'Tenis de mesa');
 insert into sports (name, description) values ('Snowboard', 'Snowboard');

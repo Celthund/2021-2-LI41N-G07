@@ -2,7 +2,7 @@
 
 ## Introdução
 
-Este documento contém os aspectos relevantes do desenho e implementação da fase 2 do projecto de Laboratório de Software.
+Este documento contém os aspectos relevantes do desenho e implementação da fase 3 do projecto de Laboratório de Software.
 
 ## Modelação da base de dados
 
@@ -90,6 +90,12 @@ Foi adicionado ao modelo de dados os
 
 Na maioria dos casos, as queries são de sintaxe trivial. Nas inserções, de forma a retornar uma representação unitária, 
 é feita uma query extra para procura da entrada acabada de inserir.
+
+### Servidor HTTP
+
+Foi implementada através da biblioteca HttpServlet um servidor HTTP para resposta a pedidos de HTTP, tipicamente via browser.
+Fez-se as alterações necessárias para implementação do fluxo do seguinte grafo:
+![Grafo](Sports.png)
 
 ### Processamento de erros
 
