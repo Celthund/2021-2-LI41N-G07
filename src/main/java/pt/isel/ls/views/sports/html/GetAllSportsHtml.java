@@ -1,15 +1,17 @@
 package pt.isel.ls.views.sports.html;
 
-import java.util.HashMap;
-import java.util.LinkedList;
 import pt.isel.ls.exceptions.InvalidJsonException;
 import pt.isel.ls.models.domainclasses.Sport;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.sports.GetAllSportsResult;
-import static pt.isel.ls.views.PageNavigation.getSkip;
-import static pt.isel.ls.views.PageNavigation.getTop;
 import pt.isel.ls.views.View;
 import pt.isel.ls.views.builders.html.Element;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+
+import static pt.isel.ls.views.PageNavigation.getSkip;
+import static pt.isel.ls.views.PageNavigation.getTop;
 import static pt.isel.ls.views.builders.html.HtmlBuilder.*;
 
 public class GetAllSportsHtml implements View {
@@ -23,35 +25,41 @@ public class GetAllSportsHtml implements View {
         }
 
         elements.add(tr(
-            th("Sid"),
-            th("Name"),
-            th("Description")
+                th("Sid"),
+                th("Name"),
+                th("Description")
 
         ));
 
-        for (Sport sport : sports) {
-            elements.add(tr(
-                td(alink("/sports/" + sport.sid, Integer.toString(sport.sid))),
-                td(sport.name),
-                td(sport.description)
-            ));
-        }
         HashMap<String, LinkedList<String>> queryString = requestResult.getRequest().getQueryStrings();
         LinkedList<Element> allElements = getFooter(queryString, sports);
-        allElements.addFirst(table(
-            elements.toArray(new Element[0])
-        ));
+
+        if (sports.size() > 0) {
+            for (Sport sport : sports) {
+                elements.add(tr(
+                        td(alink("/sports/" + sport.sid, Integer.toString(sport.sid))),
+                        td(sport.name),
+                        td(sport.description)
+                ));
+            }
+            allElements.addFirst(table(
+                    elements.toArray(new Element[0])
+            ));
+        } else {
+            allElements.addFirst(paragraph("No more results to show!"));
+            allElements.addFirst(br());
+        }
         allElements.addFirst(h1("Sports"));
         allElements.addFirst(br());
         allElements.addFirst(alink("/", "HomePage"));
 
         Element html = html(
-            head(
-                title("Sports: ")
-            ),
-            body(
-                allElements.toArray(new Element[0])
-            )
+                head(
+                        title("Sports: ")
+                ),
+                body(
+                        allElements.toArray(new Element[0])
+                )
         );
         return html.toString();
     }
@@ -66,7 +74,7 @@ public class GetAllSportsHtml implements View {
 
         if (skip > 0) {
             footer
-                .add(alink("/sports?skip=" + Math.max(0, (skip - top)) + "&top=" + Math.max(0, top), "Previous Page"));
+                    .add(alink("/sports?skip=" + Math.max(0, (skip - top)) + "&top=" + Math.max(0, top), "Previous Page"));
         }
 
         if (top == sports.size()) {

@@ -18,22 +18,25 @@ public class GetActivitiesBySidHtml implements View {
     @Override
     public String getRepresentation(RequestResult<?> requestResult) throws AppException {
         LinkedList<Activity> activities = ((GetActivitiesBySidResult) requestResult).getData();
+        String sportId = requestResult.getRequest().getParameters().get("sid");
 
         if (activities == null) {
             activities = new LinkedList<>();
         }
 
         LinkedList<Element> elements = new LinkedList<>(getActivityHtmlTableHeader());
-
-        for (Activity activity : activities) {
-            elements.add(tr(getActivityHtmlTableRow(activity).toArray(new Element[0])));
-        }
-
         HashMap<String, LinkedList<String>> queryString = requestResult.getRequest().getQueryStrings();
+        LinkedList<Element> allElements = getFooter(queryString, activities, sportId);
 
-        LinkedList<Element> allElements = getFooter(queryString, activities);
-        allElements.addFirst(table(elements.toArray(new Element[0])));
-        allElements.addFirst(h1("Sport Activities (" + activities.getFirst().sport.name + ")"));
+        if (activities.size() > 0) {
+            for (Activity activity : activities) {
+                elements.add(tr(getActivityHtmlTableRow(activity).toArray(new Element[0])));
+            }
+            allElements.addFirst(table(elements.toArray(new Element[0])));
+            allElements.addFirst(h1("Sport Activities (" + activities.getFirst().sport.name + ")"));
+        } else {
+          allElements.addFirst(h1("No more results to show!"));
+        }
         allElements.addFirst(br());
         allElements.addFirst(alink("/", "Home Page"));
 
@@ -48,7 +51,7 @@ public class GetActivitiesBySidHtml implements View {
     }
 
     private LinkedList<Element> getFooter(HashMap<String, LinkedList<String>> queryString,
-                                          LinkedList<Activity> activities) {
+                                          LinkedList<Activity> activities, String sportId) {
         LinkedList<Element> footer = new LinkedList<>();
 
         int skip = getSkip(queryString);
@@ -58,15 +61,15 @@ public class GetActivitiesBySidHtml implements View {
 
         if (skip > 0) {
             footer.add(
-                alink("/sports/" + activities.getFirst().sport.sid + "/activities?skip=" + Math.max(0, (skip - top))
+                alink("/sports/" + sportId + "/activities?skip=" + Math.max(0, (skip - top))
                     + "&top=" + Math.max(0, top), "Previous Page"));
         }
 
-        footer.add(alink("/sports/" + activities.getFirst().sport.sid, "Back to Sport"));
+        footer.add(alink("/sports/" + sportId, "Back to Sport"));
 
         if (top == activities.size()) {
             footer.add(
-                alink("/sports/" + activities.getFirst().sport.sid + "/activities?skip=" + (skip + top) + "&top=" + top,
+                alink("/sports/" + sportId + "/activities?skip=" + (skip + top) + "&top=" + top,
                     "Next Page"));
         }
 
