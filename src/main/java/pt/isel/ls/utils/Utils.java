@@ -8,9 +8,7 @@ public class Utils {
 
     public static PGSimpleDataSource getDataSource() {
         PGSimpleDataSource postgres = new PGSimpleDataSource();
-        postgres.setURL(getenv("PSQL_DB_URL"));
-        postgres.setUser(getenv("PSQL_DB_USERNAME"));
-        postgres.setPassword(getenv("PSQL_DB_PASSWORD"));
+        postgres.setURL(getenv("JDBC_DATABASE_URL"));
         return postgres;
     }
 }
