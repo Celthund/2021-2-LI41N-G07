@@ -35,7 +35,7 @@ public class GetActivitiesBySidHtml implements View {
             allElements.addFirst(table(elements.toArray(new Element[0])));
             allElements.addFirst(h1("Sport Activities (" + activities.getFirst().sport.name + ")"));
         } else {
-          allElements.addFirst(h1("No more results to show!"));
+            allElements.addFirst(h1("No more results to show!"));
         }
         allElements.addFirst(br());
         allElements.addFirst(alink("/", "Home Page"));
