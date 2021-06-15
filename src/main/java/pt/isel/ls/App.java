@@ -1,19 +1,10 @@
 package pt.isel.ls;
 
 import java.util.Scanner;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.ServletHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import pt.isel.ls.exceptions.AppException;
-import pt.isel.ls.http.TimeServlet;
 
 
 public class App {
-    private static final int LISTEN_PORT = 8080;
-    private static final Logger log = LoggerFactory.getLogger(App.class);
-
 
     public static void main(String[] args) {
         Init init = new Init();
@@ -32,16 +23,8 @@ public class App {
             Scanner scanner = new Scanner(System.in);
             String input;
             while (!(input = scanner.nextLine()).equalsIgnoreCase("EXIT /")) {
-                if (input.equalsIgnoreCase("LISTEN /")) {
-                    try {
-                        startServer(init);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    init.run(input);
-                    System.out.print("> ");
-                }
+                init.run(input);
+                System.out.print("> ");
             }
         } else {
             StringBuilder input = new StringBuilder();
@@ -50,32 +33,8 @@ public class App {
             }
             init.run(input.toString());
         }
-
+        init.waitForServer();
     }
 
-    public static void startServer(Init init) throws Exception {
 
-        log.info("main started");
-
-        // Gets the environment variable containing the port that will be used
-        String portDef = System.getenv("PORT");
-        int port = portDef != null ? Integer.parseInt(portDef) : LISTEN_PORT;
-        log.info("configured listening port is {}", port);
-
-        // Creates a new server
-        Server server = new Server(port);
-        ServletHandler handler = new ServletHandler();
-        TimeServlet servlet = new TimeServlet(init);
-
-        handler.addServletWithMapping(new ServletHolder(servlet), "/*");
-        log.info("registered {} on all paths", servlet);
-
-        server.setHandler(handler);
-        server.start();
-
-        log.info("server started listening on port {}", port);
-        server.join();
-
-        log.info("main is ending");
-    }
 }

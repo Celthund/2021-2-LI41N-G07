@@ -3,7 +3,7 @@ package pt.isel.ls.request;
 import pt.isel.ls.exceptions.InvalidRequestException;
 
 public enum Method {
-    GET, POST, DELETE, OPTION;
+    GET, POST, DELETE, OPTION, LISTEN;
 
     public static Method getMethod(String method) throws InvalidRequestException {
         switch (method.toUpperCase()) {
@@ -15,6 +15,8 @@ public enum Method {
                 return DELETE;
             case "OPTION":
                 return OPTION;
+            case "LISTEN":
+                return LISTEN;
             default:
                 throw new InvalidRequestException("Invalid Method");
         }

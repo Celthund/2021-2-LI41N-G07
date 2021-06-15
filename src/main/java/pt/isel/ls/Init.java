@@ -5,6 +5,11 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Optional;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.ServletHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.handlers.activities.*;
 import pt.isel.ls.handlers.routes.CreateRouteHandler;
@@ -16,6 +21,7 @@ import pt.isel.ls.handlers.sports.GetSportByIdHandler;
 import pt.isel.ls.handlers.users.CreateUserHandler;
 import pt.isel.ls.handlers.users.GetAllUsersHandler;
 import pt.isel.ls.handlers.users.GetUserByIdHandler;
+import pt.isel.ls.http.TimeServlet;
 import pt.isel.ls.request.Request;
 import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.results.OptionResult;
@@ -33,7 +39,7 @@ import pt.isel.ls.results.users.GetAllUsersResult;
 import pt.isel.ls.results.users.GetUserByIdResult;
 import pt.isel.ls.routers.HandlerRouter;
 import pt.isel.ls.routers.ViewRouter;
-import pt.isel.ls.views.OptionPlainText;
+import pt.isel.ls.views.BasePlainText;
 import pt.isel.ls.views.RootHtml;
 import pt.isel.ls.views.View;
 import pt.isel.ls.views.activities.html.*;
@@ -68,8 +74,22 @@ import pt.isel.ls.views.users.plaintext.GetAllUsersPlainText;
 import pt.isel.ls.views.users.plaintext.GetUserByIdPlainText;
 
 public class Init {
+    private static final int LISTEN_PORT = 8080;
+    private static final Logger log = LoggerFactory.getLogger(Init.class);
+
     private final HandlerRouter handlerRouter = new HandlerRouter();
     private final ViewRouter viewRouter = new ViewRouter();
+    private Server server = null;
+
+    public void waitForServer() {
+        try {
+            if (server != null) {
+                server.join();
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
     public RequestHandler findRoute(Request request) throws AppException {
         return handlerRouter.findRoute(request);
@@ -115,7 +135,6 @@ public class Init {
                     System.out.println(res);
                 }
 
-
             } else {
                 // It means that the it didnt any result from the sending request
                 System.out.println("Error getting result");
@@ -128,6 +147,18 @@ public class Init {
 
     // Used to register the Routes
     public void registerRoutes() throws AppException {
+        handlerRouter.addRoute("LISTEN", "/", request -> {
+                try {
+                    startServer();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return Optional.of(
+                    new OptionResult(200, null, "Server started."));
+            }
+        );
+
+
         handlerRouter.addRoute("OPTION", "/", request -> Optional.of(
             new OptionResult(200, null, handlerRouter.print()))
         );
@@ -228,7 +259,35 @@ public class Init {
         viewRouter.addView(DeleteActivitiesByUidAidResult.class, "text/html", new DeleteActivitiesByUidAidHtml());
 
         //-----------------------------Creates the view for OPTION------------------------------------//
-        viewRouter.addView(OptionResult.class, "text/html", new OptionPlainText());
+        viewRouter.addView(OptionResult.class, "text/html", new BasePlainText());
         viewRouter.addView(RootResult.class, "text/html", new RootHtml());
+    }
+
+
+    private void startServer() throws Exception {
+        if (server != null) {
+            return;
+        }
+        log.info("main started");
+
+        // Gets the environment variable containing the port that will be used
+        String portDef = System.getenv("PORT");
+        int port = portDef != null ? Integer.parseInt(portDef) : LISTEN_PORT;
+        log.info("configured listening port is {}", port);
+
+        // Creates a new server
+        server = new Server(port);
+        ServletHandler handler = new ServletHandler();
+        TimeServlet servlet = new TimeServlet(this);
+
+        handler.addServletWithMapping(new ServletHolder(servlet), "/*");
+        log.info("registered {} on all paths", servlet);
+
+        server.setHandler(handler);
+        server.start();
+
+        log.info("server started listening on port {}", port);
+
+        log.info("main is ending");
     }
 }
