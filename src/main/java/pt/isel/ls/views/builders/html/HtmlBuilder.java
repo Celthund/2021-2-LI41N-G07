@@ -20,6 +20,14 @@ public class HtmlBuilder {
         return new Head(content);
     }
 
+    public static Style style(Element... elements) {
+        return new Style(elements);
+    }
+
+    public static Style style(String content) {
+        return new Style(content);
+    }
+
     public static Body body(Element... elements) {
         return new Body(elements);
     }
@@ -136,8 +144,27 @@ public class HtmlBuilder {
         return new A(href, content);
     }
 
+    public static Input input(String type, String id, String name, String value, Element... elements) {
+        return new Input(type, id, name, value, elements);
+    }
+
+    public static Input input(String type, String id, String name, String value, String content) {
+        return new Input(type, id, name, value, content);
+    }
+
+    public static Form form(String action, String method, Element... elements) {
+        return new Form(action, method, elements);
+    }
+
+    public static Form form(String action, String method, String content) {
+        return new Form(action, method, content);
+    }
+
     public static Br br() {
         return new Br("");
     }
 
+    public static Hr hr() {
+        return new Hr("");
+    }
 }

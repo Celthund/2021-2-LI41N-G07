@@ -35,7 +35,8 @@ public class GetActivitiesByTopsHtml implements View {
 
         return html(
             head(
-                title("Activities")
+                title("Activities"),
+                    style()
             ),
             body(
                 allElements.toArray(new Element[0])
