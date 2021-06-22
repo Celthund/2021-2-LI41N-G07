@@ -1,22 +1,27 @@
 package pt.isel.ls.utils;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.LinkedList;
+import java.util.Optional;
 import org.junit.Assert;
 import org.junit.Test;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.postgresql.util.PSQLException;
-import pt.isel.ls.exceptions.*;
+import pt.isel.ls.exceptions.AppException;
+import pt.isel.ls.exceptions.RouteAlreadyExistsException;
+import pt.isel.ls.exceptions.RouteNotFoundException;
+import pt.isel.ls.exceptions.ServerErrorException;
 import pt.isel.ls.handlers.users.GetUserByIdHandler;
 import pt.isel.ls.models.UserModel;
 import pt.isel.ls.models.domainclasses.User;
-import pt.isel.ls.request.RequestHandler;
-import pt.isel.ls.results.RequestResult;
-import pt.isel.ls.results.users.CreateUserResult;
-import pt.isel.ls.routers.HandlerRouter;
 import pt.isel.ls.request.Method;
 import pt.isel.ls.request.Request;
-import java.sql.*;
-import java.util.LinkedList;
-import java.util.Optional;
+import pt.isel.ls.request.RequestHandler;
+import pt.isel.ls.results.RequestResult;
+import pt.isel.ls.routers.HandlerRouter;
 import static pt.isel.ls.utils.Database.getDataSource;
 
 public class UtilTests {
@@ -80,9 +85,10 @@ public class UtilTests {
         UserModel model = new UserModel();
         conn.setAutoCommit(false);
         User userCreate = model.createUser("name=test", "email=test@mailtest.com", conn);
-        User userQuery = model.getUserById(Integer.toString(userCreate.id),  conn);
+        User userQuery = model.getUserById(Integer.toString(userCreate.id), conn);
 
-        Assert.assertEquals("User {name='name=test', email='email=test@mailtest.com', id=" + userCreate.id + "}", userQuery.toString());
+        Assert.assertEquals("User {name='name=test', email='email=test@mailtest.com', id=" + userCreate.id + "}",
+            userQuery.toString());
 
         conn.rollback();
         conn.setAutoCommit(true);
@@ -111,17 +117,17 @@ public class UtilTests {
         conn.setAutoCommit(false);
         PreparedStatement statement;
         String cmd = "DROP TABLE if exists activities;"
-                + "DROP TABLE if exists routes;"
-                + "DROP TABLE if exists sports;"
-                + "DROP TABLE if exists users;";
+            + "DROP TABLE if exists routes;"
+            + "DROP TABLE if exists sports;"
+            + "DROP TABLE if exists users;";
 
         statement = conn.prepareStatement(cmd);
         statement.executeUpdate();
         cmd = "create table if not exists users(" +
-                "  uid serial primary key," +
-                "  name varchar(80) not null," +
-                "  email varchar(80) unique not null" +
-                ");";
+            "  uid serial primary key," +
+            "  name varchar(80) not null," +
+            "  email varchar(80) unique not null" +
+            ");";
         statement = conn.prepareStatement(cmd);
         statement.executeUpdate();
 
@@ -131,7 +137,7 @@ public class UtilTests {
         model.createUser("test3", "test3@mailtest.com", conn);
         model.createUser("test4", "test4@mailtest.com", conn);
 
-        LinkedList<User> userQuery = model.getAllUsers("0", "5",  conn);
+        LinkedList<User> userQuery = model.getAllUsers("0", "5", conn);
 
         Assert.assertEquals("User {name='test1', email='test1@mailtest.com', id=1}", userQuery.remove().toString());
         Assert.assertEquals("User {name='test2', email='test2@mailtest.com', id=2}", userQuery.remove().toString());
@@ -144,37 +150,36 @@ public class UtilTests {
     }
 
 
-
     private void createTableForTests(Connection connection) throws SQLException {
         String create = "drop table if exists activitiesTest;" +
-                "drop table if exists usersTest cascade;" +
-                "drop table if exists routesTest cascade;" +
-                "drop table if exists sportsTest cascade;" +
-                "create table if not exists routesTest (" +
-                "  rid serial primary key," +
-                "  startlocation varchar(80)," +
-                "  endlocation varchar(80)," +
-                "  distance int\n" +
-                ");" +
-                "create table if not exists usersTest (" +
-                "  uid serial primary key," +
-                "  name varchar(80) not null," +
-                "  email varchar(80) unique not null" +
-                ");" +
-                "create table if not exists sportsTest (" +
-                "   sid serial primary key," +
-                "   name varchar(80) not null," +
-                "   description varchar(120) not null" +
-                ");" +
-                "create table if not exists activitiesTest (" +
-                "    aid serial primary key," +
-                "    uid int not null references users (uid)," +
-                "    rid int references routes (rid)," +
-                "    sid int references sports (sid)," +
-                "    date date not null," +
-                "    duration bigint not null," +
-                "    ts_deleted timestamp" +
-                ");";
+            "drop table if exists usersTest cascade;" +
+            "drop table if exists routesTest cascade;" +
+            "drop table if exists sportsTest cascade;" +
+            "create table if not exists routesTest (" +
+            "  rid serial primary key," +
+            "  startlocation varchar(80)," +
+            "  endlocation varchar(80)," +
+            "  distance int\n" +
+            ");" +
+            "create table if not exists usersTest (" +
+            "  uid serial primary key," +
+            "  name varchar(80) not null," +
+            "  email varchar(80) unique not null" +
+            ");" +
+            "create table if not exists sportsTest (" +
+            "   sid serial primary key," +
+            "   name varchar(80) not null," +
+            "   description varchar(120) not null" +
+            ");" +
+            "create table if not exists activitiesTest (" +
+            "    aid serial primary key," +
+            "    uid int not null references users (uid)," +
+            "    rid int references routes (rid)," +
+            "    sid int references sports (sid)," +
+            "    date date not null," +
+            "    duration bigint not null," +
+            "    ts_deleted timestamp" +
+            ");";
 
         Statement statement = connection.createStatement();
 
@@ -183,17 +188,18 @@ public class UtilTests {
 
     private void addDataToTable(Connection connection) throws SQLException {
         String create = "INSERT into usersTest (name, email) VALUES ('Ze Antonio','A123456@alunos.isel.pt');" +
-                        "INSERT into usersTest (name, email) VALUES ('Luis Alves','luis.alves@alunos.isel.pt');"
-                + "INSERT into usersTest (name, email) VALUES ('Jorge Simoes','jorge.simoes@alunos.isel.pt');"
-                + "INSERT into sportsTest (name, description) values ('Cycling', 'Cycling');"
-                + "INSERT into sportsTest (name, description) values ('Spinning', 'Indor Spinning');"
-                + "INSERT into sportsTest (name, description) values ('Treadmill', 'Treadmill');"
-                + "INSERT into routesTest (startlocation, endlocation, distance) VALUES ('Lisboa', 'Porto', 274);" +
-                "INSERT into routesTest (startlocation, endlocation, distance) VALUES ('Faro', 'Madrid', 1274);" +
-                "INSERT into routesTest (startlocation, endlocation, distance) VALUES ('Lisboa', 'Lisboa', 40075);"
-                + "INSERT into activitiesTest (uid, rid, sid, date, duration, ts_deleted) VALUES (1, 1, 1 , '2014-5-17' ,19019,NULL);" +
-                "INSERT into activitiesTest (uid, rid, sid, date, duration, ts_deleted) VALUES (1, 2, 2, '2007-4-16',33592,NULL);" +
-                "INSERT into activitiesTest (uid, rid, sid, date, duration, ts_deleted) VALUES (2, 3, 3, '2017-6-22',170965,NULL);";
+            "INSERT into usersTest (name, email) VALUES ('Luis Alves','luis.alves@alunos.isel.pt');"
+            + "INSERT into usersTest (name, email) VALUES ('Jorge Simoes','jorge.simoes@alunos.isel.pt');"
+            + "INSERT into sportsTest (name, description) values ('Cycling', 'Cycling');"
+            + "INSERT into sportsTest (name, description) values ('Spinning', 'Indor Spinning');"
+            + "INSERT into sportsTest (name, description) values ('Treadmill', 'Treadmill');"
+            + "INSERT into routesTest (startlocation, endlocation, distance) VALUES ('Lisboa', 'Porto', 274);" +
+            "INSERT into routesTest (startlocation, endlocation, distance) VALUES ('Faro', 'Madrid', 1274);" +
+            "INSERT into routesTest (startlocation, endlocation, distance) VALUES ('Lisboa', 'Lisboa', 40075);"
+            +
+            "INSERT into activitiesTest (uid, rid, sid, date, duration, ts_deleted) VALUES (1, 1, 1 , '2014-5-17' ,19019,NULL);" +
+            "INSERT into activitiesTest (uid, rid, sid, date, duration, ts_deleted) VALUES (1, 2, 2, '2007-4-16',33592,NULL);" +
+            "INSERT into activitiesTest (uid, rid, sid, date, duration, ts_deleted) VALUES (2, 3, 3, '2017-6-22',170965,NULL);";
 
 
         Statement statement = connection.createStatement();
@@ -203,16 +209,16 @@ public class UtilTests {
 
     @Test
     public void test_add_router() throws RouteAlreadyExistsException {
-        new HandlerRouter().addRoute("GET","/users/1", new GetUserByIdHandler());
+        new HandlerRouter().addRoute("GET", "/users/1", new GetUserByIdHandler());
     }
 
     @Test
     public void test_find_router() throws AppException {
         Request request = new Request(Method.GET, "/users/1");
-        new HandlerRouter().addRoute("GET","/users/1", new GetUserByIdHandler());
+        new HandlerRouter().addRoute("GET", "/users/1", new GetUserByIdHandler());
 
         HandlerRouter handlerRouter = new HandlerRouter();
-        handlerRouter.addRoute("GET","/users/1", new GetUserByIdHandler());
+        handlerRouter.addRoute("GET", "/users/1", new GetUserByIdHandler());
         handlerRouter.findRoute(request);
     }
 

@@ -2,8 +2,11 @@ package pt.isel.ls.http;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Iterator;
 import java.util.Optional;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pt.isel.ls.Init;
 import pt.isel.ls.exceptions.AppException;
+import pt.isel.ls.exceptions.InvalidRequestException;
 import pt.isel.ls.request.Request;
 import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.results.RequestResult;
@@ -29,15 +33,56 @@ public class TimeServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-
         log.info("incoming request: method={}, uri={}, accept={}",
             req.getMethod(),
             req.getRequestURI(),
             req.getRequestURI());
-
         try {
             // Creates a new Request based on what was received in the HttpServletRequest
-            Request request = new Request(req.getMethod() + " " + req.getRequestURI() + " " + req.getQueryString());
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(req.getMethod()).append(" ").append(req.getRequestURI());
+            String s;
+            if ((s = req.getQueryString()) != null) {
+                stringBuilder.append(" ").append(headersToString(req)).append(" ").append(s);
+            }
+            Request request = new Request(stringBuilder.toString());
+            handleRequest(request, resp);
+        } catch (InvalidRequestException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        log.info("incoming request: method={}, uri={}, accept={}",
+            req.getMethod(),
+            req.getRequestURI(),
+            req.getHeader("Accept"));
+
+        try {
+            byte[] bytes = new byte[req.getContentLength()];
+            req.getInputStream().read(bytes);
+            String queryString = new String(bytes);
+            if (queryString.length() == 0 && req.getQueryString() != null) {
+                queryString = req.getQueryString();
+            } else if (req.getQueryString() != null) {
+                queryString += "&" + req.getQueryString();
+            }
+            String s = req.getMethod() + " " + req.getRequestURI() + " "
+                + headersToString(req) + " " + queryString;
+            Request request = new Request(s);
+            handleRequest(request, resp);
+        } catch (InvalidRequestException e) {
+            e.printStackTrace();
+        }
+
+        resp.setStatus(303);
+        resp.addHeader("location", "/users/56");
+    }
+
+
+    public void handleRequest(Request request, HttpServletResponse resp) throws IOException {
+        try {
             // Finds the route that match the request sent
             RequestHandler requestHandler = init.findRoute(request);
             Optional<RequestResult<?>> result = requestHandler.execute(request);
@@ -45,7 +90,7 @@ public class TimeServlet extends HttpServlet {
                 String accept;
                 // Checks for any headers to see the user pretends any specific header
                 if (request.getHeaders().containsKey("Accept")) {
-                    accept = request.getHeaders().get("Accept").getFirst();
+                    accept = request.getHeaders().get("Accept").getFirst().split(",")[0];
                 } else {
                     // Default header
                     accept = "text/html";
@@ -71,8 +116,8 @@ public class TimeServlet extends HttpServlet {
                 os.write(respBodyBytes);
                 os.flush();
                 log.info("outgoing response: method={}, uri={}, status={}, Content-Type={}",
-                    req.getMethod(),
-                    req.getRequestURI(),
+                    request.getMethod(),
+                    String.join("/", request.getPath()),
                     resp.getStatus(),
                     resp.getHeader("Content-Type"));
             }
@@ -90,4 +135,20 @@ public class TimeServlet extends HttpServlet {
             resp.setStatus(400);
         }
     }
+
+
+    private String headersToString(HttpServletRequest req) throws UnsupportedEncodingException {
+        StringBuilder stringBuilder = new StringBuilder();
+        //accept:text/plain|file-name:users.txt
+        for (Iterator<String> it = req.getHeaderNames().asIterator(); it.hasNext(); ) {
+            String s = it.next();
+            if (stringBuilder.length() > 0) {
+                stringBuilder.append("|");
+            }
+            stringBuilder.append(s).append(":").append(
+                URLEncoder.encode(req.getHeader(s), StandardCharsets.UTF_8.toString()));
+        }
+        return stringBuilder.toString();
+    }
+
 }

@@ -1,5 +1,7 @@
 package pt.isel.ls.request;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.LinkedList;
 import pt.isel.ls.exceptions.InvalidRequestException;
@@ -87,19 +89,19 @@ public class Request {
 
         for (String param : params) {
             // Separates the name of the parameters with is value (row, row value)
-            String[] keyValue = param.split("=");
+            String[] keyValue = param.split("=", 2);
             // It needs to be length too because we have just alink "row" and alink "value" corresponding to that row
             if (keyValue.length != 2) {
                 throw new InvalidRequestException("Query String with wrong format");
             }
             // We opted to store multiple parameters that are equal (multiple names, emails, etc)
             if (this.queryStrings.containsKey(keyValue[0])) {
-                this.queryStrings.get(keyValue[0]).add(keyValue[1].replace("+", " "));
+                this.queryStrings.get(keyValue[0]).add(URLDecoder.decode(keyValue[1], StandardCharsets.UTF_8));
             } else {
                 // If the parameter doesnt yet exist we create alink linked list
                 // to store the value and add that parameter to the hashmap
                 LinkedList<String> l = new LinkedList<>();
-                l.add(keyValue[1].replace("+", " "));
+                l.add(URLDecoder.decode(keyValue[1], StandardCharsets.UTF_8));
                 this.queryStrings.put(keyValue[0], l);
             }
         }
@@ -119,7 +121,7 @@ public class Request {
 
         for (String header : headers) {
             // Separates the name of the header with is value (row, row value)
-            String[] keyValue = header.split(":");
+            String[] keyValue = header.split(":", 2);
             // It needs to be length too because we have just alink "row" and alink "value" corresponding to that row
             if (keyValue.length != 2) {
                 throw new InvalidRequestException("Query String with wrong format");
@@ -127,12 +129,12 @@ public class Request {
             // We opted to store multiple headers that are equal
             if (this.headers.containsKey(keyValue[0])) {
                 //Maintain replacement case the filename has separation needs
-                this.headers.get(keyValue[0]).add(keyValue[1].replace("+", " "));
+                this.headers.get(keyValue[0]).add(URLDecoder.decode(keyValue[1], StandardCharsets.UTF_8));
             } else {
                 // If the header doesn't yet exist we create alink linklist to store the value and
                 // add that header to the hashmap
                 LinkedList<String> list = new LinkedList<>();
-                list.add(keyValue[1].replace("+", " "));
+                list.add(URLDecoder.decode(keyValue[1], StandardCharsets.UTF_8));
                 this.headers.put(keyValue[0], list);
             }
         }

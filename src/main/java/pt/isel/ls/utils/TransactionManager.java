@@ -14,8 +14,8 @@ public class TransactionManager {
         this.dt = dt;
     }
 
-    public RequestResult<?> execute(Operation operation) {
-        RequestResult<?> result = null;
+    public RequestResult<?> execute(Operation operation) throws SQLException, AppException {
+        RequestResult<?> result;
         Connection connection = null;
         try {
             connection = dt.getConnection();
@@ -30,7 +30,11 @@ public class TransactionManager {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            throwables.printStackTrace();
+            throw throwables;
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
         }
         return result;
     }
