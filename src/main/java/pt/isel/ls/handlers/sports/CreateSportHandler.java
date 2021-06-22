@@ -9,29 +9,30 @@ import pt.isel.ls.request.Request;
 import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.sports.CreateSportResult;
+import pt.isel.ls.utils.TransactionManager;
+import pt.isel.ls.utils.DataSource;
 
 public class CreateSportHandler implements RequestHandler {
 
     SportsModel model = new SportsModel();
 
-    public CreateSportResult createSport(String name, String description) throws AppException {
-        Sport sport = model.createSport(name, description);
-        if (sport != null) {
-            return new CreateSportResult(200, sport, "Sport created with success with id = " + sport.sid + "");
-        }
-        return new CreateSportResult(500, null, "Failed to create sport.");
-    }
-
     @Override
     public Optional<RequestResult<?>> execute(Request request) throws AppException {
-        if (request.getQueryStrings().containsKey("name")
-            && request.getQueryStrings().containsKey("description")
-        ) {
-            return Optional.of(createSport(
-                request.getQueryStrings().get("name").getFirst(),
-                request.getQueryStrings().get("description").getFirst()));
-        }
+        if (request.getQueryStrings().containsKey("name") && request.getQueryStrings().containsKey("description")) {
+            javax.sql.DataSource dt = DataSource.getDataSource();
+            TransactionManager tm = new TransactionManager(dt);
 
-        throw new InvalidRequestException();
+            return Optional.of(tm.execute(conn -> {
+                String name = request.getQueryStrings().get("name").getFirst();
+                String description = request.getQueryStrings().get("description").getFirst();
+                Sport sport = model.createSport(name, description, conn);
+                if (sport != null) {
+                    return new CreateSportResult(200, sport,
+                        "Sport created with success with id = " + sport.sid + "");
+                }
+                return new CreateSportResult(500, null, "Failed to create sport.");
+            }));
+        }
+        throw new InvalidRequestException("Missing sport name or description.");
     }
 }

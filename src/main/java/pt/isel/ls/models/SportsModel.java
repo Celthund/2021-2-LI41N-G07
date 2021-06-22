@@ -9,16 +9,13 @@ import org.postgresql.ds.PGSimpleDataSource;
 import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.exceptions.ServerErrorException;
 import pt.isel.ls.models.domainclasses.Sport;
-import static pt.isel.ls.utils.Utils.getDataSource;
+import static pt.isel.ls.utils.DataSource.getDataSource;
 
 public class SportsModel {
 
-    public Sport getSportById(String sid) throws ServerErrorException {
+    public Sport getSportById(String sid, Connection connection) throws ServerErrorException {
         Sport sport = null;
-        // Get the configurations to set up the DB connection
-        PGSimpleDataSource db = getDataSource();
         try {
-            Connection connection = db.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM sports WHERE sid = ?");
             preparedStatement.setInt(1, Integer.parseInt(sid));
 
@@ -30,18 +27,15 @@ public class SportsModel {
                     sportResult.getString("description"));
             }
             preparedStatement.close();
-            connection.close();
         } catch (SQLException throwable) {
             throw new ServerErrorException("Failed getting sport with id = " + sid + ".");
         }
         return sport;
     }
 
-    public LinkedList<Sport> getAllSports(String skip, String top) throws ServerErrorException {
+    public LinkedList<Sport> getAllSports(String skip, String top, Connection connection) throws ServerErrorException {
         LinkedList<Sport> sports = new LinkedList<>();
-        PGSimpleDataSource db = getDataSource();
         try {
-            Connection connection = db.getConnection();
             PreparedStatement preparedStatement;
             StringBuilder sqlCmd = new StringBuilder("SELECT * FROM sports");
 
@@ -65,20 +59,15 @@ public class SportsModel {
                     sportResult.getString("name"),
                     sportResult.getString("description")));
             }
-            connection.close();
         } catch (SQLException throwable) {
             throw new ServerErrorException("Failed getting all sports.");
         }
         return sports;
     }
 
-    public Sport createSport(String name, String description) throws ServerErrorException {
+    public Sport createSport(String name, String description, Connection connection) throws ServerErrorException {
         Sport sport = null;
-        PGSimpleDataSource db = getDataSource();
-        Connection connection = null;
         try {
-            connection = db.getConnection();
-            connection.setAutoCommit(false);
             String sqlCmd = "INSERT INTO sports(name, description) VALUES (?, ?);";
             PreparedStatement preparedStatement = connection.prepareStatement(sqlCmd);
             preparedStatement.setString(1, name);
@@ -92,25 +81,17 @@ public class SportsModel {
                         sportResult.getString("name"),
                         sportResult.getString("description"));
                 }
-                connection.commit();
             }
-
             preparedStatement.close();
-            connection.setAutoCommit(true);
-
         } catch (SQLException throwable) {
             throw new ServerErrorException("Failed creating sport.");
         }
         return sport;
     }
 
-    public LinkedList<Sport> getSportsByRid(String rid) throws AppException {
+    public LinkedList<Sport> getSportsByRid(String rid, Connection connection) throws AppException {
         LinkedList<Sport> sports = null;
-
-        // Get the configurations to set up the DB connection
-        PGSimpleDataSource db = getDataSource();
         try {
-            Connection connection = db.getConnection();
             PreparedStatement preparedStatement;
 
             StringBuilder sqlCmd = new StringBuilder("SELECT DISTINCT * FROM sports "
@@ -130,7 +111,6 @@ public class SportsModel {
             sports = createSportList(sportResult);
 
             preparedStatement.close();
-            connection.close();
         } catch (SQLException throwable) {
             throw new ServerErrorException("Failed getting sports by route id.");
         }

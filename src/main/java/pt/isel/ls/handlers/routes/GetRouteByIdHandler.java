@@ -12,34 +12,40 @@ import pt.isel.ls.request.Request;
 import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.routes.GetRouteByIdResult;
+import pt.isel.ls.utils.TransactionManager;
+import pt.isel.ls.utils.DataSource;
 
 public class GetRouteByIdHandler implements RequestHandler {
 
     RoutesModel model = new RoutesModel();
     SportsModel modelSport = new SportsModel();
 
-    public GetRouteByIdResult getRouteById(String id) throws AppException {
-        Route route = model.getRouteById(id);
-
-        if (route != null) {
-            // Gets and stores the sport that corresponds to the route we currently are handling
-            LinkedList<Sport> sports = modelSport.getSportsByRid(id);
-            route.setSports(sports);
-
-            return new GetRouteByIdResult(
-                200,
-                route,
-                "Found route with id = " + id);
-        }
-        return new GetRouteByIdResult(404, null, "Route not found.");
-    }
 
     @Override
     public Optional<RequestResult<?>> execute(Request request) throws AppException {
         if (request.getParameters().containsKey("rid")) {
-            return Optional.of(getRouteById(request.getParameters().get("rid")));
-        }
+            javax.sql.DataSource dt = DataSource.getDataSource();
+            TransactionManager tm = new TransactionManager(dt);
 
-        throw new InvalidRequestException();
+            return Optional.of(tm.execute(conn -> {
+                String rid = request.getParameters().get("rid");
+                Route route = model.getRouteById(rid, conn);
+
+                if (route != null) {
+                    // Gets and stores the sport that corresponds to the route we currently are handling
+                    LinkedList<Sport> sports = modelSport.getSportsByRid(rid, conn);
+                    route.setSports(sports);
+
+                    return new GetRouteByIdResult(
+                        200,
+                        route,
+                        "Found route with id = " + rid);
+                }
+                return new GetRouteByIdResult(404, null, "Route not found.");
+
+            }));
+
+        }
+        throw new InvalidRequestException("Missing route id.");
     }
 }

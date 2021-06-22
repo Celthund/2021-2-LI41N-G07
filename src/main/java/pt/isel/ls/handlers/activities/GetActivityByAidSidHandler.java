@@ -10,27 +10,31 @@ import pt.isel.ls.request.Request;
 import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.activities.GetActivityByAidSidResult;
+import pt.isel.ls.utils.TransactionManager;
+import pt.isel.ls.utils.DataSource;
 
 public class GetActivityByAidSidHandler implements RequestHandler {
 
     ActivitiesModel model = new ActivitiesModel();
-
-    private GetActivityByAidSidResult getActivityByAidSid(String aid, String sid) throws AppException {
-        Activity activity = model.getActivityByAidSid(aid, sid);
-        if (activity != null) {
-            return new GetActivityByAidSidResult(200, activity, "Found activity with id = " + activity.aid);
-        }
-        return new GetActivityByAidSidResult(500, null, "Activity not found.");
-    }
 
     @Override
     public Optional<RequestResult<?>> execute(Request request) throws AppException {
         HashMap<String, String> parameters = request.getParameters();
 
         if (parameters.containsKey("aid") && parameters.containsKey("sid")) {
-            return Optional.of(getActivityByAidSid(parameters.get("aid"), parameters.get("sid")));
-        }
+            javax.sql.DataSource dt = DataSource.getDataSource();
+            TransactionManager tm = new TransactionManager(dt);
 
-        throw new InvalidRequestException();
+            return Optional.of(tm.execute(conn -> {
+                String aid = parameters.get("aid");
+                String sid = parameters.get("sid");
+                Activity activity = model.getActivityByAidSid(aid, sid, conn);
+                if (activity != null) {
+                    return new GetActivityByAidSidResult(200, activity, "Found activity with id = " + activity.aid);
+                }
+                return new GetActivityByAidSidResult(500, null, "Activity not found.");
+            }));
+        }
+        throw new InvalidRequestException("Missing activity id or sport id.");
     }
 }

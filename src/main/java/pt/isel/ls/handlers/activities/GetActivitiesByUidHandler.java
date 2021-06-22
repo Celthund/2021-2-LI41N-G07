@@ -11,34 +11,42 @@ import pt.isel.ls.request.Request;
 import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.activities.GetActivitiesByUidResult;
+import pt.isel.ls.utils.TransactionManager;
+import pt.isel.ls.utils.DataSource;
 
 public class GetActivitiesByUidHandler implements RequestHandler {
 
     ActivitiesModel model = new ActivitiesModel();
 
-    private GetActivitiesByUidResult getActivitiesByUid(String uid, String skip, String top) throws AppException {
-        LinkedList<Activity> activities = model.getActivitiesByUid(uid, skip, top);
-
-        if (activities != null) {
-            return new GetActivitiesByUidResult(200, activities, "Found " + activities.size()
-                + " activities with uid = " + uid);
-        }
-
-        return new GetActivitiesByUidResult(404, null, "Activity not found");
-    }
-
-
     @Override
     public Optional<RequestResult<?>> execute(Request request) throws AppException {
         HashMap<String, String> parameters = request.getParameters();
-        HashMap<String, LinkedList<String>> queryString = request.getQueryStrings();
 
         if (parameters.containsKey("uid")) {
-            String skip = queryString.containsKey("skip") ? queryString.get("skip").getFirst() : null;
-            String top = queryString.containsKey("top") ? queryString.get("top").getFirst() : null;
-            return Optional
-                .of(getActivitiesByUid(parameters.get("uid"), skip, top));
+            javax.sql.DataSource dt = DataSource.getDataSource();
+            TransactionManager tm = new TransactionManager(dt);
+
+            return Optional.of(tm.execute(conn -> {
+                String skip = null;
+                if (request.getQueryStrings().containsKey("skip")) {
+                    skip = request.getQueryStrings().get("skip").getFirst();
+                }
+                String top = null;
+                if (request.getQueryStrings().containsKey("top")) {
+                    top = request.getQueryStrings().get("top").getFirst();
+                }
+
+                String uid = parameters.get("uid");
+                LinkedList<Activity> activities = model.getActivitiesByUid(uid, skip, top, conn);
+
+                if (activities != null) {
+                    return new GetActivitiesByUidResult(200, activities, "Found " + activities.size()
+                        + " activities with uid = " + uid);
+                }
+                return new GetActivitiesByUidResult(404, null, "Activity not found");
+
+            }));
         }
-        throw new InvalidRequestException();
+        throw new InvalidRequestException("Missing user id.");
     }
 }

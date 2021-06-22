@@ -8,16 +8,13 @@ import java.util.LinkedList;
 import org.postgresql.ds.PGSimpleDataSource;
 import pt.isel.ls.exceptions.ServerErrorException;
 import pt.isel.ls.models.domainclasses.Route;
-import static pt.isel.ls.utils.Utils.getDataSource;
+import static pt.isel.ls.utils.DataSource.getDataSource;
 
 public class RoutesModel {
 
-    public Route getRouteById(String rid) throws ServerErrorException {
+    public Route getRouteById(String rid, Connection connection) throws ServerErrorException {
         Route route = null;
-        // Get the configurations to set up the DB connection
-        PGSimpleDataSource db = getDataSource();
         try {
-            Connection connection = db.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM routes WHERE rid = ?");
             preparedStatement.setInt(1, Integer.parseInt(rid));
 
@@ -30,18 +27,15 @@ public class RoutesModel {
                     routeResult.getString("endLocation"));
             }
             preparedStatement.close();
-            connection.close();
         } catch (SQLException throwable) {
             throw new ServerErrorException("Failed getting route with id = " + rid + ".");
         }
         return route;
     }
 
-    public LinkedList<Route> getAllRoutes(String skip, String top) throws ServerErrorException {
+    public LinkedList<Route> getAllRoutes(String skip, String top, Connection connection) throws ServerErrorException {
         LinkedList<Route> routes = new LinkedList<>();
-        PGSimpleDataSource db = getDataSource();
         try {
-            Connection connection = db.getConnection();
             PreparedStatement preparedStatement;
 
             StringBuilder sqlCmd = new StringBuilder("SELECT * FROM routes");
@@ -63,20 +57,16 @@ public class RoutesModel {
                     routeResult.getString("startLocation"),
                     routeResult.getString("endLocation")));
             }
-            connection.close();
         } catch (SQLException throwable) {
             throw new ServerErrorException("Failed getting all routes.");
         }
         return routes;
     }
 
-    public Route createRoute(String startLocation, String endLocation, String distance) throws ServerErrorException {
+    public Route createRoute(String startLocation, String endLocation, String distance,
+                             Connection connection) throws ServerErrorException {
         Route route = null;
-        PGSimpleDataSource db = getDataSource();
-        Connection connection = null;
         try {
-            connection = db.getConnection();
-            connection.setAutoCommit(false);
             String sqlCmd = "INSERT INTO routes(distance, startLocation, endLocation) VALUES (?, ?, ?);";
             PreparedStatement preparedStatement = connection.prepareStatement(sqlCmd);
             preparedStatement.setInt(1, Integer.parseInt(distance));
@@ -92,13 +82,8 @@ public class RoutesModel {
                         routeResult.getString("startlocation"),
                         routeResult.getString("endlocation"));
                 }
-                connection.commit();
             }
-
             preparedStatement.close();
-            connection.setAutoCommit(true);
-            connection.close();
-
         } catch (SQLException throwables) {
             throw new ServerErrorException("Failed creating route.");
         }

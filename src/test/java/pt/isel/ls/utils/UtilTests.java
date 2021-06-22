@@ -14,7 +14,7 @@ import pt.isel.ls.request.Method;
 import pt.isel.ls.request.Request;
 import java.sql.*;
 import java.util.Optional;
-import static pt.isel.ls.utils.Utils.getDataSource;
+import static pt.isel.ls.utils.DataSource.getDataSource;
 
 public class UtilTests {
 

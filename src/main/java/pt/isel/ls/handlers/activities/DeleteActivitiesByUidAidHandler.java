@@ -11,40 +11,35 @@ import pt.isel.ls.request.Request;
 import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.activities.DeleteActivitiesByUidAidResult;
+import pt.isel.ls.utils.TransactionManager;
+import pt.isel.ls.utils.DataSource;
 
 public class DeleteActivitiesByUidAidHandler implements RequestHandler {
 
     ActivitiesModel model = new ActivitiesModel();
 
-    private DeleteActivitiesByUidAidResult deleteActivitiesByUidAid(String uid, LinkedList<String> aid)
-            throws AppException {
-        // LinkedList that will contain all the activities Model each one
-        // containing the data with the query results
-        LinkedList<Activity> activities = model.deleteActivity(uid, aid);
-
-        // If ac
-        if (activities != null) {
-            return new DeleteActivitiesByUidAidResult(200, activities, "Deleted with success "
-                + activities.size() + ((activities.size() == 1) ? "Activity" : "Activities"));
-        }
-        return new DeleteActivitiesByUidAidResult(500, null, "Failed to delete any activity.");
-
-
-    }
-
-
     @Override
     public Optional<RequestResult<?>> execute(Request request) throws AppException {
         HashMap<String, LinkedList<String>> queryString = request.getQueryStrings();
         HashMap<String, String> parameters = request.getParameters();
-        if (parameters.containsKey("uid")
-            && queryString.containsKey("activity")) {
-            String uid = parameters.get("uid");
-            // List that stores all the activity the user pretends to delete
-            LinkedList<String> aid = queryString.get("activity");
-            // Returns the Result that contains the query from the deleted
-            return Optional.of(deleteActivitiesByUidAid(uid, aid));
+        if (parameters.containsKey("uid") && queryString.containsKey("activity")) {
+            javax.sql.DataSource dt = DataSource.getDataSource();
+            TransactionManager tm = new TransactionManager(dt);
+
+            return Optional.of(tm.execute(conn -> {
+                String uid = parameters.get("uid");
+                LinkedList<String> aid = queryString.get("activity");
+                LinkedList<Activity> activities = model.deleteActivity(uid, aid, conn);
+
+                if (activities != null) {
+                    return new DeleteActivitiesByUidAidResult(200, activities, "Deleted with success "
+                        + activities.size() + ((activities.size() == 1) ? "Activity" : "Activities"));
+                }
+                return new DeleteActivitiesByUidAidResult(500, null,
+                    "Failed to delete any activity.");
+
+            }));
         }
-        throw new InvalidRequestException();
+        throw new InvalidRequestException("Missing user id or activity id.");
     }
 }

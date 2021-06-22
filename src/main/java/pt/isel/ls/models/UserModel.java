@@ -9,17 +9,14 @@ import java.util.LinkedList;
 import org.postgresql.ds.PGSimpleDataSource;
 import pt.isel.ls.exceptions.ServerErrorException;
 import pt.isel.ls.models.domainclasses.User;
-import static pt.isel.ls.utils.Utils.getDataSource;
+import static pt.isel.ls.utils.DataSource.getDataSource;
 
 // Handles the data sent by the corresponding view
 public class UserModel {
 
-    public User getUserById(String id) throws ServerErrorException {
+    public User getUserById(String id, Connection connection) throws ServerErrorException {
         User user = null;
-        // Get the configurations to set up the DB connection
-        PGSimpleDataSource db = getDataSource();
         try {
-            Connection connection = db.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE uid = ?");
             preparedStatement.setInt(1, Integer.parseInt(id));
 
@@ -31,18 +28,15 @@ public class UserModel {
                     userResult.getInt("uid"));
             }
             preparedStatement.close();
-            connection.close();
         } catch (SQLException throwable) {
             throw new ServerErrorException("Failed getting user with id = " + id + ".");
         }
         return user;
     }
 
-    public LinkedList<User> getAllUsers(String skip, String top) throws ServerErrorException {
+    public LinkedList<User> getAllUsers(String skip, String top, Connection connection) throws ServerErrorException {
         LinkedList<User> users = new LinkedList<>();
-        PGSimpleDataSource db = getDataSource();
         try {
-            Connection connection = db.getConnection();
             PreparedStatement preparedStatement;
 
             StringBuilder sqlCmd = new StringBuilder("SELECT * FROM users");
@@ -63,20 +57,15 @@ public class UserModel {
                     userResult.getString("email"),
                     userResult.getInt("uid")));
             }
-            connection.close();
         } catch (SQLException throwables) {
             throw new ServerErrorException("Failed getting all users.");
         }
         return users;
     }
 
-    public User createUser(String name, String email) throws ServerErrorException {
+    public User createUser(String name, String email, Connection connection) throws ServerErrorException {
         User user = null;
-        PGSimpleDataSource db = getDataSource();
-        Connection connection = null;
         try {
-            connection = db.getConnection();
-            connection.setAutoCommit(false);
             String sqlCmd = "INSERT INTO users(name, email) VALUES (?, ?);";
             PreparedStatement preparedStatement = connection.prepareStatement(sqlCmd);
             preparedStatement.setString(1, name);
@@ -90,12 +79,8 @@ public class UserModel {
                         userResult.getString("email"),
                         userResult.getInt("uid"));
                 }
-                connection.commit();
             }
-
             preparedStatement.close();
-            connection.setAutoCommit(true);
-
         } catch (SQLException throwable) {
             throw new ServerErrorException("Failed creating user.");
         }

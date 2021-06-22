@@ -2,12 +2,10 @@ package pt.isel.ls.models;
 
 import java.sql.*;
 import java.util.LinkedList;
-import org.postgresql.ds.PGSimpleDataSource;
 import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.exceptions.BadRequestException;
 import pt.isel.ls.exceptions.ServerErrorException;
 import pt.isel.ls.models.domainclasses.Activity;
-import static pt.isel.ls.utils.Utils.getDataSource;
 
 
 public class ActivitiesModel {
@@ -18,8 +16,9 @@ public class ActivitiesModel {
     private final RoutesModel routes = new RoutesModel();
 
     public LinkedList<Activity> getActivitiesByTops(String sid, String orderBy, String date,
-                                                    String rid, String distance, String skip, String top)
-            throws AppException {
+                                                    String rid, String distance, String skip, String top,
+                                                    Connection connection)
+        throws AppException {
 
         // Stores all the activities get from the query
         LinkedList<Activity> activities;
@@ -55,10 +54,7 @@ public class ActivitiesModel {
             sqlCmd.append(" LIMIT ? OFFSET ?");
         }
 
-        // Get the configurations to set up the DB connection
-        PGSimpleDataSource db = getDataSource();
         try {
-            Connection connection = db.getConnection();
             int i = 1;
             PreparedStatement preparedStatement = connection.prepareStatement(sqlCmd.toString());
             // Sets the sport the user wants to search for
@@ -82,26 +78,21 @@ public class ActivitiesModel {
             ResultSet activityResult = preparedStatement.executeQuery();
 
             // Value to get the route value (in case its not null)
-            activities = createActivityList(activityResult);
-
+            activities = createActivityList(activityResult, connection);
 
             preparedStatement.close();
-            connection.close();
         } catch (SQLException throwable) {
             throw new ServerErrorException("Failed getting activities by tops.");
         }
         return activities;
     }
 
-    public LinkedList<Activity> getActivitiesByUid(String uid, String skip, String top) throws AppException {
+    public LinkedList<Activity> getActivitiesByUid(String uid, String skip, String top,
+                                                   Connection connection) throws AppException {
         LinkedList<Activity> activities;
 
-        // Get the configurations to set up the DB connection
-        PGSimpleDataSource db = getDataSource();
         try {
-            Connection connection = db.getConnection();
             PreparedStatement preparedStatement;
-
             StringBuilder sqlCmd = new StringBuilder("SELECT * FROM activities WHERE ts_deleted IS NULL AND uid = ?");
 
             if (skip != null && top != null) {
@@ -118,23 +109,20 @@ public class ActivitiesModel {
             ResultSet activityResult = preparedStatement.executeQuery();
             // Value to get the route value (in case its not null)
 
-            activities = createActivityList(activityResult);
+            activities = createActivityList(activityResult, connection);
 
             preparedStatement.close();
-            connection.close();
         } catch (SQLException throwable) {
             throw new ServerErrorException("Failed getting activities by uid.");
         }
         return activities;
     }
 
-    public LinkedList<Activity> getActivitiesByRid(String rid, String skip, String top) throws AppException {
+    public LinkedList<Activity> getActivitiesByRid(String rid, String skip, String top,
+                                                   Connection connection) throws AppException {
         LinkedList<Activity> activities;
 
-        // Get the configurations to set up the DB connection
-        PGSimpleDataSource db = getDataSource();
         try {
-            Connection connection = db.getConnection();
             PreparedStatement preparedStatement;
 
             StringBuilder sqlCmd = new StringBuilder("SELECT * FROM activities WHERE ts_deleted IS NULL AND rid = ?");
@@ -153,10 +141,8 @@ public class ActivitiesModel {
             ResultSet activityResult = preparedStatement.executeQuery();
             // Value to get the route value (in case its not null)
 
-            activities = createActivityList(activityResult);
-
+            activities = createActivityList(activityResult, connection);
             preparedStatement.close();
-            connection.close();
         } catch (SQLException throwable) {
             throw new ServerErrorException("Failed getting activities by rid.");
         }
@@ -164,8 +150,9 @@ public class ActivitiesModel {
     }
 
     // Server that creates Activity
-    public Activity createActivity(String sid, String uid, String duration, String date, String rid)
-            throws AppException {
+    public Activity createActivity(String sid, String uid, String duration, String date, String rid,
+                                   Connection connection)
+        throws AppException {
         // Transforms the String date to Date date
         Date sqlDate = Activity.dateToDate(date);
 
@@ -173,18 +160,12 @@ public class ActivitiesModel {
         if (sqlDate == null) {
             throw new BadRequestException("Invalid date format.(yyyy-mm-dd)");
         }
-
-        //
         long sqlDuration = Activity.durationToLong(duration);
         if (sqlDuration == -1) {
             throw new BadRequestException("Invalid duration format. (hh:mm:ss.fff)");
         }
         Activity activity = null;
-        PGSimpleDataSource db = getDataSource();
-        Connection connection = null;
         try {
-            connection = db.getConnection();
-            connection.setAutoCommit(false);
             PreparedStatement preparedStatement;
             //  Will store the Sql command
             String sqlCmd;
@@ -216,37 +197,27 @@ public class ActivitiesModel {
                     activity = new Activity(
                         activityResult.getInt("aid"),
                         // Creates alink user with the user got from the query with the value it got from the query
-                        users.getUserById(uid),
+                        users.getUserById(uid, connection),
                         // Creates alink user with the value got from the query with the sid sent by the user
-                        sports.getSportById(sid),
+                        sports.getSportById(sid, connection),
                         // Checks if the user pretend to get Route, if its null, just put the Route in
                         // activity to null if not it will query for the rid sent by the user and store in activity
                         (checkRid = activityResult.getInt("rid")) == 0
-                            ? null : routes.getRouteById(Integer.toString(checkRid)),
+                            ? null : routes.getRouteById(Integer.toString(checkRid), connection),
                         activityResult.getDate("date"),
                         activityResult.getLong("duration"));
                 }
-
-                connection.commit();
             }
-
             preparedStatement.close();
-            connection.setAutoCommit(true);
-            connection.close();
-
         } catch (SQLException e) {
             throw new ServerErrorException("Failed creating activity.");
         }
         return activity;
     }
 
-    public Activity getActivityByAidSid(String aid, String sid) throws AppException {
+    public Activity getActivityByAidSid(String aid, String sid, Connection connection) throws AppException {
         Activity activity = null;
-
-        // Get the configurations to set up the DB connection
-        PGSimpleDataSource db = getDataSource();
         try {
-            Connection connection = db.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(
                 "SELECT * FROM activities WHERE ts_deleted IS NULL AND aid = ? AND sid = ?");
             preparedStatement.setInt(1, Integer.parseInt(aid));
@@ -259,29 +230,26 @@ public class ActivitiesModel {
                 activity = new Activity(
                     Integer.parseInt(aid),
                     // Creates alink user with the user got from the query with the value it got from the query
-                    users.getUserById(Integer.toString(activityResult.getInt("uid"))),
-                    sports.getSportById(sid),
+                    users.getUserById(Integer.toString(activityResult.getInt("uid")), connection),
+                    sports.getSportById(sid, connection),
                     // Checks if the user pretend to get Route, if its null, just put the Route in
                     // activity to null if not it will query for the rid sent by the user and store in activity
-                    (rid = activityResult.getInt("rid")) == 0 ? null : routes.getRouteById(Integer.toString(rid)),
+                    (rid = activityResult.getInt("rid")) == 0 ? null :
+                        routes.getRouteById(Integer.toString(rid), connection),
                     activityResult.getDate("date"),
                     activityResult.getLong("duration"));
             }
             preparedStatement.close();
-            connection.close();
         } catch (SQLException throwable) {
             throw new ServerErrorException("Failed getting activity by aid and sid.");
         }
         return activity;
     }
 
-    public LinkedList<Activity> getActivitiesBySid(String sid, String skip, String top) throws AppException {
+    public LinkedList<Activity> getActivitiesBySid(String sid, String skip, String top,
+                                                   Connection connection) throws AppException {
         LinkedList<Activity> activities = null;
-
-        // Get the configurations to set up the DB connection
-        PGSimpleDataSource db = getDataSource();
         try {
-            Connection connection = db.getConnection();
             PreparedStatement preparedStatement;
 
             StringBuilder sqlCmd = new StringBuilder("SELECT * FROM activities WHERE ts_deleted is NULL AND sid = ? ");
@@ -301,10 +269,8 @@ public class ActivitiesModel {
             ResultSet activityResult = preparedStatement.executeQuery();
             // Creates the activity with value it got from the query
 
-            activities = createActivityList(activityResult);
-
+            activities = createActivityList(activityResult, connection);
             preparedStatement.close();
-            connection.close();
         } catch (SQLException throwable) {
             throw new ServerErrorException("Failed getting activity by sid.");
         }
@@ -312,10 +278,11 @@ public class ActivitiesModel {
     }
 
     // Method that deletes the requested activity by not showing in any more querys
-    public LinkedList<Activity> deleteActivity(String uid, LinkedList<String> aid) throws AppException {
+    public LinkedList<Activity> deleteActivity(String uid, LinkedList<String> aid,
+                                               Connection connection) throws AppException {
 
         // Holder for the activities
-        LinkedList<Activity> activities;
+        LinkedList<Activity> activities = new LinkedList<>();
 
         // It means the user didnt specified any activity so it just returns an empty list
         if (aid.size() == 0) {
@@ -326,18 +293,13 @@ public class ActivitiesModel {
         StringBuilder numberOfAid = new StringBuilder().append("( ?");
         numberOfAid.append(", ?".repeat(aid.size() - 1));
         numberOfAid.append(")");
-
-        // Get the configurations to set up the DB connection
-        PGSimpleDataSource db = getDataSource();
         try {
-
-            Connection connection = db.getConnection();
-            connection.setAutoCommit(false);
 
             // Prepares the query by concatenating the fixed part (the part where it checks for the null ts_deleted)
             //to the number of the aids the user sent
             PreparedStatement preparedStatement = connection.prepareStatement(
-                "SELECT * FROM activities WHERE ts_deleted IS NULL AND uid = ? AND aid IN " + numberOfAid.toString());
+                "SELECT * FROM activities WHERE ts_deleted IS NULL AND uid = ? AND aid IN "
+                    + numberOfAid.toString());
 
             preparedStatement.setInt(1, Integer.parseInt(uid));
             int i = 2;
@@ -349,9 +311,8 @@ public class ActivitiesModel {
             ResultSet activityResult = preparedStatement.executeQuery();
 
             // Creates the activity with value it got from the query
-            activities = createActivityList(activityResult);
+            activities = createActivityList(activityResult, connection);
             preparedStatement.close();
-
 
             // Query that will set all those activity values to the current time
             //effectively removing from user access
@@ -363,13 +324,6 @@ public class ActivitiesModel {
             for (String id : aid) {
                 preparedStatement.setInt(i++, Integer.parseInt(id));
             }
-            if (preparedStatement.executeUpdate() > 0) {
-                connection.setAutoCommit(true);
-            } else {
-                connection.rollback();
-                activities = new LinkedList<>();
-            }
-            connection.close();
         } catch (SQLException throwable) {
             throw new ServerErrorException("Failed deleting activity.");
         }
@@ -378,8 +332,8 @@ public class ActivitiesModel {
     }
 
     // Creates alink list with all the activities got from alink query
-    private LinkedList<Activity> createActivityList(ResultSet activityResult)
-            throws SQLException, ServerErrorException {
+    private LinkedList<Activity> createActivityList(ResultSet activityResult, Connection connection)
+        throws SQLException, ServerErrorException {
         LinkedList<Activity> activities = new LinkedList<>();
         Activity activity = null;
 
@@ -390,10 +344,10 @@ public class ActivitiesModel {
             // The constructor for the Activity value holder
             activity = new Activity(
                 activityResult.getInt("aid"),
-                users.getUserById(Integer.toString(activityResult.getInt("uid"))),
-                sports.getSportById(Integer.toString(activityResult.getInt("sid"))),
+                users.getUserById(Integer.toString(activityResult.getInt("uid")), connection),
+                sports.getSportById(Integer.toString(activityResult.getInt("sid")), connection),
                 (tmpRid = activityResult.getInt("rid")) == 0
-                    ? null : routes.getRouteById(Integer.toString(tmpRid)),
+                    ? null : routes.getRouteById(Integer.toString(tmpRid), connection),
                 activityResult.getDate("date"),
                 activityResult.getLong("duration"));
             activities.add(activity);
