@@ -73,13 +73,7 @@ public class HtmlGetter {
             th("Activity Id"),
             th("Date"),
             th("Duration"),
-            th("User Id"),
-            th("User Name"),
-            th("User Email"),
-            th("Sport Id"),
-            th("Sport Name"),
-            th("Sport Description"),
-            th("Router Id"),
+            th("Name"),
             th("Start Location"),
             th("End Location"),
             th("Distance")
@@ -104,15 +98,11 @@ public class HtmlGetter {
         LinkedList<Element> elements = new LinkedList<>();
 
         // User id, Name, Email, Sport id, Name, Description, Route id
-        // , Start Location, End Location, Distance
-        // , Date Duration
         elements.add(
             td(alink("/sports/" + activity.sport.sid + "/activities/" + activity.aid, Integer.toString(activity.aid))));
         elements.add(td(activity.date.toString()));
         elements.add(td(durationToString(activity.duration)));
-
-        elements.addAll(getUserHtmlTableRow(activity.user));
-        elements.addAll(getSportHtmlTableRow(activity.sport));
+        elements.add(td(alink("/users/" + activity.user.id, activity.user.name)));
 
         if (activity.route != null) {
             elements.addAll(getRouteHtmlTableRow(activity.route));
@@ -136,8 +126,7 @@ public class HtmlGetter {
     public static LinkedList<Element> getRouteHtmlTableRow(Route route) {
         LinkedList<Element> elements = new LinkedList<>();
 
-        // Route id, Start Location, End Location, Distance
-        elements.add(td(Integer.toString(route.rid)));
+        // Start Location, End Location, Distance
         elements.add(td(route.startLocation));
         elements.add(td(route.endLocation));
         elements.add(td(Integer.toString(route.distance)));

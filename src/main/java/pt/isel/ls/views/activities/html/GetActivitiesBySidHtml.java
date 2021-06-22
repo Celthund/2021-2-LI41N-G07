@@ -42,6 +42,22 @@ public class GetActivitiesBySidHtml implements View {
         allElements.addFirst(br());
         allElements.addFirst(alink("/", "Home Page"));
 
+        allElements.add(form(
+                "/sports/{sid}/activities", "POST",
+                h2("Add new Activity:"),
+                paragraph("User"),
+                input("text", "uid", "uid", "", ""),
+                paragraph("Date"),
+                input("date", "date", "date", "", ""),
+                paragraph("Duration"),
+                input("time", "duration", "duration", "", ""),
+                paragraph("Route (optional)"),
+                input("text", "rid", "rid", "", ""),
+
+                input("submit", "", "", "", "")
+                )
+        );
+
         return html(
                 head(
                         title("Sport Activities"),
@@ -75,7 +91,6 @@ public class GetActivitiesBySidHtml implements View {
                     alink("/sports/" + sportId + "/activities?skip=" + (skip + top) + "&top=" + top,
                             "Next Page"));
         }
-
 
         return footer;
     }

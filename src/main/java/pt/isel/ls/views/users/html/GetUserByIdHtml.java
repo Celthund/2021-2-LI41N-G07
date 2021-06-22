@@ -59,7 +59,6 @@ public class GetUserByIdHtml implements View {
                 th("Activity"),
                 th("Date"),
                 th("Duration"),
-                th("Route Id"),
                 th("Start Location"),
                 th("End Location"),
                 th("Distance")
@@ -90,7 +89,7 @@ public class GetUserByIdHtml implements View {
                 ),
                 body(alink("/", "Home Page"),
                         br(),
-                        h1("User Id: " + user.id),
+                        h1("User: " + user.id),
                         ul(
                                 li("Id: " + user.id),
                                 li("Name: " + user.name),

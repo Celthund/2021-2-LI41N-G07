@@ -35,7 +35,6 @@ public class TimeServlet extends HttpServlet {
             req.getRequestURI(),
             req.getRequestURI());
 
-
         try {
             // Creates a new Request based on what was received in the HttpServletRequest
             Request request = new Request(req.getMethod() + " " + req.getRequestURI() + " " + req.getQueryString());
@@ -90,6 +89,5 @@ public class TimeServlet extends HttpServlet {
             // If it gets here it means something went wrong with the request so we send a bad request status
             resp.setStatus(400);
         }
-
     }
 }
