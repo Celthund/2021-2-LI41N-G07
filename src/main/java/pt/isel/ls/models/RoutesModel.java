@@ -5,10 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
-import org.postgresql.ds.PGSimpleDataSource;
 import pt.isel.ls.exceptions.ServerErrorException;
 import pt.isel.ls.models.domainclasses.Route;
-import static pt.isel.ls.utils.DataSource.getDataSource;
 
 public class RoutesModel {
 

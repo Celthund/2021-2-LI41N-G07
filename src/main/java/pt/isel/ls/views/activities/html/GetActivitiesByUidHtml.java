@@ -36,7 +36,7 @@ public class GetActivitiesByUidHtml implements View {
         return html(
             head(
                 title("Activities"),
-                    style()
+                style()
             ),
             body(
                 allElements.toArray(new Element[0])

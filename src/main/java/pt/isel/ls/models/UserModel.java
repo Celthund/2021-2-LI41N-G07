@@ -6,10 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
-import org.postgresql.ds.PGSimpleDataSource;
 import pt.isel.ls.exceptions.ServerErrorException;
 import pt.isel.ls.models.domainclasses.User;
-import static pt.isel.ls.utils.DataSource.getDataSource;
 
 // Handles the data sent by the corresponding view
 public class UserModel {

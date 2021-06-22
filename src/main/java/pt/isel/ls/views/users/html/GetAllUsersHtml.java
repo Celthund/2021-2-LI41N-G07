@@ -1,16 +1,14 @@
 package pt.isel.ls.views.users.html;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import pt.isel.ls.models.domainclasses.User;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.users.GetAllUsersResult;
-import pt.isel.ls.views.View;
-import pt.isel.ls.views.builders.html.Element;
-
-import java.util.HashMap;
-import java.util.LinkedList;
-
 import static pt.isel.ls.views.PageNavigation.getSkip;
 import static pt.isel.ls.views.PageNavigation.getTop;
+import pt.isel.ls.views.View;
+import pt.isel.ls.views.builders.html.Element;
 import static pt.isel.ls.views.builders.html.HtmlBuilder.*;
 
 public class GetAllUsersHtml implements View {
@@ -24,9 +22,9 @@ public class GetAllUsersHtml implements View {
         }
 
         elements.add(tr(
-                th("Id"),
-                th("Name"),
-                th("Email")
+            th("Id"),
+            th("Name"),
+            th("Email")
 
         ));
 
@@ -36,14 +34,14 @@ public class GetAllUsersHtml implements View {
         if (users.size() > 0) {
             for (User user : users) {
                 elements.add(tr(
-                        td(alink("/users/" + user.id, Integer.toString(user.id))),
-                        td(user.name),
-                        td(user.email)
+                    td(alink("/users/" + user.id, Integer.toString(user.id))),
+                    td(user.name),
+                    td(user.email)
                 ));
             }
 
             allElements.addFirst(table(
-                    elements.toArray(new Element[0])
+                elements.toArray(new Element[0])
             ));
         } else {
             allElements.addFirst(paragraph("No more results to show!"));
@@ -56,24 +54,24 @@ public class GetAllUsersHtml implements View {
 
         allElements.add(hr());
         allElements.add(
-                form("/users", "POST",
-                        h2("Add new User:"),
-                        paragraph("Name"),
-                        input("text", "name", "name", "", ""),
-                        paragraph("Email"),
-                        input("text", "email", "email", "", ""),
-                        input("submit", "", "", "", "")
-                )
+            form("/users", "POST",
+                h2("Add new User:"),
+                paragraph("Name"),
+                input("text", "name", "name", "", ""),
+                paragraph("Email"),
+                input("text", "email", "email", "", ""),
+                input("submit", "", "", "", "")
+            )
         );
 
         Element html = html(
-                head(
-                        title("Users"),
-                        style()
-                ),
-                body(
-                        allElements.toArray(new Element[0])
-                )
+            head(
+                title("Users"),
+                style()
+            ),
+            body(
+                allElements.toArray(new Element[0])
+            )
         );
         return html.toString();
     }

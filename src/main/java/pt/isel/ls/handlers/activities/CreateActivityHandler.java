@@ -3,6 +3,7 @@ package pt.isel.ls.handlers.activities;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Optional;
+import javax.sql.DataSource;
 import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.exceptions.InvalidRequestException;
 import pt.isel.ls.models.ActivitiesModel;
@@ -11,8 +12,8 @@ import pt.isel.ls.request.Request;
 import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.activities.CreateActivityResult;
+import pt.isel.ls.utils.Database;
 import pt.isel.ls.utils.TransactionManager;
-import pt.isel.ls.utils.DataSource;
 
 public class CreateActivityHandler implements RequestHandler {
 
@@ -28,7 +29,7 @@ public class CreateActivityHandler implements RequestHandler {
         if (parameters.containsKey("sid") && queryString.containsKey("uid") && queryString.containsKey("duration")
             && queryString.containsKey("date")) {
 
-            javax.sql.DataSource dt = DataSource.getDataSource();
+            DataSource dt = Database.getDataSource();
             TransactionManager tm = new TransactionManager(dt);
 
             return Optional.of(tm.execute(conn -> {

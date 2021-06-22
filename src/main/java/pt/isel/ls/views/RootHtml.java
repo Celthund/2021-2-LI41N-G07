@@ -11,9 +11,9 @@ public class RootHtml implements View {
         int top = 5;
         // Homepage View
         return html(
-                head(
-                  style()
-                ),
+            head(
+                style()
+            ),
             body(
                 h1("Home"),
                 h2("Grupo 7:"),

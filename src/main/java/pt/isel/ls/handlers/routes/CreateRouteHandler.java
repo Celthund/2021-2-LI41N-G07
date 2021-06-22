@@ -1,6 +1,7 @@
 package pt.isel.ls.handlers.routes;
 
 import java.util.Optional;
+import javax.sql.DataSource;
 import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.exceptions.InvalidRequestException;
 import pt.isel.ls.models.RoutesModel;
@@ -9,8 +10,8 @@ import pt.isel.ls.request.Request;
 import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.routes.CreateRouteResult;
+import pt.isel.ls.utils.Database;
 import pt.isel.ls.utils.TransactionManager;
-import pt.isel.ls.utils.DataSource;
 
 public class CreateRouteHandler implements RequestHandler {
 
@@ -23,7 +24,7 @@ public class CreateRouteHandler implements RequestHandler {
             && request.getQueryStrings().containsKey("endlocation")
             && request.getQueryStrings().containsKey("distance")
         ) {
-            javax.sql.DataSource dt = DataSource.getDataSource();
+            DataSource dt = Database.getDataSource();
             TransactionManager tm = new TransactionManager(dt);
 
             return Optional.of(tm.execute(conn -> {

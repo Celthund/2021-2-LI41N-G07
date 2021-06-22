@@ -1,11 +1,10 @@
 package pt.isel.ls.views.builders.html.parts;
 
 
-import pt.isel.ls.views.builders.html.Element;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import pt.isel.ls.views.builders.html.Element;
 
 public class Style extends Element {
 
@@ -23,10 +22,10 @@ public class Style extends Element {
         try {
             File cssFile = new File("style.css");
             Scanner fileReader = new Scanner(cssFile);
-            while (fileReader.hasNextLine()){
+            while (fileReader.hasNextLine()) {
                 css.append(fileReader.nextLine());
             }
-        } catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             css.append("File Not Found");
         }
         return "<style>" + css;

@@ -1,17 +1,15 @@
 package pt.isel.ls.views.routes.html;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import pt.isel.ls.exceptions.InvalidJsonException;
 import pt.isel.ls.models.domainclasses.Route;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.routes.GetAllRoutesResult;
-import pt.isel.ls.views.View;
-import pt.isel.ls.views.builders.html.Element;
-
-import java.util.HashMap;
-import java.util.LinkedList;
-
 import static pt.isel.ls.views.PageNavigation.getSkip;
 import static pt.isel.ls.views.PageNavigation.getTop;
+import pt.isel.ls.views.View;
+import pt.isel.ls.views.builders.html.Element;
 import static pt.isel.ls.views.builders.html.HtmlBuilder.*;
 
 public class GetAllRoutesHtml implements View {
@@ -25,10 +23,10 @@ public class GetAllRoutesHtml implements View {
         }
 
         elements.add(tr(
-                th("Route Id"),
-                th("Start Location"),
-                th("End Location"),
-                th("Distance")
+            th("Route Id"),
+            th("Start Location"),
+            th("End Location"),
+            th("Distance")
 
         ));
 
@@ -38,15 +36,15 @@ public class GetAllRoutesHtml implements View {
         if (routes.size() > 0) {
             for (Route route : routes) {
                 elements.add(tr(
-                        td(alink("/routes/" + route.rid, Integer.toString(route.rid))),
-                        td(route.startLocation),
-                        td(route.endLocation),
-                        td(Integer.toString(route.distance))
+                    td(alink("/routes/" + route.rid, Integer.toString(route.rid))),
+                    td(route.startLocation),
+                    td(route.endLocation),
+                    td(Integer.toString(route.distance))
                 ));
             }
 
             allElements.addFirst(table(
-                    elements.toArray(new Element[0])
+                elements.toArray(new Element[0])
             ));
         } else {
             allElements.addFirst(paragraph("No more results to show!"));
@@ -58,26 +56,26 @@ public class GetAllRoutesHtml implements View {
 
         allElements.add(hr());
         allElements.add(
-                form("/routes", "POST",
-                        h2("Add new route:"),
-                        paragraph("Start Location"),
-                        input("text", "startlocation", "startlocation", "", ""),
-                        paragraph("End Location"),
-                        input("text", "endlocation", "endlocation", "", ""),
-                        paragraph("Distance"),
-                        input("number", "distance", "distance", "", ""),
-                        input("submit", "", "", "", "")
-                )
+            form("/routes", "POST",
+                h2("Add new route:"),
+                paragraph("Start Location"),
+                input("text", "startlocation", "startlocation", "", ""),
+                paragraph("End Location"),
+                input("text", "endlocation", "endlocation", "", ""),
+                paragraph("Distance"),
+                input("number", "distance", "distance", "", ""),
+                input("submit", "", "", "", "")
+            )
         );
 
         Element html = html(
-                head(
-                        title("Routes"),
-                        style()
-                ),
-                body(
-                        allElements.toArray(new Element[0])
-                )
+            head(
+                title("Routes"),
+                style()
+            ),
+            body(
+                allElements.toArray(new Element[0])
+            )
         );
 
         return html.toString();
@@ -93,7 +91,7 @@ public class GetAllRoutesHtml implements View {
 
         if (skip > 0) {
             footer
-                    .add(alink("/routes?skip=" + Math.max(0, (skip - top)) + "&top=" + Math.max(0, top), "Previous Page"));
+                .add(alink("/routes?skip=" + Math.max(0, (skip - top)) + "&top=" + Math.max(0, top), "Previous Page"));
         }
 
         if (top == routes.size()) {

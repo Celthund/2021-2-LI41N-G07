@@ -4,24 +4,18 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.postgresql.util.PSQLException;
-import pt.isel.ls.handlers.routes.CreateRouteHandler;
-import pt.isel.ls.handlers.routes.GetRouteByIdHandler;
-import pt.isel.ls.handlers.users.CreateUserHandler;
 import pt.isel.ls.handlers.users.GetUserByIdHandler;
 import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.exceptions.RouteAlreadyExistsException;
 import pt.isel.ls.exceptions.RouteNotFoundException;
 import pt.isel.ls.results.RequestResult;
-import pt.isel.ls.results.users.CreateUserResult;
 import pt.isel.ls.routers.HandlerRouter;
 import pt.isel.ls.request.Method;
 import pt.isel.ls.request.Request;
 import java.sql.*;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Optional;
-import static pt.isel.ls.utils.DataSource.getDataSource;
+import static pt.isel.ls.utils.Database.getDataSource;
 
 public class UtilTests {
 

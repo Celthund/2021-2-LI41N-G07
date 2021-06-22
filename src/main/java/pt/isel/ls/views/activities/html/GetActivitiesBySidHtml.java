@@ -1,17 +1,15 @@
 package pt.isel.ls.views.activities.html;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.models.domainclasses.Activity;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.activities.GetActivitiesBySidResult;
-import pt.isel.ls.views.View;
-import pt.isel.ls.views.builders.html.Element;
-
-import java.util.HashMap;
-import java.util.LinkedList;
-
 import static pt.isel.ls.views.PageNavigation.getSkip;
 import static pt.isel.ls.views.PageNavigation.getTop;
+import pt.isel.ls.views.View;
+import pt.isel.ls.views.builders.html.Element;
 import static pt.isel.ls.views.builders.html.HtmlBuilder.*;
 import static pt.isel.ls.views.builders.html.HtmlGetter.getActivityHtmlTableHeader;
 import static pt.isel.ls.views.builders.html.HtmlGetter.getActivityHtmlTableRow;
@@ -43,29 +41,29 @@ public class GetActivitiesBySidHtml implements View {
         allElements.addFirst(alink("/", "Home Page"));
 
         allElements.add(form(
-                "/sports/{sid}/activities", "POST",
-                h2("Add new Activity:"),
-                paragraph("User"),
-                input("text", "uid", "uid", "", ""),
-                paragraph("Date"),
-                input("date", "date", "date", "", ""),
-                paragraph("Duration"),
-                input("time", "duration", "duration", "", ""),
-                paragraph("Route (optional)"),
-                input("text", "rid", "rid", "", ""),
+            "/sports/{sid}/activities", "POST",
+            h2("Add new Activity:"),
+            paragraph("User"),
+            input("text", "uid", "uid", "", ""),
+            paragraph("Date"),
+            input("date", "date", "date", "", ""),
+            paragraph("Duration"),
+            input("time", "duration", "duration", "", ""),
+            paragraph("Route (optional)"),
+            input("text", "rid", "rid", "", ""),
 
-                input("submit", "", "", "", "")
-                )
+            input("submit", "", "", "", "")
+            )
         );
 
         return html(
-                head(
-                        title("Sport Activities"),
-                        style()
-                ),
-                body(
-                        allElements.toArray(new Element[0])
-                )
+            head(
+                title("Sport Activities"),
+                style()
+            ),
+            body(
+                allElements.toArray(new Element[0])
+            )
         ).toString();
     }
 
@@ -80,16 +78,16 @@ public class GetActivitiesBySidHtml implements View {
 
         if (skip > 0) {
             footer.add(
-                    alink("/sports/" + sportId + "/activities?skip=" + Math.max(0, (skip - top))
-                            + "&top=" + Math.max(0, top), "Previous Page"));
+                alink("/sports/" + sportId + "/activities?skip=" + Math.max(0, (skip - top))
+                    + "&top=" + Math.max(0, top), "Previous Page"));
         }
 
         footer.add(alink("/sports/" + sportId, "Back to Sport"));
 
         if (top == activities.size()) {
             footer.add(
-                    alink("/sports/" + sportId + "/activities?skip=" + (skip + top) + "&top=" + top,
-                            "Next Page"));
+                alink("/sports/" + sportId + "/activities?skip=" + (skip + top) + "&top=" + top,
+                    "Next Page"));
         }
 
         return footer;
