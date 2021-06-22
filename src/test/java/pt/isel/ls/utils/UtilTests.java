@@ -4,16 +4,18 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.postgresql.util.PSQLException;
+import pt.isel.ls.exceptions.*;
 import pt.isel.ls.handlers.users.GetUserByIdHandler;
+import pt.isel.ls.models.UserModel;
+import pt.isel.ls.models.domainclasses.User;
 import pt.isel.ls.request.RequestHandler;
-import pt.isel.ls.exceptions.AppException;
-import pt.isel.ls.exceptions.RouteAlreadyExistsException;
-import pt.isel.ls.exceptions.RouteNotFoundException;
 import pt.isel.ls.results.RequestResult;
+import pt.isel.ls.results.users.CreateUserResult;
 import pt.isel.ls.routers.HandlerRouter;
 import pt.isel.ls.request.Method;
 import pt.isel.ls.request.Request;
 import java.sql.*;
+import java.util.LinkedList;
 import java.util.Optional;
 import static pt.isel.ls.utils.Database.getDataSource;
 
@@ -57,6 +59,91 @@ public class UtilTests {
         Connection connection = db.getConnection();
         connection.close();
     }
+
+    @Test
+    public void test_add_users() throws SQLException, ServerErrorException {
+        PGSimpleDataSource db = getDataSource();
+        Connection conn = db.getConnection();
+        UserModel model = new UserModel();
+        conn.setAutoCommit(false);
+        model.createUser("name=test", "email=test@mailtest.com", conn);
+
+        conn.rollback();
+        conn.setAutoCommit(true);
+        conn.close();
+    }
+
+    @Test
+    public void test_get_users_id() throws SQLException, ServerErrorException {
+        PGSimpleDataSource db = getDataSource();
+        Connection conn = db.getConnection();
+        UserModel model = new UserModel();
+        conn.setAutoCommit(false);
+        User userCreate = model.createUser("name=test", "email=test@mailtest.com", conn);
+        User userQuery = model.getUserById(Integer.toString(userCreate.id),  conn);
+
+        Assert.assertEquals("User {name='name=test', email='email=test@mailtest.com', id=" + userCreate.id + "}", userQuery.toString());
+
+        conn.rollback();
+        conn.setAutoCommit(true);
+        conn.close();
+    }
+
+    @Test(expected = pt.isel.ls.exceptions.ServerErrorException.class)
+    public void test_get_repeated_user_id() throws SQLException, ServerErrorException {
+        PGSimpleDataSource db = getDataSource();
+        Connection conn = db.getConnection();
+        UserModel model = new UserModel();
+        conn.setAutoCommit(false);
+        model.createUser("name=test", "email=test@mailtest.com", conn);
+        model.createUser("name=test", "email=test@mailtest.com", conn);
+
+        conn.rollback();
+        conn.setAutoCommit(true);
+        conn.close();
+    }
+
+    @Test
+    public void test_get_users() throws SQLException, ServerErrorException {
+        PGSimpleDataSource db = getDataSource();
+        Connection conn = db.getConnection();
+        UserModel model = new UserModel();
+        conn.setAutoCommit(false);
+        PreparedStatement statement;
+        String cmd = "DROP TABLE if exists activities;"
+                + "DROP TABLE if exists routes;"
+                + "DROP TABLE if exists sports;"
+                + "DROP TABLE if exists users;";
+
+        statement = conn.prepareStatement(cmd);
+        statement.executeUpdate();
+        cmd = "create table if not exists users(" +
+                "  uid serial primary key," +
+                "  name varchar(80) not null," +
+                "  email varchar(80) unique not null" +
+                ");";
+        statement = conn.prepareStatement(cmd);
+        statement.executeUpdate();
+
+
+        model.createUser("test1", "test1@mailtest.com", conn);
+        model.createUser("test2", "test2@mailtest.com", conn);
+        model.createUser("test3", "test3@mailtest.com", conn);
+        model.createUser("test4", "test4@mailtest.com", conn);
+
+        LinkedList<User> userQuery = model.getAllUsers("0", "5",  conn);
+
+        Assert.assertEquals("User {name='test1', email='test1@mailtest.com', id=1}", userQuery.remove().toString());
+        Assert.assertEquals("User {name='test2', email='test2@mailtest.com', id=2}", userQuery.remove().toString());
+        Assert.assertEquals("User {name='test3', email='test3@mailtest.com', id=3}", userQuery.remove().toString());
+        Assert.assertEquals("User {name='test4', email='test4@mailtest.com', id=4}", userQuery.remove().toString());
+
+        conn.rollback();
+        conn.setAutoCommit(true);
+        conn.close();
+    }
+
+
 
     private void createTableForTests(Connection connection) throws SQLException {
         String create = "drop table if exists activitiesTest;" +
@@ -128,39 +215,6 @@ public class UtilTests {
         handlerRouter.addRoute("GET","/users/1", new GetUserByIdHandler());
         handlerRouter.findRoute(request);
     }
-
-    /*
-    @Test
-    public void create_route_handler() throws SQLException, AppException {
-        PGSimpleDataSource db = getDataSource();
-        Connection connection = db.getConnection();
-
-        try {
-            connection.setAutoCommit(false);
-            createTableForTests(connection);
-            addDataToTable(connection);
-            Request request = new Request(Method.GET, "/users/1");
-            new HandlerRouter().addRoute("GET","/users/1", new GetUserByIdHandler());
-
-            HandlerRouter handlerRouter = new HandlerRouter();
-            handlerRouter.addRoute("GET","/users/1", new GetUserByIdHandler());
-            handlerRouter.findRoute(request);
-            GetRouteByIdHandler handler = new GetRouteByIdHandler();
-            Optional<RequestResult<?>> result = handler.execute(request);
-            if(result.isPresent()){
-                RequestResult<?> requestResult = result.get();
-                requestResult.getData().toString();
-                int a;
-            }
-
-
-        } finally {
-            connection.rollback();
-            connection.setAutoCommit(true);
-            connection.close();
-        }
-    }
-    */
 
     @Test(expected = org.postgresql.util.PSQLException.class)
     public void test_insert_existing_user_manually() throws SQLException {
