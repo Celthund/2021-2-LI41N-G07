@@ -29,7 +29,6 @@ public class Style extends Element {
         } catch (FileNotFoundException e){
             css.append("File Not Found");
         }
-
         return "<style>" + css;
     }
 
