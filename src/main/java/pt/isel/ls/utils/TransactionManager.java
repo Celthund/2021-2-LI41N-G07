@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import javax.sql.DataSource;
 import pt.isel.ls.exceptions.AppException;
+import pt.isel.ls.exceptions.ServerErrorException;
 import pt.isel.ls.results.RequestResult;
 
 public class TransactionManager {
@@ -14,7 +15,7 @@ public class TransactionManager {
         this.dt = dt;
     }
 
-    public RequestResult<?> execute(Operation operation) throws SQLException, AppException {
+    public RequestResult<?> execute(Operation operation) throws AppException {
         RequestResult<?> result;
         Connection connection = null;
         try {
@@ -24,16 +25,27 @@ public class TransactionManager {
             connection.commit();
             connection.setAutoCommit(true);
             connection.close();
-        } catch (SQLException | AppException throwables) {
+        } catch (SQLException exc) {
             try {
                 connection.rollback();
-            } catch (SQLException e) {
-                e.printStackTrace();
+            } catch (SQLException ignored) {
+                //do nothing
             }
-            throw throwables;
+            throw new ServerErrorException("Database Error.");
+        } catch (AppException exception) {
+            try {
+                connection.rollback();
+            } catch (SQLException ignored) {
+                //do nothing
+            }
+            throw exception;
         } finally {
             if (connection != null) {
-                connection.close();
+                try {
+                    connection.close();
+                } catch (SQLException ignored) {
+                    //do nothing
+                }
             }
         }
         return result;
