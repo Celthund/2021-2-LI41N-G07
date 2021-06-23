@@ -148,12 +148,14 @@ public class HtmlGetter {
 
     public static Element emptyDataSetHtml(String message) {
         return html(
-            head(
-                title(message)
-            ),
-            body(
-                h1(message)
-            )
+                head(
+                  title(message)
+                ),
+                body(
+                        alink("/", "Homepage"),
+                        br(),
+                        h1(message)
+                )
         );
     }
 }
