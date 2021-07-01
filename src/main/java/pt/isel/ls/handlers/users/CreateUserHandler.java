@@ -28,8 +28,10 @@ public class CreateUserHandler implements RequestHandler {
                 String email = request.getQueryStrings().get("email").getFirst();
                 User user = model.createUser(name, email, conn);
                 if (user != null) {
-                    return new CreateUserResult(200, user,
+                    CreateUserResult resp = new CreateUserResult(303, user,
                         "User created with success with id = " + user.id + "");
+                    resp.addHeader("Location", "/users/" + user.id);
+                    return resp;
                 }
                 return new CreateUserResult(500, null, "Failed to create user.");
             }));

@@ -1,5 +1,6 @@
 package pt.isel.ls.results;
 
+import java.util.HashMap;
 import pt.isel.ls.request.Request;
 
 public abstract class RequestResult<T> {
@@ -9,12 +10,14 @@ public abstract class RequestResult<T> {
     private final T data;
     // Stores the message to be sent to the user (if needed)
     private final String message;
+    private final HashMap<String, String> headers;
     private Request request;
 
     protected RequestResult(int status, T data, String message) {
         this.status = status;
         this.data = data;
         this.message = message;
+        headers = new HashMap<>();
     }
 
     public T getData() {
@@ -35,5 +38,13 @@ public abstract class RequestResult<T> {
 
     public void setRequest(Request request) {
         this.request = request;
+    }
+
+    public void addHeader(String key, String value) {
+        headers.put(key, value);
+    }
+
+    public HashMap<String, String> getHeaders() {
+        return headers;
     }
 }

@@ -46,8 +46,10 @@ public class CreateActivityHandler implements RequestHandler {
                 // If it null it means that there was alink problem creating the activity, it not it means
                 //it created the activity so it send the activity holder that contains all the values
                 if (activity != null) {
-                    return new CreateActivityResult(200, activity,
+                    CreateActivityResult resp = new CreateActivityResult(303, activity,
                         "Activity created with success with id = " + activity.aid);
+                    resp.addHeader("Location", "/sports/" + sid + "/activities/" + activity.aid);
+                    return resp;
                 }
                 return new CreateActivityResult(500, null, "Failed to create activity.");
 

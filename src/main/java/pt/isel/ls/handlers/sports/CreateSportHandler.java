@@ -28,8 +28,10 @@ public class CreateSportHandler implements RequestHandler {
                 String description = request.getQueryStrings().get("description").getFirst();
                 Sport sport = model.createSport(name, description, conn);
                 if (sport != null) {
-                    return new CreateSportResult(200, sport,
+                    CreateSportResult resp = new CreateSportResult(303, sport,
                         "Sport created with success with id = " + sport.sid + "");
+                    resp.addHeader("Location", "/sports/" + sport.sid);
+                    return resp;
                 }
                 return new CreateSportResult(500, null, "Failed to create sport.");
             }));

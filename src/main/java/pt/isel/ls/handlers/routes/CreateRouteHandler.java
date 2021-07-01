@@ -35,8 +35,10 @@ public class CreateRouteHandler implements RequestHandler {
 
                 Route route = model.createRoute(startLocation, endLocation, distance, conn);
                 if (route != null) {
-                    return new CreateRouteResult(200, route,
+                    CreateRouteResult resp = new CreateRouteResult(303, route,
                         "Route created with success with id = " + route.rid + "");
+                    resp.addHeader("Location", "/routes/" + route.rid);
+                    return resp;
                 }
                 return new CreateRouteResult(500, null, "Failed to create route.");
 
