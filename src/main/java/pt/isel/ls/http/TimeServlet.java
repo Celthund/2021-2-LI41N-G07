@@ -15,9 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pt.isel.ls.Init;
-import pt.isel.ls.exceptions.AppException;
-import pt.isel.ls.exceptions.InvalidRequestException;
-import pt.isel.ls.exceptions.RouteNotFoundException;
+import pt.isel.ls.exceptions.*;
 import pt.isel.ls.request.Request;
 import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.results.RequestResult;
@@ -135,8 +133,13 @@ public class TimeServlet extends HttpServlet {
             }
         } catch (AppException e) {
             Charset utf8 = StandardCharsets.UTF_8;
-            if(e.getClass() == RouteNotFoundException.class){
+            if (RouteNotFoundException.class.equals(e.getClass())) {
+                resp.setStatus(404);
+            } else if (BadRequestException.class.equals(e.getClass()) ||
+                InvalidRequestException.class.equals(e.getClass())) {
                 resp.setStatus(400);
+            } else if (ServerErrorException.class.equals(e.getClass())) {
+                resp.setStatus(500);
             }
 
             resp.setContentType(String.format("text/html; charset=%s", utf8.name()));
