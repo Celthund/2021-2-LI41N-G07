@@ -2,6 +2,8 @@ package pt.isel.ls.handlers.sports;
 
 import java.util.Optional;
 import javax.sql.DataSource;
+
+import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.exceptions.InvalidRequestException;
 import pt.isel.ls.exceptions.ServerErrorException;
 import pt.isel.ls.models.SportsModel;
@@ -18,7 +20,7 @@ public class GetSportByIdHandler implements RequestHandler {
     SportsModel model = new SportsModel();
 
     @Override
-    public Optional<RequestResult<?>> execute(Request request) throws InvalidRequestException, ServerErrorException {
+    public Optional<RequestResult<?>> execute(Request request) throws AppException {
         if (request.getParameters().containsKey("sid")) {
             DataSource dt = Database.getDataSource();
             TransactionManager tm = new TransactionManager(dt);

@@ -17,10 +17,17 @@ import org.slf4j.LoggerFactory;
 import pt.isel.ls.Init;
 import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.exceptions.InvalidRequestException;
+import pt.isel.ls.exceptions.RouteNotFoundException;
 import pt.isel.ls.request.Request;
 import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.views.View;
+import pt.isel.ls.views.builders.html.Element;
+
+import static pt.isel.ls.views.builders.html.HtmlBuilder.*;
+
+import static pt.isel.ls.views.builders.html.HtmlBuilder.html;
+import static pt.isel.ls.views.builders.html.HtmlGetter.emptyDataSetHtml;
 
 public class TimeServlet extends HttpServlet {
 
@@ -128,16 +135,19 @@ public class TimeServlet extends HttpServlet {
             }
         } catch (AppException e) {
             Charset utf8 = StandardCharsets.UTF_8;
+            if(e.getClass() == RouteNotFoundException.class){
+                resp.setStatus(400);
+            }
 
-            resp.setContentType(String.format("text/plain; charset=%s", utf8.name()));
+            resp.setContentType(String.format("text/html; charset=%s", utf8.name()));
 
-            byte[] respBodyBytes = e.getMessage().getBytes(utf8);
+            byte[] respBodyBytes = emptyDataSetHtml(e.getMessage()).toString().getBytes(utf8);
+            // If it gets here it means something went wrong with the request so we send a bad request status
+
             resp.setContentLength(respBodyBytes.length);
             OutputStream os = resp.getOutputStream();
             os.write(respBodyBytes);
             os.flush();
-            // If it gets here it means something went wrong with the request so we send a bad request status
-            resp.setStatus(400);
         }
     }
 

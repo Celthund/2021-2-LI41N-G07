@@ -141,7 +141,7 @@ public class HandlerRouter {
             }
             // If flag is false it means no path in the tree was valid so, the path sent was an invalid one
             if (!flag) {
-                throw new RouteNotFoundException("Route not found.");
+                throw new RouteNotFoundException("Request not found.");
             } else {
                 // Set it back to false to continues the iteration
                 flag = false;
@@ -149,7 +149,7 @@ public class HandlerRouter {
         }
 
         if (nodeFound.getHandler() == null) {
-            throw new RouteNotFoundException("Route not found.");
+            throw new RouteNotFoundException("Request not found.");
         }
         // Stores the execute to then send it
         return nodeFound.getHandler();
