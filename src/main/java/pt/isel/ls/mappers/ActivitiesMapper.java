@@ -1,19 +1,19 @@
-package pt.isel.ls.models;
+package pt.isel.ls.mappers;
 
 import java.sql.*;
 import java.util.LinkedList;
 import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.exceptions.BadRequestException;
 import pt.isel.ls.exceptions.ServerErrorException;
-import pt.isel.ls.models.domainclasses.Activity;
+import pt.isel.ls.mappers.domainclasses.Activity;
 
 
-public class ActivitiesModel {
+public class ActivitiesMapper {
 
     // Variable used in the creation of Activity
-    private final SportsModel sports = new SportsModel();
-    private final UserModel users = new UserModel();
-    private final RoutesModel routes = new RoutesModel();
+    private final SportsMapper sports = new SportsMapper();
+    private final UserMapper users = new UserMapper();
+    private final RoutesMapper routes = new RoutesMapper();
 
     public LinkedList<Activity> getActivitiesByTops(String sid, String orderBy, String date,
                                                     String rid, String distance, String skip, String top,

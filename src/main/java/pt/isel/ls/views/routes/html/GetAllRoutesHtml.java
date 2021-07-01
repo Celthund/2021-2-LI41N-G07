@@ -3,7 +3,7 @@ package pt.isel.ls.views.routes.html;
 import java.util.HashMap;
 import java.util.LinkedList;
 import pt.isel.ls.exceptions.InvalidJsonException;
-import pt.isel.ls.models.domainclasses.Route;
+import pt.isel.ls.mappers.domainclasses.Route;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.routes.GetAllRoutesResult;
 import static pt.isel.ls.views.PageNavigation.getSkip;

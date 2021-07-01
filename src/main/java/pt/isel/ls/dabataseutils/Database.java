@@ -1,4 +1,4 @@
-package pt.isel.ls.utils;
+package pt.isel.ls.dabataseutils;
 
 import static java.lang.System.getenv;
 import org.postgresql.ds.PGSimpleDataSource;

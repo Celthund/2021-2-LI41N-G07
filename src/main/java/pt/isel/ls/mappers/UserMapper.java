@@ -1,4 +1,4 @@
-package pt.isel.ls.models;
+package pt.isel.ls.mappers;
 
 
 import java.sql.Connection;
@@ -7,10 +7,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import pt.isel.ls.exceptions.ServerErrorException;
-import pt.isel.ls.models.domainclasses.User;
+import pt.isel.ls.mappers.domainclasses.User;
 
 // Handles the data sent by the corresponding view
-public class UserModel {
+public class UserMapper {
 
     public User getUserById(String id, Connection connection) throws ServerErrorException {
         User user = null;

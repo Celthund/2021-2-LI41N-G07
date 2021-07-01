@@ -14,27 +14,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pt.isel.ls.Init;
+import pt.isel.ls.CustomServer;
 import pt.isel.ls.exceptions.*;
 import pt.isel.ls.request.Request;
 import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.views.View;
-import pt.isel.ls.views.builders.html.Element;
-
-import static pt.isel.ls.views.builders.html.HtmlBuilder.*;
-
-import static pt.isel.ls.views.builders.html.HtmlBuilder.html;
 import static pt.isel.ls.views.builders.html.HtmlGetter.emptyDataSetHtml;
 
 public class TimeServlet extends HttpServlet {
 
     private static final Logger log = LoggerFactory.getLogger(TimeServlet.class);
-    private final Init init;
+    private final CustomServer customServer;
 
-    public TimeServlet(Init init) {
+    public TimeServlet(CustomServer customServer) {
         super();
-        this.init = init;
+        this.customServer = customServer;
     }
 
     @Override
@@ -90,7 +85,7 @@ public class TimeServlet extends HttpServlet {
     public void handleRequest(Request request, HttpServletResponse resp) throws IOException {
         try {
             // Finds the route that match the request sent
-            RequestHandler requestHandler = init.findRoute(request);
+            RequestHandler requestHandler = customServer.findRoute(request);
             Optional<RequestResult<?>> result = requestHandler.execute(request);
             if (result.isPresent()) {
                 String accept;
@@ -118,7 +113,7 @@ public class TimeServlet extends HttpServlet {
                     resp.addHeader(key, value);
                 }
                 // Finds the view that corresponds to the request it got
-                View view = init.findView(requestResult, accept);
+                View view = customServer.findView(requestResult, accept);
                 String respBody = view.getRepresentation(requestResult);
                 byte[] respBodyBytes = respBody.getBytes(utf8);
                 resp.setContentLength(respBodyBytes.length);
@@ -135,8 +130,8 @@ public class TimeServlet extends HttpServlet {
             Charset utf8 = StandardCharsets.UTF_8;
             if (RouteNotFoundException.class.equals(e.getClass())) {
                 resp.setStatus(404);
-            } else if (BadRequestException.class.equals(e.getClass()) ||
-                InvalidRequestException.class.equals(e.getClass())) {
+            } else if (BadRequestException.class.equals(e.getClass())
+                || InvalidRequestException.class.equals(e.getClass())) {
                 resp.setStatus(400);
             } else if (ServerErrorException.class.equals(e.getClass())) {
                 resp.setStatus(500);

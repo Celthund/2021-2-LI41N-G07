@@ -3,7 +3,7 @@ package pt.isel.ls.views.activities.html;
 import java.util.HashMap;
 import java.util.LinkedList;
 import pt.isel.ls.exceptions.AppException;
-import pt.isel.ls.models.domainclasses.Activity;
+import pt.isel.ls.mappers.domainclasses.Activity;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.activities.GetActivitiesBySidResult;
 import static pt.isel.ls.views.PageNavigation.getSkip;

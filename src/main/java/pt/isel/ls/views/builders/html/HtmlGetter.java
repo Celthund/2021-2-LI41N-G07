@@ -1,11 +1,11 @@
 package pt.isel.ls.views.builders.html;
 
 import java.util.LinkedList;
-import pt.isel.ls.models.domainclasses.Activity;
-import static pt.isel.ls.models.domainclasses.Activity.durationToString;
-import pt.isel.ls.models.domainclasses.Route;
-import pt.isel.ls.models.domainclasses.Sport;
-import pt.isel.ls.models.domainclasses.User;
+import pt.isel.ls.mappers.domainclasses.Activity;
+import static pt.isel.ls.mappers.domainclasses.Activity.durationToString;
+import pt.isel.ls.mappers.domainclasses.Route;
+import pt.isel.ls.mappers.domainclasses.Sport;
+import pt.isel.ls.mappers.domainclasses.User;
 import static pt.isel.ls.views.builders.html.HtmlBuilder.*;
 
 public class HtmlGetter {
@@ -148,14 +148,14 @@ public class HtmlGetter {
 
     public static Element emptyDataSetHtml(String message) {
         return html(
-                head(
-                  title(message)
-                ),
-                body(
-                        alink("/", "Homepage"),
-                        br(),
-                        h1(message)
-                )
+            head(
+                title(message)
+            ),
+            body(
+                alink("/", "Homepage"),
+                br(),
+                h1(message)
+            )
         );
     }
 }

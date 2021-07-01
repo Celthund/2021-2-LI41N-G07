@@ -3,7 +3,7 @@ package pt.isel.ls.views.sports.html;
 import java.util.HashMap;
 import java.util.LinkedList;
 import pt.isel.ls.exceptions.InvalidJsonException;
-import pt.isel.ls.models.domainclasses.Sport;
+import pt.isel.ls.mappers.domainclasses.Sport;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.sports.GetAllSportsResult;
 import static pt.isel.ls.views.PageNavigation.getSkip;

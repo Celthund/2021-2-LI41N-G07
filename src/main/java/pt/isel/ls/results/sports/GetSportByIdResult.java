@@ -1,6 +1,6 @@
 package pt.isel.ls.results.sports;
 
-import pt.isel.ls.models.domainclasses.Sport;
+import pt.isel.ls.mappers.domainclasses.Sport;
 import pt.isel.ls.results.RequestResult;
 
 public class GetSportByIdResult extends RequestResult<Sport> {

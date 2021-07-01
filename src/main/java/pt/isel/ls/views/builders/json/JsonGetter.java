@@ -1,11 +1,11 @@
 package pt.isel.ls.views.builders.json;
 
 import pt.isel.ls.exceptions.InvalidJsonException;
-import pt.isel.ls.models.domainclasses.Activity;
-import static pt.isel.ls.models.domainclasses.Activity.durationToString;
-import pt.isel.ls.models.domainclasses.Route;
-import pt.isel.ls.models.domainclasses.Sport;
-import pt.isel.ls.models.domainclasses.User;
+import pt.isel.ls.mappers.domainclasses.Activity;
+import static pt.isel.ls.mappers.domainclasses.Activity.durationToString;
+import pt.isel.ls.mappers.domainclasses.Route;
+import pt.isel.ls.mappers.domainclasses.Sport;
+import pt.isel.ls.mappers.domainclasses.User;
 import static pt.isel.ls.views.builders.json.JsonBuilder.jsonObject;
 import static pt.isel.ls.views.builders.json.JsonBuilder.jsonPut;
 import pt.isel.ls.views.builders.json.parts.JsonObject;

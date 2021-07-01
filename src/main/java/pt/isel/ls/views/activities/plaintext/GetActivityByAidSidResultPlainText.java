@@ -1,6 +1,6 @@
 package pt.isel.ls.views.activities.plaintext;
 
-import pt.isel.ls.models.domainclasses.Activity;
+import pt.isel.ls.mappers.domainclasses.Activity;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.activities.GetActivityByAidSidResult;
 import pt.isel.ls.views.View;

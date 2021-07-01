@@ -73,9 +73,9 @@ import pt.isel.ls.views.users.plaintext.CreateUserPlainText;
 import pt.isel.ls.views.users.plaintext.GetAllUsersPlainText;
 import pt.isel.ls.views.users.plaintext.GetUserByIdPlainText;
 
-public class Init {
+public class CustomServer {
     private static final int LISTEN_PORT = 8080;
-    private static final Logger log = LoggerFactory.getLogger(Init.class);
+    private static final Logger log = LoggerFactory.getLogger(CustomServer.class);
 
     private final HandlerRouter handlerRouter = new HandlerRouter();
     private final ViewRouter viewRouter = new ViewRouter();

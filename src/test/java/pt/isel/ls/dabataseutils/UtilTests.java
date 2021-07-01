@@ -1,4 +1,4 @@
-package pt.isel.ls.utils;
+package pt.isel.ls.dabataseutils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,14 +15,14 @@ import pt.isel.ls.exceptions.RouteAlreadyExistsException;
 import pt.isel.ls.exceptions.RouteNotFoundException;
 import pt.isel.ls.exceptions.ServerErrorException;
 import pt.isel.ls.handlers.users.GetUserByIdHandler;
-import pt.isel.ls.models.UserModel;
-import pt.isel.ls.models.domainclasses.User;
+import pt.isel.ls.mappers.UserMapper;
+import pt.isel.ls.mappers.domainclasses.User;
 import pt.isel.ls.request.Method;
 import pt.isel.ls.request.Request;
 import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.routers.HandlerRouter;
-import static pt.isel.ls.utils.Database.getDataSource;
+import static pt.isel.ls.dabataseutils.Database.getDataSource;
 
 public class UtilTests {
 
@@ -52,7 +52,7 @@ public class UtilTests {
     public void test_wrong_user() throws SQLException {
         PGSimpleDataSource db = getDataSource();
         db.setServerNames(new String[] {"Server1"});
-        db.setUser("Wrong UserModel");
+        db.setUser("Wrong UserMapper");
         Connection connection = db.getConnection();
         connection.close();
     }
@@ -69,7 +69,7 @@ public class UtilTests {
     public void test_add_users() throws SQLException, ServerErrorException {
         PGSimpleDataSource db = getDataSource();
         Connection conn = db.getConnection();
-        UserModel model = new UserModel();
+        UserMapper model = new UserMapper();
         conn.setAutoCommit(false);
         model.createUser("name=test", "email=test@mailtest.com", conn);
 
@@ -82,7 +82,7 @@ public class UtilTests {
     public void test_get_users_id() throws SQLException, ServerErrorException {
         PGSimpleDataSource db = getDataSource();
         Connection conn = db.getConnection();
-        UserModel model = new UserModel();
+        UserMapper model = new UserMapper();
         conn.setAutoCommit(false);
         User userCreate = model.createUser("name=test", "email=test@mailtest.com", conn);
         User userQuery = model.getUserById(Integer.toString(userCreate.id), conn);
@@ -99,7 +99,7 @@ public class UtilTests {
     public void test_get_repeated_user_id() throws SQLException, ServerErrorException {
         PGSimpleDataSource db = getDataSource();
         Connection conn = db.getConnection();
-        UserModel model = new UserModel();
+        UserMapper model = new UserMapper();
         conn.setAutoCommit(false);
         model.createUser("name=test", "email=test@mailtest.com", conn);
         model.createUser("name=test", "email=test@mailtest.com", conn);
@@ -113,7 +113,7 @@ public class UtilTests {
     public void test_get_users() throws SQLException, ServerErrorException {
         PGSimpleDataSource db = getDataSource();
         Connection conn = db.getConnection();
-        UserModel model = new UserModel();
+        UserMapper model = new UserMapper();
         conn.setAutoCommit(false);
         PreparedStatement statement;
         String cmd = "DROP TABLE if exists activities;"

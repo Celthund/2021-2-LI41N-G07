@@ -2,7 +2,7 @@ package pt.isel.ls.views.users.json;
 
 import java.util.LinkedList;
 import pt.isel.ls.exceptions.InvalidJsonException;
-import pt.isel.ls.models.domainclasses.User;
+import pt.isel.ls.mappers.domainclasses.User;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.users.GetAllUsersResult;
 import pt.isel.ls.views.View;

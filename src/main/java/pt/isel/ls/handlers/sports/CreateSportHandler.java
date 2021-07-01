@@ -4,18 +4,18 @@ import java.util.Optional;
 import javax.sql.DataSource;
 import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.exceptions.InvalidRequestException;
-import pt.isel.ls.models.SportsModel;
-import pt.isel.ls.models.domainclasses.Sport;
+import pt.isel.ls.mappers.SportsMapper;
+import pt.isel.ls.mappers.domainclasses.Sport;
 import pt.isel.ls.request.Request;
 import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.sports.CreateSportResult;
-import pt.isel.ls.utils.Database;
-import pt.isel.ls.utils.TransactionManager;
+import pt.isel.ls.dabataseutils.Database;
+import pt.isel.ls.dabataseutils.TransactionManager;
 
 public class CreateSportHandler implements RequestHandler {
 
-    SportsModel model = new SportsModel();
+    SportsMapper model = new SportsMapper();
 
     @Override
     public Optional<RequestResult<?>> execute(Request request) throws AppException {

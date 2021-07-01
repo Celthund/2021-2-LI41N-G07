@@ -6,19 +6,19 @@ import java.util.Optional;
 import javax.sql.DataSource;
 import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.exceptions.InvalidRequestException;
-import pt.isel.ls.models.ActivitiesModel;
-import pt.isel.ls.models.domainclasses.Activity;
+import pt.isel.ls.mappers.ActivitiesMapper;
+import pt.isel.ls.mappers.domainclasses.Activity;
 import pt.isel.ls.request.Request;
 import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.activities.CreateActivityResult;
-import pt.isel.ls.utils.Database;
-import pt.isel.ls.utils.TransactionManager;
+import pt.isel.ls.dabataseutils.Database;
+import pt.isel.ls.dabataseutils.TransactionManager;
 
 public class CreateActivityHandler implements RequestHandler {
 
     // Call the respective model, this model class will handle the query
-    ActivitiesModel model = new ActivitiesModel();
+    ActivitiesMapper model = new ActivitiesMapper();
 
     // This method will search the request and act accordingly returning and Optional
     //containing the RequestResult with all the information from the query

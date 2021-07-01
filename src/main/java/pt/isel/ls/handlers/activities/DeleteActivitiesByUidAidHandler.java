@@ -6,18 +6,18 @@ import java.util.Optional;
 import javax.sql.DataSource;
 import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.exceptions.InvalidRequestException;
-import pt.isel.ls.models.ActivitiesModel;
-import pt.isel.ls.models.domainclasses.Activity;
+import pt.isel.ls.mappers.ActivitiesMapper;
+import pt.isel.ls.mappers.domainclasses.Activity;
 import pt.isel.ls.request.Request;
 import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.activities.DeleteActivitiesByUidAidResult;
-import pt.isel.ls.utils.Database;
-import pt.isel.ls.utils.TransactionManager;
+import pt.isel.ls.dabataseutils.Database;
+import pt.isel.ls.dabataseutils.TransactionManager;
 
 public class DeleteActivitiesByUidAidHandler implements RequestHandler {
 
-    ActivitiesModel model = new ActivitiesModel();
+    ActivitiesMapper model = new ActivitiesMapper();
 
     @Override
     public Optional<RequestResult<?>> execute(Request request) throws AppException {

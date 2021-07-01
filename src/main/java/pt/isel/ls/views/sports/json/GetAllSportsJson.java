@@ -2,7 +2,7 @@ package pt.isel.ls.views.sports.json;
 
 import java.util.LinkedList;
 import pt.isel.ls.exceptions.InvalidJsonException;
-import pt.isel.ls.models.domainclasses.Sport;
+import pt.isel.ls.mappers.domainclasses.Sport;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.sports.GetAllSportsResult;
 import pt.isel.ls.views.View;

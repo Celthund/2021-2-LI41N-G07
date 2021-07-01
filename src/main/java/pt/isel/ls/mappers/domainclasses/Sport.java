@@ -1,4 +1,4 @@
-package pt.isel.ls.models.domainclasses;
+package pt.isel.ls.mappers.domainclasses;
 
 public class Sport {
 

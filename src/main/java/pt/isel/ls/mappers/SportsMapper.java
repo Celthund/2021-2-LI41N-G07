@@ -1,4 +1,4 @@
-package pt.isel.ls.models;
+package pt.isel.ls.mappers;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,9 +7,9 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.exceptions.ServerErrorException;
-import pt.isel.ls.models.domainclasses.Sport;
+import pt.isel.ls.mappers.domainclasses.Sport;
 
-public class SportsModel {
+public class SportsMapper {
 
     public Sport getSportById(String sid, Connection connection) throws ServerErrorException {
         Sport sport = null;

@@ -1,7 +1,7 @@
 package pt.isel.ls.results.routes;
 
 import java.util.LinkedList;
-import pt.isel.ls.models.domainclasses.Route;
+import pt.isel.ls.mappers.domainclasses.Route;
 import pt.isel.ls.results.RequestResult;
 
 public class GetAllRoutesResult extends RequestResult<LinkedList<Route>> {

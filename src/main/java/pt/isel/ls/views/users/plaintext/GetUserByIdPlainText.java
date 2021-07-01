@@ -1,6 +1,6 @@
 package pt.isel.ls.views.users.plaintext;
 
-import pt.isel.ls.models.domainclasses.User;
+import pt.isel.ls.mappers.domainclasses.User;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.users.GetUserByIdResult;
 import pt.isel.ls.views.View;

@@ -1,4 +1,4 @@
-package pt.isel.ls.models;
+package pt.isel.ls.mappers;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,9 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import pt.isel.ls.exceptions.ServerErrorException;
-import pt.isel.ls.models.domainclasses.Route;
+import pt.isel.ls.mappers.domainclasses.Route;
 
-public class RoutesModel {
+public class RoutesMapper {
 
     public Route getRouteById(String rid, Connection connection) throws ServerErrorException {
         Route route = null;

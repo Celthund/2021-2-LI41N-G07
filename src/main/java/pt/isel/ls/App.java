@@ -7,11 +7,11 @@ import pt.isel.ls.exceptions.AppException;
 public class App {
 
     public static void main(String[] args) {
-        Init init = new Init();
+        CustomServer customServer = new CustomServer();
         // Method that register the routes
         try {
-            init.registerRoutes();
-            init.registerViews();
+            customServer.registerRoutes();
+            customServer.registerViews();
         } catch (AppException e) {
             e.printStackTrace();
             System.out.print(e.getMessage());
@@ -23,7 +23,7 @@ public class App {
             Scanner scanner = new Scanner(System.in);
             String input;
             while (!(input = scanner.nextLine()).equalsIgnoreCase("EXIT /")) {
-                init.run(input);
+                customServer.run(input);
                 System.out.print("> ");
             }
         } else {
@@ -31,9 +31,9 @@ public class App {
             for (String string : args) {
                 input.append(string).append(" ");
             }
-            init.run(input.toString());
+            customServer.run(input.toString());
         }
-        init.waitForServer();
+        customServer.waitForServer();
     }
 
 

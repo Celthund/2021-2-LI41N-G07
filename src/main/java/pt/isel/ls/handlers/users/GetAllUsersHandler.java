@@ -5,18 +5,18 @@ import java.util.LinkedList;
 import java.util.Optional;
 import javax.sql.DataSource;
 import pt.isel.ls.exceptions.AppException;
-import pt.isel.ls.models.UserModel;
-import pt.isel.ls.models.domainclasses.User;
+import pt.isel.ls.mappers.UserMapper;
+import pt.isel.ls.mappers.domainclasses.User;
 import pt.isel.ls.request.Request;
 import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.users.GetAllUsersResult;
-import pt.isel.ls.utils.Database;
-import pt.isel.ls.utils.TransactionManager;
+import pt.isel.ls.dabataseutils.Database;
+import pt.isel.ls.dabataseutils.TransactionManager;
 
 public class GetAllUsersHandler implements RequestHandler {
 
-    UserModel model = new UserModel();
+    UserMapper model = new UserMapper();
 
     @Override
     public Optional<RequestResult<?>> execute(Request request) throws AppException {

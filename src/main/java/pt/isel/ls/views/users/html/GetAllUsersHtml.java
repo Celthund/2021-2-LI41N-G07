@@ -2,7 +2,7 @@ package pt.isel.ls.views.users.html;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import pt.isel.ls.models.domainclasses.User;
+import pt.isel.ls.mappers.domainclasses.User;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.users.GetAllUsersResult;
 import static pt.isel.ls.views.PageNavigation.getSkip;

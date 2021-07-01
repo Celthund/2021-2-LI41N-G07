@@ -4,18 +4,18 @@ import java.util.Optional;
 import javax.sql.DataSource;
 import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.exceptions.InvalidRequestException;
-import pt.isel.ls.models.RoutesModel;
-import pt.isel.ls.models.domainclasses.Route;
+import pt.isel.ls.mappers.RoutesMapper;
+import pt.isel.ls.mappers.domainclasses.Route;
 import pt.isel.ls.request.Request;
 import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.routes.CreateRouteResult;
-import pt.isel.ls.utils.Database;
-import pt.isel.ls.utils.TransactionManager;
+import pt.isel.ls.dabataseutils.Database;
+import pt.isel.ls.dabataseutils.TransactionManager;
 
 public class CreateRouteHandler implements RequestHandler {
 
-    RoutesModel model = new RoutesModel();
+    RoutesMapper model = new RoutesMapper();
 
     @Override
     public Optional<RequestResult<?>> execute(Request request) throws AppException {

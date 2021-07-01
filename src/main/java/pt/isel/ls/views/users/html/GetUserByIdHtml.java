@@ -2,9 +2,9 @@ package pt.isel.ls.views.users.html;
 
 import java.util.HashSet;
 import java.util.LinkedList;
-import pt.isel.ls.models.domainclasses.Activity;
-import static pt.isel.ls.models.domainclasses.Activity.durationToString;
-import pt.isel.ls.models.domainclasses.User;
+import pt.isel.ls.mappers.domainclasses.Activity;
+import static pt.isel.ls.mappers.domainclasses.Activity.durationToString;
+import pt.isel.ls.mappers.domainclasses.User;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.users.GetUserByIdResult;
 import pt.isel.ls.views.View;

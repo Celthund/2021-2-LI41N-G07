@@ -1,7 +1,7 @@
 package pt.isel.ls.views.routes.plaintext;
 
 import java.util.LinkedList;
-import pt.isel.ls.models.domainclasses.Route;
+import pt.isel.ls.mappers.domainclasses.Route;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.routes.GetAllRoutesResult;
 import pt.isel.ls.views.View;

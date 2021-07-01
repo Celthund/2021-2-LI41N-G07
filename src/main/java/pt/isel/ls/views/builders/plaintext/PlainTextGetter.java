@@ -1,10 +1,10 @@
 package pt.isel.ls.views.builders.plaintext;
 
-import pt.isel.ls.models.domainclasses.Activity;
-import static pt.isel.ls.models.domainclasses.Activity.durationToString;
-import pt.isel.ls.models.domainclasses.Route;
-import pt.isel.ls.models.domainclasses.Sport;
-import pt.isel.ls.models.domainclasses.User;
+import pt.isel.ls.mappers.domainclasses.Activity;
+import static pt.isel.ls.mappers.domainclasses.Activity.durationToString;
+import pt.isel.ls.mappers.domainclasses.Route;
+import pt.isel.ls.mappers.domainclasses.Sport;
+import pt.isel.ls.mappers.domainclasses.User;
 
 public class PlainTextGetter {
 
