@@ -25,8 +25,8 @@ public class GetAllUsersHandler implements RequestHandler {
 
         return Optional.of(tm.execute(conn -> {
             HashMap<String, LinkedList<String>> queryStrings = request.getQueryStrings();
-            String skip = queryStrings.containsKey("skip") ? request.getQueryStrings().get("skip").getFirst() : null;
-            String top = queryStrings.containsKey("top") ? request.getQueryStrings().get("top").getFirst() : null;
+            String skip = queryStrings.containsKey("skip") ? queryStrings.get("skip").getFirst() : null;
+            String top = queryStrings.containsKey("top") ? queryStrings.get("top").getFirst() : null;
 
             LinkedList<User> users = model.getAllUsers(skip, top, conn);
             if (users.size() > 0) {

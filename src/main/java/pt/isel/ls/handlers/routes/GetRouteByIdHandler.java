@@ -21,7 +21,6 @@ public class GetRouteByIdHandler implements RequestHandler {
     RoutesMapper model = new RoutesMapper();
     SportsMapper modelSport = new SportsMapper();
 
-
     @Override
     public Optional<RequestResult<?>> execute(Request request) throws AppException {
         if (request.getParameters().containsKey("rid")) {
@@ -43,9 +42,7 @@ public class GetRouteByIdHandler implements RequestHandler {
                         "Found route with id = " + rid);
                 }
                 return new GetRouteByIdResult(404, null, "Route not found.");
-
             }));
-
         }
         throw new InvalidRequestException("Missing route id.");
     }

@@ -52,7 +52,6 @@ public class CreateActivityHandler implements RequestHandler {
                     return resp;
                 }
                 return new CreateActivityResult(500, null, "Failed to create activity.");
-
             }));
         }
         throw new InvalidRequestException("Missing sport id, user id, duration or date.");

@@ -42,7 +42,6 @@ public class GetActivitiesByTopsHandler implements RequestHandler {
                         String.format("Found %s activities", activities.size()));
                 }
                 return new GetActivitiesByTopsResult(404, null, "No activities found");
-
             }));
         }
         throw new InvalidRequestException("Missing sport id.");

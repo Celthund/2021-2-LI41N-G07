@@ -1,5 +1,7 @@
 package pt.isel.ls.handlers.routes;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Optional;
 import javax.sql.DataSource;
 import pt.isel.ls.exceptions.AppException;
@@ -20,18 +22,20 @@ public class CreateRouteHandler implements RequestHandler {
     @Override
     public Optional<RequestResult<?>> execute(Request request) throws AppException {
 
-        if (request.getQueryStrings().containsKey("startlocation")
-            && request.getQueryStrings().containsKey("endlocation")
-            && request.getQueryStrings().containsKey("distance")
+        HashMap<String, LinkedList<String>> queryStrings = request.getQueryStrings();
+
+        if (queryStrings.containsKey("startlocation")
+            && queryStrings.containsKey("endlocation")
+            && queryStrings.containsKey("distance")
         ) {
             DataSource dt = Database.getDataSource();
             TransactionManager tm = new TransactionManager(dt);
 
             return Optional.of(tm.execute(conn -> {
 
-                String startLocation = request.getQueryStrings().get("startlocation").getFirst();
-                String endLocation = request.getQueryStrings().get("endlocation").getFirst();
-                String distance = request.getQueryStrings().get("distance").getFirst();
+                String startLocation = queryStrings.get("startlocation").getFirst();
+                String endLocation = queryStrings.get("endlocation").getFirst();
+                String distance = queryStrings.get("distance").getFirst();
 
                 Route route = model.createRoute(startLocation, endLocation, distance, conn);
                 if (route != null) {
@@ -41,7 +45,6 @@ public class CreateRouteHandler implements RequestHandler {
                     return resp;
                 }
                 return new CreateRouteResult(500, null, "Failed to create route.");
-
             }));
         }
         throw new InvalidRequestException("Missing start location or end location or distance.");
