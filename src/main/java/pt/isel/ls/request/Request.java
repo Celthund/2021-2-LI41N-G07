@@ -178,7 +178,6 @@ public class Request {
                     setQueryStrings(arr[2]);
                 }
             }
-
         }
     }
 }

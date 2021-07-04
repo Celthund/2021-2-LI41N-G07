@@ -38,7 +38,6 @@ public class DeleteActivitiesByUidAidHandler implements RequestHandler {
                 }
                 return new DeleteActivitiesByUidAidResult(500, null,
                     "Failed to delete any activity.");
-
             }));
         }
         throw new InvalidRequestException("Missing user id or activity id.");

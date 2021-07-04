@@ -25,8 +25,8 @@ public class GetAllSportsHandler implements RequestHandler {
 
         return Optional.of(tm.execute(conn -> {
             HashMap<String, LinkedList<String>> queryStrings = request.getQueryStrings();
-            String skip = queryStrings.containsKey("skip") ? request.getQueryStrings().get("skip").getFirst() : null;
-            String top = queryStrings.containsKey("top") ? request.getQueryStrings().get("top").getFirst() : null;
+            String skip = queryStrings.containsKey("skip") ? queryStrings.get("skip").getFirst() : null;
+            String top = queryStrings.containsKey("top") ? queryStrings.get("top").getFirst() : null;
 
             LinkedList<Sport> sports = model.getAllSports(skip, top, conn);
             if (sports.size() > 0) {

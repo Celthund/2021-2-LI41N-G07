@@ -22,6 +22,7 @@ public class GetActivitiesByUidHandler implements RequestHandler {
     @Override
     public Optional<RequestResult<?>> execute(Request request) throws AppException {
         HashMap<String, String> parameters = request.getParameters();
+        HashMap<String, LinkedList<String>> queryStrings = request.getQueryStrings();
 
         if (parameters.containsKey("uid")) {
             DataSource dt = Database.getDataSource();
@@ -29,12 +30,12 @@ public class GetActivitiesByUidHandler implements RequestHandler {
 
             return Optional.of(tm.execute(conn -> {
                 String skip = null;
-                if (request.getQueryStrings().containsKey("skip")) {
-                    skip = request.getQueryStrings().get("skip").getFirst();
+                if (queryStrings.containsKey("skip")) {
+                    skip = queryStrings.get("skip").getFirst();
                 }
                 String top = null;
-                if (request.getQueryStrings().containsKey("top")) {
-                    top = request.getQueryStrings().get("top").getFirst();
+                if (queryStrings.containsKey("top")) {
+                    top = queryStrings.get("top").getFirst();
                 }
 
                 String uid = parameters.get("uid");
@@ -45,7 +46,6 @@ public class GetActivitiesByUidHandler implements RequestHandler {
                         + " activities with uid = " + uid);
                 }
                 return new GetActivitiesByUidResult(404, null, "Activity not found");
-
             }));
         }
         throw new InvalidRequestException("Missing user id.");

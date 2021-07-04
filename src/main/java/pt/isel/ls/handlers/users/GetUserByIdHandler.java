@@ -21,7 +21,6 @@ public class GetUserByIdHandler implements RequestHandler {
     UserMapper userMapper = new UserMapper();
     ActivitiesMapper activityModel = new ActivitiesMapper();
 
-
     @Override
     public Optional<RequestResult<?>> execute(Request request) throws AppException {
         if (request.getParameters().containsKey("uid")) {
