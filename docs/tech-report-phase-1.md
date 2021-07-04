@@ -2,7 +2,7 @@
 
 ## Introdução
 
-Este documento contém os aspectos relevantes do desenho e implementação da fase 3 do projecto de Laboratório de Software.
+Este documento contém os aspetos relevantes do desenho e implementação da fase 3 do projecto de Laboratório de Software.
 
 ## Modelação da base de dados
 
@@ -77,16 +77,14 @@ executanto o metodo correspondente à chamada assim que validado.
 
 ### Gestão de ligações
 
-Cada modelo é responsável por pedir a criação de um novo datasource ao package Utils, realizar as queries necessárias 
-ao seu propósito e finalmente garantindo o encerramento de todas as ligações que possam existir com o datasource.
+Foi criado um TransactionManager de modo que a gestão de coneções a base de dados fique centralizado numa classe.
+Esta classe tem o método execute que recebe um interface Operation que é implementada através de uma função lamda.  
 
 ### Acesso a dados
 
 Foram desenvolvidas classes para representar cada área do problema, nomeadamente `user`, `sports`, `activities` e `routes`, 
 alocadas ao package `model`, de modo a abstrair as transações de dados da base de dados. Estas classes devolvem 
-sempre representações unitárias de uma identidade como por exemplo, a classe `UserModel` irá sempre 
-retornar instâncias de `User`. 
-Foi adicionado ao modelo de dados os 
+sempre representações unitárias de uma identidade como, por exemplo, a classe `UserModel` irá sempre retornar instâncias de `User`.
 
 Na maioria dos casos, as queries são de sintaxe trivial. Nas inserções, de forma a retornar uma representação unitária, 
 é feita uma query extra para procura da entrada acabada de inserir.
@@ -94,16 +92,18 @@ Na maioria dos casos, as queries são de sintaxe trivial. Nas inserções, de fo
 ### Servidor HTTP
 
 Foi implementada através da biblioteca HttpServlet um servidor HTTP para resposta a pedidos de HTTP, tipicamente via browser.
-Fez-se as alterações necessárias para implementação do fluxo do seguinte grafo:
+Fizeram-se as alterações necessárias para implementação do fluxo do seguinte grafo:
+Este servidor aceita pedidos com os métodos GET, POST. Pedidos POST fazem um redirecionamento para as pagina especificas criadas. 
+Exemplo: Quando criamos um user através da chamada POST /users envia um status code 303 com o header Location: GET /users/{id_created}
 ![Grafo](Sports.png)
 
 ### Processamento de erros
 
-Foram criadas exceções adicionais para dados inválidos que sejam introduzidos pelo utilizador como por exemplo:
+Foram criadas exceções adicionais para dados inválidos que sejam introduzidos pelo utilizador como, por exemplo:
 
-* Pedido de uma rota inexistente
+* Pedido de uma rota inexistente.
 * Envio de parâmetros errados ou formato errado
-* Falhas de acesso à base de dados
+* Falhas de acesso à base de dados.
 
 Todos estas exceções têm uma mensagem que é apresentada ao utilizador.
 
