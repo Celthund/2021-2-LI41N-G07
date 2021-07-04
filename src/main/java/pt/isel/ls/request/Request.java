@@ -1,10 +1,11 @@
 package pt.isel.ls.request;
 
+import pt.isel.ls.exceptions.InvalidRequestException;
+
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.LinkedList;
-import pt.isel.ls.exceptions.InvalidRequestException;
 
 public class Request {
     // Hashmap where we store all parameters
@@ -165,18 +166,10 @@ public class Request {
             int idxOfParameters = arr[2].indexOf("=");
             int idxOfHeader = arr[2].indexOf(":");
 
-            if (idxOfHeader > 0 && idxOfParameters > 0) {
-                if (idxOfHeader < idxOfParameters) {
-                    setHeader(arr[2]);
-                } else {
-                    setQueryStrings(arr[2]);
-                }
-            } else {
-                if (idxOfHeader > 0) {
-                    setHeader(arr[2]);
-                } else if (idxOfParameters > 0) {
-                    setQueryStrings(arr[2]);
-                }
+            if (idxOfHeader > 0) {
+                setHeader(arr[2]);
+            } else if (idxOfParameters > 0) {
+                setQueryStrings(arr[2]);
             }
         }
     }
