@@ -13,8 +13,8 @@ import pt.isel.ls.request.Request;
 import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.results.users.GetUserByIdResult;
-import pt.isel.ls.dabataseutils.Database;
-import pt.isel.ls.dabataseutils.TransactionManager;
+import pt.isel.ls.databaseutils.Database;
+import pt.isel.ls.databaseutils.TransactionManager;
 
 public class GetUserByIdHandler implements RequestHandler {
 

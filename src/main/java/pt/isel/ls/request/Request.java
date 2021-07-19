@@ -1,11 +1,10 @@
 package pt.isel.ls.request;
 
-import pt.isel.ls.exceptions.InvalidRequestException;
-
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.LinkedList;
+import pt.isel.ls.exceptions.InvalidRequestException;
 
 public class Request {
     // Hashmap where we store all parameters

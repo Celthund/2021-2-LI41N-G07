@@ -76,9 +76,6 @@ public class TimeServlet extends HttpServlet {
         } catch (InvalidRequestException e) {
             e.printStackTrace();
         }
-
-        resp.setStatus(303);
-        resp.addHeader("location", "/users/56");
     }
 
 

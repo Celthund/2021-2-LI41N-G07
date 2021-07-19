@@ -1,4 +1,4 @@
-package pt.isel.ls.dabataseutils;
+package pt.isel.ls.databaseutils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,6 +10,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.postgresql.util.PSQLException;
+import static pt.isel.ls.databaseutils.Database.getDataSource;
 import pt.isel.ls.exceptions.AppException;
 import pt.isel.ls.exceptions.RouteAlreadyExistsException;
 import pt.isel.ls.exceptions.RouteNotFoundException;
@@ -22,7 +23,6 @@ import pt.isel.ls.request.Request;
 import pt.isel.ls.request.RequestHandler;
 import pt.isel.ls.results.RequestResult;
 import pt.isel.ls.routers.HandlerRouter;
-import static pt.isel.ls.dabataseutils.Database.getDataSource;
 
 public class UtilTests {
 
@@ -113,7 +113,6 @@ public class UtilTests {
     public void test_get_users() throws SQLException, ServerErrorException {
         PGSimpleDataSource db = getDataSource();
         Connection conn = db.getConnection();
-        UserMapper model = new UserMapper();
         conn.setAutoCommit(false);
         PreparedStatement statement;
         String cmd = "DROP TABLE if exists activities;"
@@ -123,15 +122,16 @@ public class UtilTests {
 
         statement = conn.prepareStatement(cmd);
         statement.executeUpdate();
-        cmd = "create table if not exists users(" +
-            "  uid serial primary key," +
-            "  name varchar(80) not null," +
-            "  email varchar(80) unique not null" +
-            ");";
+        cmd = "create table if not exists users("
+            + "  uid serial primary key,"
+            + "  name varchar(80) not null,"
+            + "  email varchar(80) unique not null"
+            + ");";
         statement = conn.prepareStatement(cmd);
         statement.executeUpdate();
 
 
+        UserMapper model = new UserMapper();
         model.createUser("test1", "test1@mailtest.com", conn);
         model.createUser("test2", "test2@mailtest.com", conn);
         model.createUser("test3", "test3@mailtest.com", conn);
@@ -151,35 +151,35 @@ public class UtilTests {
 
 
     private void createTableForTests(Connection connection) throws SQLException {
-        String create = "drop table if exists activitiesTest;" +
-            "drop table if exists usersTest cascade;" +
-            "drop table if exists routesTest cascade;" +
-            "drop table if exists sportsTest cascade;" +
-            "create table if not exists routesTest (" +
-            "  rid serial primary key," +
-            "  startlocation varchar(80)," +
-            "  endlocation varchar(80)," +
-            "  distance int\n" +
-            ");" +
-            "create table if not exists usersTest (" +
-            "  uid serial primary key," +
-            "  name varchar(80) not null," +
-            "  email varchar(80) unique not null" +
-            ");" +
-            "create table if not exists sportsTest (" +
-            "   sid serial primary key," +
-            "   name varchar(80) not null," +
-            "   description varchar(120) not null" +
-            ");" +
-            "create table if not exists activitiesTest (" +
-            "    aid serial primary key," +
-            "    uid int not null references users (uid)," +
-            "    rid int references routes (rid)," +
-            "    sid int references sports (sid)," +
-            "    date date not null," +
-            "    duration bigint not null," +
-            "    ts_deleted timestamp" +
-            ");";
+        String create = "drop table if exists activitiesTest;"
+            + "drop table if exists usersTest cascade;"
+            + "drop table if exists routesTest cascade;"
+            + "drop table if exists sportsTest cascade;"
+            + "create table if not exists routesTest ("
+            + "  rid serial primary key,"
+            + "  startlocation varchar(80),"
+            + "  endlocation varchar(80),"
+            + "  distance int\n"
+            + ");"
+            + "create table if not exists usersTest ("
+            + "  uid serial primary key,"
+            + "  name varchar(80) not null,"
+            + "  email varchar(80) unique not null"
+            + ");"
+            + "create table if not exists sportsTest ("
+            + "   sid serial primary key,"
+            + "   name varchar(80) not null,"
+            + "   description varchar(120) not null"
+            + ");"
+            + "create table if not exists activitiesTest ("
+            + "    aid serial primary key,"
+            + "    uid int not null references users (uid),"
+            + "    rid int references routes (rid),"
+            + "    sid int references sports (sid),"
+            + "    date date not null,"
+            + "    duration bigint not null,"
+            + "    ts_deleted timestamp"
+            + ");";
 
         Statement statement = connection.createStatement();
 
@@ -187,19 +187,21 @@ public class UtilTests {
     }
 
     private void addDataToTable(Connection connection) throws SQLException {
-        String create = "INSERT into usersTest (name, email) VALUES ('Ze Antonio','A123456@alunos.isel.pt');" +
-            "INSERT into usersTest (name, email) VALUES ('Luis Alves','luis.alves@alunos.isel.pt');"
+        String create = "INSERT into usersTest (name, email) VALUES ('Ze Antonio','A123456@alunos.isel.pt');"
+            + "INSERT into usersTest (name, email) VALUES ('Luis Alves','luis.alves@alunos.isel.pt');"
             + "INSERT into usersTest (name, email) VALUES ('Jorge Simoes','jorge.simoes@alunos.isel.pt');"
             + "INSERT into sportsTest (name, description) values ('Cycling', 'Cycling');"
             + "INSERT into sportsTest (name, description) values ('Spinning', 'Indor Spinning');"
             + "INSERT into sportsTest (name, description) values ('Treadmill', 'Treadmill');"
-            + "INSERT into routesTest (startlocation, endlocation, distance) VALUES ('Lisboa', 'Porto', 274);" +
-            "INSERT into routesTest (startlocation, endlocation, distance) VALUES ('Faro', 'Madrid', 1274);" +
-            "INSERT into routesTest (startlocation, endlocation, distance) VALUES ('Lisboa', 'Lisboa', 40075);"
-            +
-            "INSERT into activitiesTest (uid, rid, sid, date, duration, ts_deleted) VALUES (1, 1, 1 , '2014-5-17' ,19019,NULL);" +
-            "INSERT into activitiesTest (uid, rid, sid, date, duration, ts_deleted) VALUES (1, 2, 2, '2007-4-16',33592,NULL);" +
-            "INSERT into activitiesTest (uid, rid, sid, date, duration, ts_deleted) VALUES (2, 3, 3, '2017-6-22',170965,NULL);";
+            + "INSERT into routesTest (startlocation, endlocation, distance) VALUES ('Lisboa', 'Porto', 274);"
+            + "INSERT into routesTest (startlocation, endlocation, distance) VALUES ('Faro', 'Madrid', 1274);"
+            + "INSERT into routesTest (startlocation, endlocation, distance) VALUES ('Lisboa', 'Lisboa', 40075);"
+            + "INSERT into activitiesTest (uid, rid, sid, date, duration, ts_deleted) "
+            + "VALUES (1, 1, 1 , '2014-5-17' ,19019,NULL);"
+            + "INSERT into activitiesTest (uid, rid, sid, date, duration, ts_deleted) "
+            + "VALUES (1, 2, 2, '2007-4-16',33592,NULL);"
+            + "INSERT into activitiesTest (uid, rid, sid, date, duration, ts_deleted) "
+            + "VALUES (2, 3, 3, '2017-6-22',170965,NULL);";
 
 
         Statement statement = connection.createStatement();

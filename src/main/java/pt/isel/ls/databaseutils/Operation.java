@@ -1,4 +1,4 @@
-package pt.isel.ls.dabataseutils;
+package pt.isel.ls.databaseutils;
 
 import java.sql.Connection;
 import pt.isel.ls.exceptions.AppException;
