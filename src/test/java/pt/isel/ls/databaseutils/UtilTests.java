@@ -56,11 +56,10 @@ public class UtilTests {
         String user = db.getUser();
         db.setServerNames(new String[] {"Server1"});
         db.setUser("Wrong UserMapper");
-        try{
+        try {
             Connection connection = db.getConnection();
             connection.close();
-        }
-        finally {
+        } finally {
             db.setUser(user);
             db.setServerNames(servers);
         }
@@ -73,11 +72,10 @@ public class UtilTests {
         String pass = db.getPassword();
         db.setPassword("Wrong password");
 
-        try{
+        try {
             Connection connection = db.getConnection();
             connection.close();
-        }
-        finally {
+        } finally {
             db.setPassword(pass);
         }
     }
