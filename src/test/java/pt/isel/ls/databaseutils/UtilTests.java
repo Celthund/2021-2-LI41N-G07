@@ -50,19 +50,36 @@ public class UtilTests {
 
     @Test(expected = PSQLException.class)
     public void test_wrong_user() throws SQLException {
+
         PGSimpleDataSource db = getDataSource();
+        String [] servers = db.getServerNames();
+        String user = db.getUser();
         db.setServerNames(new String[] {"Server1"});
         db.setUser("Wrong UserMapper");
-        Connection connection = db.getConnection();
-        connection.close();
+        try{
+            Connection connection = db.getConnection();
+            connection.close();
+        }
+        finally {
+            db.setUser(user);
+            db.setServerNames(servers);
+        }
+
     }
 
     @Test(expected = PSQLException.class)
     public void test_wrong_password() throws SQLException {
         PGSimpleDataSource db = getDataSource();
+        String pass = db.getPassword();
         db.setPassword("Wrong password");
-        Connection connection = db.getConnection();
-        connection.close();
+
+        try{
+            Connection connection = db.getConnection();
+            connection.close();
+        }
+        finally {
+            db.setPassword(pass);
+        }
     }
 
     @Test
@@ -71,7 +88,7 @@ public class UtilTests {
         Connection conn = db.getConnection();
         UserMapper model = new UserMapper();
         conn.setAutoCommit(false);
-        model.createUser("name=test", "email=test@mailtest.com", conn);
+        model.createUser("name=zassad", "email=tedsaasdasdst@mailtest.com", conn);
 
         conn.rollback();
         conn.setAutoCommit(true);
