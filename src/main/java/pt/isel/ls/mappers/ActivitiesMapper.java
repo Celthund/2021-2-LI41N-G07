@@ -81,7 +81,7 @@ public class ActivitiesMapper {
             activities = createActivityList(activityResult, connection);
 
             preparedStatement.close();
-        } catch (SQLException throwable) {
+        } catch (SQLException  | NumberFormatException throwables) {
             throw new ServerErrorException("Failed getting activities by tops.");
         }
         return activities;
@@ -112,7 +112,7 @@ public class ActivitiesMapper {
             activities = createActivityList(activityResult, connection);
 
             preparedStatement.close();
-        } catch (SQLException throwable) {
+        } catch (SQLException | NumberFormatException throwables) {
             throw new ServerErrorException("Failed getting activities by uid.");
         }
         return activities;
@@ -143,7 +143,7 @@ public class ActivitiesMapper {
 
             activities = createActivityList(activityResult, connection);
             preparedStatement.close();
-        } catch (SQLException throwable) {
+        } catch (SQLException | NumberFormatException throwables) {
             throw new ServerErrorException("Failed getting activities by rid.");
         }
         return activities;
@@ -171,7 +171,7 @@ public class ActivitiesMapper {
             String sqlCmd;
 
             // If rid is null it means the user didn't introduce it so the query will not have it
-            if (rid == null) {
+            if (rid == null || rid.length() == 0) {
                 sqlCmd = "INSERT INTO activities(uid, sid, date, duration) VALUES (?, ?, ?, ?);";
                 preparedStatement = connection.prepareStatement(sqlCmd);
                 preparedStatement.setInt(2, Integer.parseInt(sid));
@@ -209,7 +209,7 @@ public class ActivitiesMapper {
                 }
             }
             preparedStatement.close();
-        } catch (SQLException e) {
+        } catch (SQLException  | NumberFormatException throwables) {
             throw new ServerErrorException("Failed creating activity.");
         }
         return activity;
@@ -240,7 +240,7 @@ public class ActivitiesMapper {
                     activityResult.getLong("duration"));
             }
             preparedStatement.close();
-        } catch (SQLException throwable) {
+        } catch (SQLException | NumberFormatException throwables) {
             throw new ServerErrorException("Failed getting activity by aid and sid.");
         }
         return activity;
@@ -271,7 +271,7 @@ public class ActivitiesMapper {
 
             activities = createActivityList(activityResult, connection);
             preparedStatement.close();
-        } catch (SQLException throwable) {
+        } catch (SQLException | NumberFormatException throwables) {
             throw new ServerErrorException("Failed getting activity by sid.");
         }
         return activities;
@@ -324,7 +324,7 @@ public class ActivitiesMapper {
             for (String id : aid) {
                 preparedStatement.setInt(i++, Integer.parseInt(id));
             }
-        } catch (SQLException throwable) {
+        } catch (SQLException | NumberFormatException throwables) {
             throw new ServerErrorException("Failed deleting activity.");
         }
         // Returns all the activity removed

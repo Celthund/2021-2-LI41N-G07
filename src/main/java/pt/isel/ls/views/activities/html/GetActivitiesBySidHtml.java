@@ -41,14 +41,14 @@ public class GetActivitiesBySidHtml implements View {
         allElements.addFirst(alink("/", "Home Page"));
 
         allElements.add(form(
-            "/sports/{sid}/activities", "POST",
+            "/sports/" + activities.getFirst().sport.sid + "/activities", "POST",
             h2("Add new Activity:"),
             paragraph("User"),
             input("text", "uid", "uid", "", ""),
             paragraph("Date"),
-            input("date", "date", "date", "", ""),
+            input("text", "date", "date", "", ""),
             paragraph("Duration"),
-            input("time", "duration", "duration", "", ""),
+            input("text", "duration", "duration", "", ""),
             paragraph("Route (optional)"),
             input("text", "rid", "rid", "", ""),
 

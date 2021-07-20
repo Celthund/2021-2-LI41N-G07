@@ -25,7 +25,7 @@ public class RoutesMapper {
                     routeResult.getString("endLocation"));
             }
             preparedStatement.close();
-        } catch (SQLException throwable) {
+        } catch (SQLException  | NumberFormatException throwables) {
             throw new ServerErrorException("Failed getting route with id = " + rid + ".");
         }
         return route;
@@ -55,7 +55,7 @@ public class RoutesMapper {
                     routeResult.getString("startLocation"),
                     routeResult.getString("endLocation")));
             }
-        } catch (SQLException throwable) {
+        } catch (SQLException  | NumberFormatException throwables) {
             throw new ServerErrorException("Failed getting all routes.");
         }
         return routes;
@@ -82,7 +82,7 @@ public class RoutesMapper {
                 }
             }
             preparedStatement.close();
-        } catch (SQLException throwables) {
+        } catch (SQLException  | NumberFormatException throwables) {
             throw new ServerErrorException("Failed creating route.");
         }
         return route;

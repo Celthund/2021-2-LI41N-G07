@@ -26,7 +26,7 @@ public class UserMapper {
                     userResult.getInt("uid"));
             }
             preparedStatement.close();
-        } catch (SQLException throwable) {
+        } catch (SQLException | NumberFormatException throwables) {
             throw new ServerErrorException("Failed getting user with id = " + id + ".");
         }
         return user;
@@ -55,7 +55,7 @@ public class UserMapper {
                     userResult.getString("email"),
                     userResult.getInt("uid")));
             }
-        } catch (SQLException throwables) {
+        } catch (SQLException | NumberFormatException throwables) {
             throw new ServerErrorException("Failed getting all users.");
         }
         return users;
@@ -79,7 +79,7 @@ public class UserMapper {
                 }
             }
             preparedStatement.close();
-        } catch (SQLException throwable) {
+        } catch (SQLException | NumberFormatException throwables) {
             throw new ServerErrorException("Failed creating user.");
         }
         return user;

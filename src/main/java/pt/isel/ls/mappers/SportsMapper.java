@@ -25,7 +25,7 @@ public class SportsMapper {
                     sportResult.getString("description"));
             }
             preparedStatement.close();
-        } catch (SQLException throwable) {
+        } catch (SQLException | NumberFormatException throwable) {
             throw new ServerErrorException("Failed getting sport with id = " + sid + ".");
         }
         return sport;
@@ -57,7 +57,7 @@ public class SportsMapper {
                     sportResult.getString("name"),
                     sportResult.getString("description")));
             }
-        } catch (SQLException throwable) {
+        } catch (SQLException | NumberFormatException throwables) {
             throw new ServerErrorException("Failed getting all sports.");
         }
         return sports;
@@ -81,7 +81,7 @@ public class SportsMapper {
                 }
             }
             preparedStatement.close();
-        } catch (SQLException throwable) {
+        } catch (SQLException | NumberFormatException throwables) {
             throw new ServerErrorException("Failed creating sport.");
         }
         return sport;
@@ -109,7 +109,7 @@ public class SportsMapper {
             sports = createSportList(sportResult);
 
             preparedStatement.close();
-        } catch (SQLException throwable) {
+        } catch (SQLException | NumberFormatException throwables) {
             throw new ServerErrorException("Failed getting sports by route id.");
         }
         return sports;

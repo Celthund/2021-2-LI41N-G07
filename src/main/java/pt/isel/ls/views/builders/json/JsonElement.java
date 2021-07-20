@@ -9,7 +9,7 @@ public abstract class JsonElement {
     private final List<JsonElement> elements;
     private final String content;
 
-    // Constructor to receive an indeterminated array of elements
+    // Constructor to receive an indeterminate array of elements
     public JsonElement(JsonElement... elements) {
         this.elements = asList(elements);
         content = null;

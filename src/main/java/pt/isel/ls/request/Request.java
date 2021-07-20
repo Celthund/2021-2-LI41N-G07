@@ -147,7 +147,7 @@ public class Request {
     private void parse(String request) throws InvalidRequestException {
         String[] arr = request.split(" ");
 
-        if (arr.length < 2) { //doesn't have path, method or both
+        if (arr.length < 2 || arr.length > 4) { //doesn't have path, method or both
             throw new InvalidRequestException();
         }
 
@@ -171,5 +171,10 @@ public class Request {
                 setQueryStrings(arr[2]);
             }
         }
+        /*
+        else {
+            throw InvalidRequestException();
+            }
+        */
     }
 }

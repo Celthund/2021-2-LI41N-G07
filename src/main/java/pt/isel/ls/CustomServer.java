@@ -140,7 +140,7 @@ public class CustomServer {
                 System.out.println("Error getting result");
             }
         } catch (AppException | FileNotFoundException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             System.out.println(e.getMessage());
         }
     }
